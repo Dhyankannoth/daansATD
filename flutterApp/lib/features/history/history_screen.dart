@@ -273,28 +273,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        PulseColors.surfaceDim,
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-                Image.asset(
-                  'assets/mascot/bluey_emptyState.png',
-                  height: 140,
-                  fit: BoxFit.contain,
-                ),
-              ],
+            Image.asset(
+              'assets/mascot/bluey_emptyState.png',
+              height: 180,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 20),
             Text(

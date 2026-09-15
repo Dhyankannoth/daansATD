@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import '../../../../camera_finger_instruction.dart';
 import '../../../../core/theme/pulse_colors.dart';
 import '../../../../core/theme/pulse_typography.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../widgets/onboarding_info_icon.dart';
 
 /// Screen 6 — Camera Measurement Tutorial: Teach camera-based physiological measurement.
-/// Animation: Guide (Realistic hand placing fingertip over the rear camera and holding).
+/// Clean visual hierarchy: Mascot + Instructions + Guidance tips + "Measure" CTA.
+/// Tapping "Measure" navigates to "Let's establish your baseline." for first-time baseline.
 class CameraTutorialScreen extends StatelessWidget {
-  final VoidCallback onTryIt;
+  final VoidCallback? onMeasure;
+  final VoidCallback? onTryIt;
 
   const CameraTutorialScreen({
     super.key,
-    required this.onTryIt,
-  });
+    this.onMeasure,
+    this.onTryIt,
+  }) : assert(onMeasure != null || onTryIt != null, 'Either onMeasure or onTryIt must be provided');
+
+  VoidCallback get _onAction => onMeasure ?? onTryIt!;
 
   @override
   Widget build(BuildContext context) {
@@ -33,30 +38,14 @@ class CameraTutorialScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 4),
 
-                    // Mascot: Bluey Scanning
+                    // Mascot: Bluey Scanning (flat artwork directly on white background)
                     Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 96,
-                            height: 96,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  PulseColors.tintEmeraldBg.withValues(alpha: 0.8),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/mascot/bluey_scanning.png',
-                            height: 115,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
+                      child: SizedBox(
+                        height: 200,
+                        child: Image.asset(
+                          'assets/mascot/bluey_scanning.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
 
@@ -76,32 +65,26 @@ class CameraTutorialScreen extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
-                    // Supporting Text
-                    Text(
-                      'Place your fingertip over the rear camera and flash. Keep it still while we measure.',
-                      style: PulseTypography.bodyRegular.copyWith(
-                        fontSize: 14,
-                        height: 1.5,
-                        color: PulseColors.textSecondary,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Guide Animation: Phone + Finger Placement
-                    Container(
-                      height: 270,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: PulseColors.surface,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: PulseColors.divider, width: 1.2),
-                        boxShadow: const [PulseColors.cardShadow],
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: const CameraFingerInstruction(
-                        height: 260,
-                      ),
+                    // Supporting Text with on-demand info icon
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Place your fingertip over the rear camera and flash. Keep it still while I measure.',
+                            style: PulseTypography.bodyRegular.copyWith(
+                              fontSize: 14,
+                              height: 1.5,
+                              color: PulseColors.textSecondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const OnboardingInfoIcon(
+                          message:
+                              'Camera video stream is processed in-memory and immediately discarded. No video frames are ever recorded or stored.',
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 20),
@@ -126,13 +109,13 @@ class CameraTutorialScreen extends StatelessWidget {
 
                 const SizedBox(height: 24),
 
-                // CTA Button
+                // CTA Button: "Measure" navigates forward in the flow
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: PrimaryButton(
-                    label: 'Try It',
+                    label: 'Measure',
                     icon: Icons.camera_alt_rounded,
-                    onPressed: onTryIt,
+                    onPressed: _onAction,
                   ),
                 ),
               ],

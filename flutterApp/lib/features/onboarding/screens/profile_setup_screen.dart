@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/pulse_colors.dart';
 import '../../../../core/theme/pulse_typography.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../widgets/onboarding_info_icon.dart';
 
 /// Screen 3 — Basic Profile: Collect only necessary personalization info.
 /// Animation: Slide (smooth staggered slide transition focusing on usability).
@@ -112,28 +113,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
 
                           // Mascot: Bluey Thinking
                           Center(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 96,
-                                  height: 96,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: RadialGradient(
-                                      colors: [
-                                        PulseColors.tintAmberBg.withValues(alpha: 0.8),
-                                        Colors.transparent,
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Image.asset(
-                                  'assets/mascot/bluey_thinking.png',
-                                  height: 115,
-                                  fit: BoxFit.contain,
-                                ),
-                              ],
+                            child: Image.asset(
+                              'assets/mascot/bluey_thinking.png',
+                              height: 180,
+                              fit: BoxFit.contain,
                             ),
                           ),
 
@@ -155,7 +138,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
 
                           // Supporting Text
                           Text(
-                            "A few basic details help us personalize your monitoring experience.",
+                            "A few basic details help me personalize your monitoring experience.",
                             style: PulseTypography.bodyRegular.copyWith(
                               fontSize: 14,
                               height: 1.5,
@@ -217,13 +200,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
                           const SizedBox(height: 20),
 
                           // Age / Date of Birth Card
-                          Text(
-                            'AGE',
-                            style: PulseTypography.caption.copyWith(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
-                              color: PulseColors.textTertiary,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                'AGE',
+                                style: PulseTypography.caption.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.5,
+                                  color: PulseColors.textTertiary,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const OnboardingInfoIcon(
+                                message:
+                                    'Age benchmarks help calibrate population baseline fallbacks before your personal profile completes training.',
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
@@ -268,37 +260,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
                               }
                               return null;
                             },
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Subtle Info Box
-                          Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: PulseColors.surfaceDim,
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.info_outline_rounded,
-                                  size: 18,
-                                  color: PulseColors.textSecondary,
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    'Age benchmarks help calibrate population baseline fallbacks before your personal profile completes training.',
-                                    style: PulseTypography.caption.copyWith(
-                                      fontSize: 12,
-                                      color: PulseColors.textSecondary,
-                                      height: 1.35,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

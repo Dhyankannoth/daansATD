@@ -10,9 +10,9 @@ class OnboardingTrustBadge extends StatelessWidget {
 
   const OnboardingTrustBadge({
     super.key,
-    this.title = 'Your privacy and security matter to us.',
+    this.title = 'Your privacy and security matter to me.',
     this.message =
-        'We promise to always keep your personal information private, encrypted, and stored safely on your device.',
+        'I promise to always keep your personal information private, encrypted, and stored safely on your device.',
     this.icon = Icons.lock_outline_rounded,
   });
 

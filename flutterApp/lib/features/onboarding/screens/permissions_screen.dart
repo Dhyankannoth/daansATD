@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/pulse_colors.dart';
 import '../../../../core/theme/pulse_typography.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../widgets/onboarding_info_icon.dart';
 
 /// Screen 5 — Permissions: Explain permissions before requesting them.
 /// Animation: Enable (staggered subtle activation Camera -> Notifications -> Health Data).
@@ -107,28 +108,10 @@ class _PermissionsScreenState extends State<PermissionsScreen>
 
                     // Mascot: Bluey Permissions
                     Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 96,
-                            height: 96,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  PulseColors.tintBlueBg.withValues(alpha: 0.8),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/mascot/bluey_permision.png',
-                            height: 115,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
+                      child: Image.asset(
+                        'assets/mascot/bluey_permision.png',
+                        height: 180,
+                        fit: BoxFit.contain,
                       ),
                     ),
 
@@ -172,6 +155,8 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                         enabled: _cameraGranted,
                         isRequired: true,
                         onToggle: (val) => setState(() => _cameraGranted = val),
+                        infoTooltip:
+                            'Camera video stream is processed in-memory and immediately discarded. No video frames are ever recorded or stored.',
                       ),
                     ),
 
@@ -183,7 +168,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                       child: _buildPermissionCard(
                         title: 'Notifications',
                         description:
-                            'Used to notify you when we notice something that needs your attention.',
+                            'Used to notify you when I notice something that needs your attention.',
                         icon: Icons.notifications_active_rounded,
                         iconBg: PulseColors.tintAmberBg,
                         iconColor: PulseColors.tintAmberIcon,
@@ -208,37 +193,6 @@ class _PermissionsScreenState extends State<PermissionsScreen>
                         enabled: _healthDataGranted,
                         isRequired: false,
                         onToggle: (val) => setState(() => _healthDataGranted = val),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Cal AI Security note
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: PulseColors.surfaceDim,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.verified_user_outlined,
-                            size: 18,
-                            color: PulseColors.textSecondary,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Camera video stream is processed in-memory and immediately discarded. No video frames are ever recorded or stored.',
-                              style: PulseTypography.caption.copyWith(
-                                fontSize: 11,
-                                height: 1.35,
-                                color: PulseColors.textSecondary,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ],
@@ -271,6 +225,7 @@ class _PermissionsScreenState extends State<PermissionsScreen>
     required bool enabled,
     required bool isRequired,
     required ValueChanged<bool> onToggle,
+    String? infoTooltip,
   }) {
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -292,13 +247,21 @@ class _PermissionsScreenState extends State<PermissionsScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: PulseTypography.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    color: PulseColors.textPrimary,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: PulseTypography.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                        color: PulseColors.textPrimary,
+                      ),
+                    ),
+                    if (infoTooltip != null) ...[
+                      const SizedBox(width: 6),
+                      OnboardingInfoIcon(message: infoTooltip),
+                    ],
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(

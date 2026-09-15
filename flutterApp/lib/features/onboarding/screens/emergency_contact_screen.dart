@@ -5,6 +5,7 @@ import '../../../../core/theme/pulse_typography.dart';
 import '../../../../engine/core/models/emergency_contact.dart';
 import '../../../../services/pulse_engine_scope.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
+import '../widgets/onboarding_info_icon.dart';
 import '../widgets/pulse_connecting_indicator.dart';
 
 /// Screen 4 — Emergency Contact: Establish a person who can be contacted during escalation.
@@ -110,7 +111,7 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
 
                       // Headline
                       Text(
-                        'Who should we contact if you need help?',
+                        'Who should I contact if you need help?',
                         style: PulseTypography.headingLarge.copyWith(
                           fontSize: 26,
                           fontWeight: FontWeight.w800,
@@ -123,13 +124,25 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
                       const SizedBox(height: 10),
 
                       // Supporting Text
-                      Text(
-                        'Add someone we can reach quickly if you become unresponsive or need assistance.',
-                        style: PulseTypography.bodyRegular.copyWith(
-                          fontSize: 14,
-                          height: 1.5,
-                          color: PulseColors.textSecondary,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Add someone I can reach quickly if you become unresponsive or need assistance.',
+                              style: PulseTypography.bodyRegular.copyWith(
+                                fontSize: 14,
+                                height: 1.5,
+                                color: PulseColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const OnboardingInfoIcon(
+                            message:
+                                'Emergency contacts are strictly private. I never send unsolicited cellular texts or make unprompted network calls.',
+                          ),
+                        ],
                       ),
 
                       const SizedBox(height: 20),
@@ -291,37 +304,6 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
                               width: 1.5,
                             ),
                           ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 18),
-
-                      // Privacy Notice
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: PulseColors.surfaceDim,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.lock_outline_rounded,
-                              size: 16,
-                              color: PulseColors.textSecondary,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                'Emergency contacts are strictly private. PulseGuard never sends unsolicited cellular texts or makes unprompted network calls.',
-                                style: PulseTypography.caption.copyWith(
-                                  fontSize: 11,
-                                  height: 1.35,
-                                  color: PulseColors.textSecondary,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],

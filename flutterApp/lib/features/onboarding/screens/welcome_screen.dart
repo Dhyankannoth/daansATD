@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/pulse_colors.dart';
 import '../../../../core/theme/pulse_typography.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
-import '../widgets/onboarding_trust_badge.dart';
 
 /// Screen 1 — Welcome: Introduce the product and establish trust.
 /// Animation: Reveal (Branding -> Headline -> Supporting Text -> Trust Badge -> CTA).
@@ -31,7 +30,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late final Animation<double> _bodyFade;
   late final Animation<Offset> _bodySlide;
 
-  late final Animation<double> _trustFade;
   late final Animation<double> _ctaFade;
 
   @override
@@ -73,14 +71,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       curve: const Interval(0.40, 0.75, curve: Curves.easeOutCubic),
     ));
 
-    _trustFade = CurvedAnimation(
-      parent: _animCtrl,
-      curve: const Interval(0.60, 0.90, curve: Curves.easeOut),
-    );
-
     _ctaFade = CurvedAnimation(
       parent: _animCtrl,
-      curve: const Interval(0.75, 1.00, curve: Curves.easeOut),
+      curve: const Interval(0.60, 1.00, curve: Curves.easeOut),
     );
 
     _animCtrl.forward();
@@ -117,30 +110,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       child: SlideTransition(
                         position: _logoSlide,
                         child: Center(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: 140,
-                                height: 140,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: RadialGradient(
-                                    colors: [
-                                      PulseColors.tintBlueBg.withValues(alpha: 0.8),
-                                      PulseColors.tintBlueBg.withValues(alpha: 0.1),
-                                      Colors.transparent,
-                                    ],
-                                    stops: const [0.3, 0.7, 1.0],
-                                  ),
-                                ),
-                              ),
-                              Image.asset(
-                                'assets/mascot/bluey_welcome.png',
-                                height: 150,
-                                fit: BoxFit.contain,
-                              ),
-                            ],
+                          child: Image.asset(
+                            'assets/mascot/bluey_welcome.png',
+                            height: 230,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
@@ -154,7 +127,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       child: SlideTransition(
                         position: _titleSlide,
                         child: Text(
-                          'Know when something changes.',
+                          'Hi, I\'m Bluey!',
                           textAlign: TextAlign.center,
                           style: PulseTypography.headingLarge.copyWith(
                             fontSize: 28,
@@ -177,7 +150,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
-                            'Monitor changes in your vital signals and get an early warning when something looks unusual.',
+                            'I\'m here to help you understand your vital signals and notice when something changes.',
                             textAlign: TextAlign.center,
                             style: PulseTypography.bodyRegular.copyWith(
                               fontSize: 15,
@@ -186,18 +159,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             ),
                           ),
                         ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Privacy & Security Trust Badge
-                    FadeTransition(
-                      opacity: _trustFade,
-                      child: const OnboardingTrustBadge(
-                        title: 'Your privacy and security matter to us.',
-                        message:
-                            'All physiological baseline data stays locally on your device. We never sell, share, or broadcast your health information.',
                       ),
                     ),
                   ],

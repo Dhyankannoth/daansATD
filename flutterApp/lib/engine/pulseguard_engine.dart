@@ -231,6 +231,16 @@ class PulseGuardEngine implements PulseGuardApi {
   bool get hasBaseline => _baseline != null;
   @override
   Baseline? get baseline => _baseline;
+
+  @visibleForTesting
+  Future<void> setBaselineForTesting(Baseline baseline) async {
+    _baseline = baseline;
+    if (_store != null) {
+      await _store!.saveBaseline(baseline);
+    }
+    _updateSnapshot();
+  }
+
   @override
   Stream<CalibrationProgress> get calibration => _calibrationCtrl.stream;
 

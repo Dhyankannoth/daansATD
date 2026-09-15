@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pulseguard/core/theme/pulse_theme.dart';
 import 'package:pulseguard/data/repositories/history_repository.dart';
 import 'package:pulseguard/features/history/history_screen.dart';
-import 'package:pulseguard/features/measurement/camera_measurement_screen.dart';
 import 'package:pulseguard/features/onboarding/onboarding_flow_screen.dart';
 import 'package:pulseguard/pulseguard_engine.dart';
 import 'package:pulseguard/services/pulse_engine_scope.dart';
@@ -92,13 +91,16 @@ void main() {
 
       // Screen 6: Camera Tutorial mascot
       expect(findAssetImage('assets/mascot/bluey_scanning.png'), findsOneWidget);
-      await tapButton(tester, find.text('Try It'));
+      await tapButton(tester, find.text('Measure'));
 
-      // Screen 7: Initial Baseline (scanning mascot inside central gauge)
+      // Screen 7: Establish Baseline Tutorial
+      await tapButton(tester, find.text('Start Measurement'));
+
+      // Screen 8: Initial Baseline (scanning mascot inside central gauge)
       expect(findAssetImage('assets/mascot/bluey_scanning.png'), findsOneWidget);
       await tapButton(tester, find.text('Skip Baseline for Now'));
 
-      // Screen 8: Baseline Complete mascot
+      // Screen 9: Baseline Complete mascot
       expect(findAssetImage('assets/mascot/bluey_excited.png'), findsOneWidget);
     });
 

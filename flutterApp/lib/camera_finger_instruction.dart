@@ -28,9 +28,13 @@ class CameraFingerInstruction extends StatefulWidget {
   /// Asset path for finger graphic.
   final String fingerAsset;
 
+  /// Whether to display the instructional text below the animation. Defaults to true.
+  final bool showText;
+
   const CameraFingerInstruction({
     super.key,
     this.height,
+    this.showText = true,
     this.cycleDuration = const Duration(seconds: 4),
     this.cameraRelativeX = 0.275,
     this.cameraRelativeY = 0.135,
@@ -251,42 +255,44 @@ class _CameraFingerInstructionState extends State<CameraFingerInstruction>
               ),
             ),
 
-            const SizedBox(height: 18.0),
+            if (widget.showText) ...[
+              const SizedBox(height: 18.0),
 
-            // Instructional Text Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
-                    'Cover the camera with your finger',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: PulseTypography.fontFamily,
-                      fontFamilyFallback: PulseTypography.fontFamilyFallback,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF0F172A), // Slate 800
-                      letterSpacing: -0.2,
+              // Instructional Text Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text(
+                      'Cover the camera with your finger',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: PulseTypography.fontFamily,
+                        fontFamilyFallback: PulseTypography.fontFamilyFallback,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0F172A), // Slate 800
+                        letterSpacing: -0.2,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Keep your finger in place for a few seconds',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: PulseTypography.fontFamily,
-                      fontFamilyFallback: PulseTypography.fontFamilyFallback,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF64748B), // Slate 500
-                      height: 1.35,
+                    SizedBox(height: 8.0),
+                    Text(
+                      'Keep your finger in place for a few seconds',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: PulseTypography.fontFamily,
+                        fontFamilyFallback: PulseTypography.fontFamilyFallback,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF64748B), // Slate 500
+                        height: 1.35,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         ),
       );

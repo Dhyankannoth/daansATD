@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/pulse_colors.dart';
 import '../../../../core/theme/pulse_typography.dart';
 import '../../../../shared/widgets/buttons/primary_button.dart';
-import '../widgets/live_baseline_waveform.dart';
 
 /// Screen 2 — How Monitoring Works: Explain personal baseline monitoring.
-/// Animation: Pulse (subtle moving physiological waveform communicating continuous learning).
 class MonitoringConceptScreen extends StatelessWidget {
   final VoidCallback onContinue;
 
@@ -35,28 +33,10 @@ class MonitoringConceptScreen extends StatelessWidget {
 
                     // Mascot: Bluey Checking
                     Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 96,
-                            height: 96,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  PulseColors.tintEmeraldBg.withValues(alpha: 0.8),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/mascot/bluey_checking.png',
-                            height: 115,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
+                      child: Image.asset(
+                        'assets/mascot/bluey_checking.png',
+                        height: 180,
+                        fit: BoxFit.contain,
                       ),
                     ),
 
@@ -64,7 +44,7 @@ class MonitoringConceptScreen extends StatelessWidget {
 
                     // Headline
                     Text(
-                      "We learn what's normal for you.",
+                      "I learn what's normal for you.",
                       style: PulseTypography.headingLarge.copyWith(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
@@ -78,7 +58,7 @@ class MonitoringConceptScreen extends StatelessWidget {
 
                     // Supporting Text
                     Text(
-                      "Everyone's body is different. We build a personal baseline so changes can be compared against your usual patterns.",
+                      "Everyone's body is different. I build a personal baseline so changes can be compared against your usual patterns.",
                       style: PulseTypography.bodyRegular.copyWith(
                         fontSize: 14,
                         height: 1.5,
@@ -86,26 +66,9 @@ class MonitoringConceptScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 22),
-
-                    // Visual: Live Baseline Pulsing Waveform
-                    const LiveBaselineWaveform(height: 140),
-
-                    const SizedBox(height: 8),
-                    Center(
-                      child: Text(
-                        'Learned Normal Distribution (Mean ± 2 SD)',
-                        style: PulseTypography.caption.copyWith(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: PulseColors.textTertiary,
-                        ),
-                      ),
-                    ),
-
                     const SizedBox(height: 24),
 
-                    // 3 Concise Explanatory Feature Rows
+                    // 3 Concise Explanatory Feature Rows (clean, frameless presentation)
                     _buildConceptRow(
                       icon: Icons.auto_awesome_rounded,
                       iconBg: PulseColors.tintEmeraldBg,
@@ -114,7 +77,7 @@ class MonitoringConceptScreen extends StatelessWidget {
                       description:
                           'A static threshold causes false alerts. Your baseline is derived specifically from your physiological signals.',
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 12),
 
                     _buildConceptRow(
                       icon: Icons.directions_run_rounded,
@@ -124,7 +87,7 @@ class MonitoringConceptScreen extends StatelessWidget {
                       description:
                           'Elevated heart rate during exercise is expected. Recovery hysteresis prevents unnecessary alarms during cooldown.',
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 12),
 
                     _buildConceptRow(
                       icon: Icons.health_and_safety_outlined,
@@ -162,18 +125,15 @@ class MonitoringConceptScreen extends StatelessWidget {
     required String title,
     required String description,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(14.0),
-      decoration: BoxDecoration(
-        color: PulseColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: PulseColors.divider, width: 1.0),
-        boxShadow: const [PulseColors.cardShadow],
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 22, color: iconColor),
+          Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Icon(icon, size: 22, color: iconColor),
+          ),
           const SizedBox(width: 14),
           Expanded(
             child: Column(

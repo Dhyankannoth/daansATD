@@ -96,37 +96,12 @@ class _BaselineCompleteScreenState extends State<BaselineCompleteScreen>
                     // Confirm Animation: Bluey Excited Celebration Mascot
                     ScaleTransition(
                       scale: _scaleAnim,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 140,
-                            height: 140,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(
-                                colors: [
-                                  PulseColors.tintEmeraldBg.withValues(alpha: 0.8),
-                                  PulseColors.tintEmeraldBg.withValues(alpha: 0.1),
-                                  Colors.transparent,
-                                ],
-                                stops: const [0.3, 0.7, 1.0],
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: PulseColors.tintEmeraldIcon.withValues(alpha: 0.15),
-                                  blurRadius: 30,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/mascot/bluey_excited.png',
-                            height: 150,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
+                      child: Center(
+                        child: Image.asset(
+                          'assets/mascot/bluey_excited.png',
+                          height: 220,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
 
@@ -155,7 +130,7 @@ class _BaselineCompleteScreenState extends State<BaselineCompleteScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          'Your initial baseline has been created. It will become more reliable as we learn your normal patterns over time.',
+                          'Your initial baseline has been created. It will become more reliable as I learn your normal patterns over time.',
                           textAlign: TextAlign.center,
                           style: PulseTypography.bodyRegular.copyWith(
                             fontSize: 15,

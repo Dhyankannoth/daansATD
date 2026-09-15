@@ -151,7 +151,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
 
                         // Headline
                         Text(
-                          "Let's establish your baseline.",
+                          'Measuring your baseline.',
                           style: PulseTypography.headingLarge.copyWith(
                             fontSize: 26,
                             fontWeight: FontWeight.w800,
@@ -227,7 +227,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
                                           )
                                         : Image.asset(
                                             'assets/mascot/bluey_scanning.png',
-                                            height: 34,
+                                            height: 48,
                                             fit: BoxFit.contain,
                                           ),
                                     const SizedBox(height: 4),
