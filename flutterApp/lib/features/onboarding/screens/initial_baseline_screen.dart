@@ -24,11 +24,11 @@ class InitialBaselineScreen extends StatefulWidget {
 }
 
 class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
-  StreamSubscription<ScanSummary>? _scanFinishedSub;
+  StreamSubscription<CalibrationProgress>? _calibrationSub;
   int _countdown = PulseConstants.spotScanDurationSeconds;
   Timer? _countdownTimer;
   bool _scanStarted = false;
-  ScanSummary? _completedSummary;
+  bool _measurementComplete = false;
 
   @override
   void initState() {
@@ -44,21 +44,22 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
 
     final engine = PulseEngineScope.engineOf(context);
 
-    _scanFinishedSub = engine.scanFinished.listen((summary) {
+    _calibrationSub = engine.calibration.listen((progress) {
+      if (!progress.done) return;
       _countdownTimer?.cancel();
       if (!mounted) return;
       setState(() {
-        _completedSummary = summary;
+        _measurementComplete = true;
       });
       Future.delayed(const Duration(milliseconds: 600), () {
         if (mounted) {
-          widget.onMeasurementComplete(summary);
+          widget.onMeasurementComplete(null);
         }
       });
     });
 
     try {
-      await engine.startScan();
+      await engine.startCalibration();
 
       _countdown = PulseConstants.spotScanDurationSeconds;
       _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -92,7 +93,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
   @override
   void dispose() {
     _countdownTimer?.cancel();
-    _scanFinishedSub?.cancel();
+    _calibrationSub?.cancel();
     super.dispose();
   }
 
@@ -102,7 +103,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
   }
 
   String _deriveStatusText(EngineSnapshot snapshot) {
-    if (_completedSummary != null) return 'Measurement complete!';
+    if (_measurementComplete) return 'Measurement complete!';
     if (snapshot.phase == EnginePhase.preparingCamera) {
       return 'Preparing camera sensor...';
     }
