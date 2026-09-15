@@ -44,3 +44,5 @@ desktop.ini
 *.jks
 google-services.json
 GoogleService-Info.plist
+
+.docs
