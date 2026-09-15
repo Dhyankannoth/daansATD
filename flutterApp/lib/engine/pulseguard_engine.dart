@@ -600,6 +600,9 @@ class PulseGuardEngine implements PulseGuardApi {
       phase: _phase,
       elapsed: Duration(milliseconds: (t * 1000).round()),
       latestVitals: input.vitals,
+      placementHint: input.vitals.fingerPresent
+          ? PlacementHint.ok
+          : PlacementHint.noFinger,
       activity: activityState,
       risk: riskAssessment,
       alertState: _mapAlertState(_alertController.state),
@@ -660,6 +663,10 @@ class PulseGuardEngine implements PulseGuardApi {
       elapsed: progress.elapsed,
       remaining: progress.total - progress.elapsed,
       remainingIsSet: true,
+      latestVitals: reading,
+      placementHint: reading.fingerPresent
+          ? PlacementHint.ok
+          : PlacementHint.noFinger,
     );
 
     if (t >= totalS) {
