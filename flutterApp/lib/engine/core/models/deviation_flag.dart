@@ -59,16 +59,16 @@ class DeviationFlag {
   }
 
   Map<String, dynamic> toJson() => {
-        'timestamp': timestamp,
-        'system': system.toJson(),
-        'deviating': deviating,
-        'severity': severity,
-        'metric': metric,
-        'value': value,
-        'baseline': baseline,
-        'z': z,
-        'trusted': trusted,
-        'reason': reason,
-        'recovering_suppressed': recoveringSuppressed,
-      };
+    'timestamp': timestamp,
+    'system': system.toJson(),
+    'deviating': deviating,
+    'severity': severity,
+    'metric': metric,
+    'value': value,
+    'baseline': baseline,
+    'z': z,
+    'trusted': trusted,
+    'reason': reason,
+    'recovering_suppressed': recoveringSuppressed,
+  };
 }

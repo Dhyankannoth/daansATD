@@ -39,6 +39,7 @@ dependencies:
   wakelock_plus: ^1.7.0
   shared_preferences: ^2.5.5
   path_provider: ^2.1.6
+  google_fonts: ^8.2.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,8 @@ flutter:
     - assets/models/
     - assets/traces/
     - assets/demo/
+    - assets/animations/
+    - assets/mascot/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

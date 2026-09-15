@@ -23,7 +23,8 @@ class ActivityGate {
   /// Call once at the start of a scan. Whether "still" resolves to
   /// [ActivityStateKind.recovering] is fixed for the whole scan.
   void startScan({required double? timeSinceExerciseS}) {
-    _recoveringEligible = timeSinceExerciseS != null &&
+    _recoveringEligible =
+        timeSinceExerciseS != null &&
         timeSinceExerciseS < thresholds.deviation.recoveringMaxSinceExerciseS;
   }
 

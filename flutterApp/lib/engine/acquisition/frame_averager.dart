@@ -1,7 +1,12 @@
 import 'dart:typed_data';
 
 class FrameAverage {
-  const FrameAverage({required this.r, required this.g, required this.b, required this.satFrac});
+  const FrameAverage({
+    required this.r,
+    required this.g,
+    required this.b,
+    required this.satFrac,
+  });
   final double r;
   final double g;
   final double b;
@@ -13,7 +18,11 @@ class FrameAverage {
 /// Averages the central ROI of a camera frame, sampling every `pixelStep`
 /// pixel in both directions. Allocation-free per call.
 class FrameAverager {
-  FrameAverager({required this.roiFraction, required this.pixelStep, required this.satPixel});
+  FrameAverager({
+    required this.roiFraction,
+    required this.pixelStep,
+    required this.satPixel,
+  });
 
   final double roiFraction;
   final int pixelStep;
@@ -66,7 +75,12 @@ class FrameAverager {
     }
 
     if (n == 0) return const FrameAverage(r: 0, g: 0, b: 0, satFrac: 0);
-    return FrameAverage(r: sumR / n, g: sumG / n, b: sumB / n, satFrac: satCount / n);
+    return FrameAverage(
+      r: sumR / n,
+      g: sumG / n,
+      b: sumB / n,
+      satFrac: satCount / n,
+    );
   }
 
   /// BGRA8888 (iOS). 4 bytes/pixel, order B, G, R, A.
@@ -101,6 +115,11 @@ class FrameAverager {
     }
 
     if (n == 0) return const FrameAverage(r: 0, g: 0, b: 0, satFrac: 0);
-    return FrameAverage(r: sumR / n, g: sumG / n, b: sumB / n, satFrac: satCount / n);
+    return FrameAverage(
+      r: sumR / n,
+      g: sumG / n,
+      b: sumB / n,
+      satFrac: satCount / n,
+    );
   }
 }

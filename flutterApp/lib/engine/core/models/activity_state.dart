@@ -17,17 +17,17 @@ enum ActivityBasis {
   classifier;
 
   String toJson() => switch (this) {
-        ActivityBasis.selfReport => 'self_report',
-        ActivityBasis.accelerometer => 'accelerometer',
-        ActivityBasis.classifier => 'classifier',
-      };
+    ActivityBasis.selfReport => 'self_report',
+    ActivityBasis.accelerometer => 'accelerometer',
+    ActivityBasis.classifier => 'classifier',
+  };
 
   static ActivityBasis fromJson(String value) => switch (value) {
-        'self_report' => ActivityBasis.selfReport,
-        'accelerometer' => ActivityBasis.accelerometer,
-        'classifier' => ActivityBasis.classifier,
-        _ => throw ArgumentError('Unknown activity basis: $value'),
-      };
+    'self_report' => ActivityBasis.selfReport,
+    'accelerometer' => ActivityBasis.accelerometer,
+    'classifier' => ActivityBasis.classifier,
+    _ => throw ArgumentError('Unknown activity basis: $value'),
+  };
 }
 
 /// Current motion/exercise classification of the user during a scan.
@@ -54,9 +54,9 @@ class ActivityState {
   }
 
   Map<String, dynamic> toJson() => {
-        'timestamp': timestamp,
-        'state': state.toJson(),
-        'confidence': confidence,
-        'basis': basis.toJson(),
-      };
+    'timestamp': timestamp,
+    'state': state.toJson(),
+    'confidence': confidence,
+    'basis': basis.toJson(),
+  };
 }

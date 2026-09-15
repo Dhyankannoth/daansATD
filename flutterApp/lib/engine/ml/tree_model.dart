@@ -25,15 +25,17 @@ class TreeNode {
   bool isLeaf(int node) => left[node] == -1 && right[node] == -1;
 
   factory TreeNode.fromJson(Map<String, dynamic> j) => TreeNode(
-        feature: (j['feature'] as List).map((e) => e as int).toList(),
-        threshold: (j['threshold'] as List).map((e) => (e as num).toDouble()).toList(),
-        left: (j['left'] as List).map((e) => e as int).toList(),
-        right: (j['right'] as List).map((e) => e as int).toList(),
-        nSamples: (j['n_samples'] as List).map((e) => e as int).toList(),
-        value: (j['value'] as List)
-            .map((row) => (row as List).map((e) => (e as num).toDouble()).toList())
-            .toList(),
-      );
+    feature: (j['feature'] as List).map((e) => e as int).toList(),
+    threshold: (j['threshold'] as List)
+        .map((e) => (e as num).toDouble())
+        .toList(),
+    left: (j['left'] as List).map((e) => e as int).toList(),
+    right: (j['right'] as List).map((e) => e as int).toList(),
+    nSamples: (j['n_samples'] as List).map((e) => e as int).toList(),
+    value: (j['value'] as List)
+        .map((row) => (row as List).map((e) => (e as num).toDouble()).toList())
+        .toList(),
+  );
 
   /// Traverses from the root using [x] (already restricted to the model's
   /// `feature_indices` subset), returning the leaf node index reached.
@@ -78,20 +80,28 @@ class TreeModel {
   final double? baseScore;
 
   /// Restricts a full feature row to this model's feature subset, in order.
-  List<double> selectFeatures(List<double> fullRow) =>
-      [for (final i in featureIndices) fullRow[i]];
+  List<double> selectFeatures(List<double> fullRow) => [
+    for (final i in featureIndices) fullRow[i],
+  ];
 
-  static TreeModel? tryParse(String json, {required int expectedFeatureSpecVersion}) {
+  static TreeModel? tryParse(
+    String json, {
+    required int expectedFeatureSpecVersion,
+  }) {
     final j = jsonDecode(json) as Map<String, dynamic>;
     final version = j['feature_spec_version'] as int;
     if (version != expectedFeatureSpecVersion) return null;
     return TreeModel(
       modelType: j['model_type'] as String,
       featureSpecVersion: version,
-      featureIndices: (j['feature_indices'] as List).map((e) => e as int).toList(),
+      featureIndices: (j['feature_indices'] as List)
+          .map((e) => e as int)
+          .toList(),
       maxSamples: j['max_samples'] as int?,
       scoreThreshold: (j['score_threshold'] as num?)?.toDouble(),
-      classes: ((j['classes'] as List?) ?? const []).map((e) => e as String).toList(),
+      classes: ((j['classes'] as List?) ?? const [])
+          .map((e) => e as String)
+          .toList(),
       trees: (j['trees'] as List)
           .map((t) => TreeNode.fromJson(t as Map<String, dynamic>))
           .toList(),

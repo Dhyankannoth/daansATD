@@ -21,26 +21,30 @@ class OxCalibration {
   final double spo2Min;
 
   factory OxCalibration.fromJson(Map<String, dynamic> j) => OxCalibration(
-        deviceLabel: j['device_label'] as String,
-        a: (j['a'] as num).toDouble(),
-        b: (j['b'] as num).toDouble(),
-        ratioMin: (j['ratio_min'] as num).toDouble(),
-        ratioMax: (j['ratio_max'] as num).toDouble(),
-        spo2Min: (j['spo2_min'] as num).toDouble(),
-      );
+    deviceLabel: j['device_label'] as String,
+    a: (j['a'] as num).toDouble(),
+    b: (j['b'] as num).toDouble(),
+    ratioMin: (j['ratio_min'] as num).toDouble(),
+    ratioMax: (j['ratio_max'] as num).toDouble(),
+    spo2Min: (j['spo2_min'] as num).toDouble(),
+  );
 
   Map<String, dynamic> toJson() => {
-        'device_label': deviceLabel,
-        'a': a,
-        'b': b,
-        'ratio_min': ratioMin,
-        'ratio_max': ratioMax,
-        'spo2_min': spo2Min,
-      };
+    'device_label': deviceLabel,
+    'a': a,
+    'b': b,
+    'ratio_min': ratioMin,
+    'ratio_max': ratioMax,
+    'spo2_min': spo2Min,
+  };
 }
 
 class OxResult {
-  const OxResult({required this.ratio, required this.oxTrend, required this.spo2});
+  const OxResult({
+    required this.ratio,
+    required this.oxTrend,
+    required this.spo2,
+  });
   final double? ratio;
   final double? oxTrend;
   final double? spo2;

@@ -27,23 +27,32 @@ class FrameValidator {
   PlacementHint? _pendingHint;
   double? _pendingSinceS;
 
-  FrameValidation validate(FrameAverage avg, {required double t, required double motionStdShort}) {
+  FrameValidation validate(
+    FrameAverage avg, {
+    required double t,
+    required double motionStdShort,
+  }) {
     final f = thresholds.frame;
     final m = thresholds.motion;
 
-    final fingerCheck = avg.r > f.fingerRatio * avg.g && avg.r > f.fingerRatio * avg.b;
+    final fingerCheck =
+        avg.r > f.fingerRatio * avg.g && avg.r > f.fingerRatio * avg.b;
     final lightCheck = avg.r > f.minRed;
     final fingerPresent = fingerCheck && lightCheck;
 
     final clippingCheck = avg.satFrac < f.maxSatFrac;
-    final jumpCheck = _prevR == null || (avg.r - _prevR!).abs() / _prevR! < f.maxJump;
+    final jumpCheck =
+        _prevR == null || (avg.r - _prevR!).abs() / _prevR! < f.maxJump;
     final motionCheck = motionStdShort < m.fidgetStd;
 
-    final valid = fingerCheck && lightCheck && clippingCheck && jumpCheck && motionCheck;
+    final valid =
+        fingerCheck && lightCheck && clippingCheck && jumpCheck && motionCheck;
 
     PlacementHint rawHint;
     if (!fingerCheck) {
-      rawHint = avg.r <= f.minRed ? PlacementHint.noFinger : PlacementHint.coverLens;
+      rawHint = avg.r <= f.minRed
+          ? PlacementHint.noFinger
+          : PlacementHint.coverLens;
     } else if (!lightCheck) {
       rawHint = PlacementHint.coverFlash;
     } else if (!clippingCheck) {
@@ -57,7 +66,11 @@ class FrameValidator {
     _prevR = avg.r;
     _debounce(rawHint, t);
 
-    return FrameValidation(fingerPresent: fingerPresent, valid: valid, rawHint: rawHint);
+    return FrameValidation(
+      fingerPresent: fingerPresent,
+      valid: valid,
+      rawHint: rawHint,
+    );
   }
 
   /// The debounced hint for display, or null if nothing has been observed

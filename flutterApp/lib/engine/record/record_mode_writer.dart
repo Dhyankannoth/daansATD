@@ -24,8 +24,8 @@ class RecordModeWriter {
   RecordModeWriter({
     required Future<Directory> Function() documentsDirProvider,
     required List<String> featureNames,
-  })  : _documentsDirProvider = documentsDirProvider,
-        _featureNames = featureNames;
+  }) : _documentsDirProvider = documentsDirProvider,
+       _featureNames = featureNames;
 
   final Future<Directory> Function() _documentsDirProvider;
   final List<String> _featureNames;
@@ -54,7 +54,11 @@ class RecordModeWriter {
     required Map<String, dynamic> meta,
   }) async {
     if (!kRecordModeLabels.contains(label)) {
-      throw ArgumentError.value(label, 'label', 'must be one of $kRecordModeLabels');
+      throw ArgumentError.value(
+        label,
+        'label',
+        'must be one of $kRecordModeLabels',
+      );
     }
     final docsDir = await _documentsDirProvider();
     final recordingsDir = Directory('${docsDir.path}/recordings');
@@ -84,30 +88,30 @@ class RecordModeWriter {
   }
 
   List<String> _header() => [
-        'session_id',
-        'person_id',
-        'label',
-        'device_label',
-        'timestamp',
-        'hr',
-        'hrv',
-        'rr',
-        'spo2',
-        'ox_trend',
-        'quality',
-        'rr_quality',
-        'finger_present',
-        'activity',
-        'activity_confidence',
-        'row_valid',
-        ..._featureNames,
-        'anomaly_score',
-        'risk_probability',
-        'risk_level',
-        'cardio_dev',
-        'resp_dev',
-        'auto_dev',
-      ];
+    'session_id',
+    'person_id',
+    'label',
+    'device_label',
+    'timestamp',
+    'hr',
+    'hrv',
+    'rr',
+    'spo2',
+    'ox_trend',
+    'quality',
+    'rr_quality',
+    'finger_present',
+    'activity',
+    'activity_confidence',
+    'row_valid',
+    ..._featureNames,
+    'anomaly_score',
+    'risk_probability',
+    'risk_level',
+    'cardio_dev',
+    'resp_dev',
+    'auto_dev',
+  ];
 
   void writeTick({
     required VitalsReading vitals,
@@ -118,9 +122,15 @@ class RecordModeWriter {
     final sink = _sink;
     if (sink == null) return;
 
-    final cardio = risk.flags.where((f) => f.system.name == 'cardiovascular').firstOrNull;
-    final resp = risk.flags.where((f) => f.system.name == 'respiratory').firstOrNull;
-    final auto = risk.flags.where((f) => f.system.name == 'autonomic').firstOrNull;
+    final cardio = risk.flags
+        .where((f) => f.system.name == 'cardiovascular')
+        .firstOrNull;
+    final resp = risk.flags
+        .where((f) => f.system.name == 'respiratory')
+        .firstOrNull;
+    final auto = risk.flags
+        .where((f) => f.system.name == 'autonomic')
+        .firstOrNull;
 
     final row = <Object?>[
       _sessionId,
@@ -140,7 +150,9 @@ class RecordModeWriter {
       activity.confidence,
       featureRow.valid,
       for (var i = 0; i < _featureNames.length; i++)
-        featureRow.valid && i < featureRow.values.length ? featureRow.values[i] : null,
+        featureRow.valid && i < featureRow.values.length
+            ? featureRow.values[i]
+            : null,
       risk.anomalyScore,
       risk.riskProbability,
       risk.level.name,
@@ -168,7 +180,9 @@ class RecordModeWriter {
   }) {
     final sink = _rawSink;
     if (sink == null) return;
-    sink.writeln(_csvRow([t, r, g, b, satFrac, valid, fingerPresent, motionStd]));
+    sink.writeln(
+      _csvRow([t, r, g, b, satFrac, valid, fingerPresent, motionStd]),
+    );
     _rawRowsSinceFlush++;
     if (_rawRowsSinceFlush >= 10) {
       _rawRowsSinceFlush = 0;

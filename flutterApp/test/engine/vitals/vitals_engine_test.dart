@@ -25,24 +25,33 @@ List<FrameSample> _syntheticBuffer({
     final r = 150.0 - 20.0 * dip;
     final g = 100.0 - 12.0 * dip;
     final b = 90.0 - 5.0 * dip;
-    return FrameSample(t: t, r: r, g: g, b: b, valid: true, fingerPresent: true);
+    return FrameSample(
+      t: t,
+      r: r,
+      g: g,
+      b: b,
+      valid: true,
+      fingerPresent: true,
+    );
   });
 }
 
 void main() {
-  test('end-to-end tick over a 65 s synthetic 72 bpm buffer resolves HR and quality',
-      () async {
-    final thresholds = await Thresholds.load(bundle: _FileBundle());
-    final engine = VitalsEngine(thresholds: thresholds);
-    final buffer = _syntheticBuffer(bpm: 72, durationS: 65);
+  test(
+    'end-to-end tick over a 65 s synthetic 72 bpm buffer resolves HR and quality',
+    () async {
+      final thresholds = await Thresholds.load(bundle: _FileBundle());
+      final engine = VitalsEngine(thresholds: thresholds);
+      final buffer = _syntheticBuffer(bpm: 72, durationS: 65);
 
-    final reading = engine.tick(buffer: buffer, nowS: 65.0, nowMs: 65000);
+      final reading = engine.tick(buffer: buffer, nowS: 65.0, nowMs: 65000);
 
-    expect(reading.fingerPresent, isTrue);
-    expect(reading.hr, isNotNull);
-    expect(reading.hr!, closeTo(72.0, 3.0));
-    expect(reading.quality, greaterThan(0));
-  });
+      expect(reading.fingerPresent, isTrue);
+      expect(reading.hr, isNotNull);
+      expect(reading.hr!, closeTo(72.0, 3.0));
+      expect(reading.quality, greaterThan(0));
+    },
+  );
 
   test('empty buffer yields an all-null, zero-quality reading', () async {
     final thresholds = await Thresholds.load(bundle: _FileBundle());

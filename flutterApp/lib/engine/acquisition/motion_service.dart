@@ -24,8 +24,9 @@ class MotionService {
   StreamSubscription<AccelerometerEvent>? _sub;
 
   void start() {
-    _sub = accelerometerEventStream(samplingPeriod: SensorInterval.gameInterval)
-        .listen(_onEvent);
+    _sub = accelerometerEventStream(
+      samplingPeriod: SensorInterval.gameInterval,
+    ).listen(_onEvent);
   }
 
   Future<void> stop() async {

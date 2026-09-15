@@ -7,8 +7,9 @@ import 'package:pulseguard/engine/core/models/baseline.dart';
 import 'package:pulseguard/engine/detection/baseline_service.dart';
 
 Thresholds _load() {
-  final json = jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
-      as Map<String, dynamic>;
+  final json =
+      jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
+          as Map<String, dynamic>;
   return Thresholds.fromJson(json);
 }
 
@@ -60,7 +61,13 @@ void main() {
     final thresholds = _load();
     final service = BaselineService(thresholds: thresholds);
     const mb = MetricBaseline(
-        mean: 72, sd: 5, variance: 25, sdFloorApplied: true, sessionCount: 1, updatedAt: 0);
+      mean: 72,
+      sd: 5,
+      variance: 25,
+      sdFloorApplied: true,
+      sessionCount: 1,
+      updatedAt: 0,
+    );
     const current = Baseline(hr: mb, hrv: mb, rr: mb, isDemo: false);
 
     final updated = service.adaptiveUpdate(
@@ -84,37 +91,52 @@ void main() {
     expect(updated!.hr.mean, closeTo(72.4, 1e-9));
   });
 
-  test('adaptive update is skipped after an escalation (alertOutcome escalated)', () {
-    final thresholds = _load();
-    final service = BaselineService(thresholds: thresholds);
-    const mb = MetricBaseline(
-        mean: 72, sd: 5, variance: 25, sdFloorApplied: true, sessionCount: 1, updatedAt: 0);
-    const current = Baseline(hr: mb, hrv: mb, rr: mb, isDemo: false);
+  test(
+    'adaptive update is skipped after an escalation (alertOutcome escalated)',
+    () {
+      final thresholds = _load();
+      final service = BaselineService(thresholds: thresholds);
+      const mb = MetricBaseline(
+        mean: 72,
+        sd: 5,
+        variance: 25,
+        sdFloorApplied: true,
+        sessionCount: 1,
+        updatedAt: 0,
+      );
+      const current = Baseline(hr: mb, hrv: mb, rr: mb, isDemo: false);
 
-    final updated = service.adaptiveUpdate(
-      current: current,
-      hrMedian: 90,
-      hrvMedian: 20,
-      rrMedian: 25,
-      endReason: 'user',
-      restingFraction: 0.9,
-      maxLevelRank: 4,
-      alertOutcome: 'escalated',
-      trustedTicksHr: 40,
-      trustedTicksHrv: 40,
-      trustedTicksRr: 40,
-      isReplay: false,
-      nowMs: 1000,
-    );
+      final updated = service.adaptiveUpdate(
+        current: current,
+        hrMedian: 90,
+        hrvMedian: 20,
+        rrMedian: 25,
+        endReason: 'user',
+        restingFraction: 0.9,
+        maxLevelRank: 4,
+        alertOutcome: 'escalated',
+        trustedTicksHr: 40,
+        trustedTicksHrv: 40,
+        trustedTicksRr: 40,
+        isReplay: false,
+        nowMs: 1000,
+      );
 
-    expect(updated, isNull);
-  });
+      expect(updated, isNull);
+    },
+  );
 
   test('adaptive update is skipped for a demo baseline', () {
     final thresholds = _load();
     final service = BaselineService(thresholds: thresholds);
     const mb = MetricBaseline(
-        mean: 72, sd: 5, variance: 25, sdFloorApplied: true, sessionCount: 1, updatedAt: 0);
+      mean: 72,
+      sd: 5,
+      variance: 25,
+      sdFloorApplied: true,
+      sessionCount: 1,
+      updatedAt: 0,
+    );
     const current = Baseline(hr: mb, hrv: mb, rr: mb, isDemo: true);
 
     final updated = service.adaptiveUpdate(

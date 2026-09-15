@@ -11,16 +11,16 @@ const _kContactKey = 'pulseguard.contact';
 const _kCalibrationHistoryKey = 'pulseguard.calibration_history';
 
 Map<String, dynamic> _sessionToJson(CalibrationSessionResult s) => {
-      'success': s.success,
-      'failure_reason': s.failureReason,
-      'hr_median': s.hrMedian,
-      'hr_std': s.hrStd,
-      'hrv_median': s.hrvMedian,
-      'hrv_std': s.hrvStd,
-      'rr_median': s.rrMedian,
-      'rr_std': s.rrStd,
-      'timestamp': s.timestamp,
-    };
+  'success': s.success,
+  'failure_reason': s.failureReason,
+  'hr_median': s.hrMedian,
+  'hr_std': s.hrStd,
+  'hrv_median': s.hrvMedian,
+  'hrv_std': s.hrvStd,
+  'rr_median': s.rrMedian,
+  'rr_std': s.rrStd,
+  'timestamp': s.timestamp,
+};
 
 CalibrationSessionResult _sessionFromJson(Map<String, dynamic> j) =>
     CalibrationSessionResult(
@@ -70,17 +70,24 @@ class EngineStore {
     final raw = prefs.getString(_kCalibrationHistoryKey);
     if (raw == null) return [];
     final list = jsonDecode(raw) as List;
-    return list.map((e) => _sessionFromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => _sessionFromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<void> appendCalibrationSession(CalibrationSessionResult session) async {
+  Future<void> appendCalibrationSession(
+    CalibrationSessionResult session,
+  ) async {
     final history = loadCalibrationHistory()..add(session);
-    final capped = history.length > 10 ? history.sublist(history.length - 10) : history;
+    final capped = history.length > 10
+        ? history.sublist(history.length - 10)
+        : history;
     await prefs.setString(
       _kCalibrationHistoryKey,
       jsonEncode(capped.map(_sessionToJson).toList()),
     );
   }
 
-  Future<void> clearCalibrationHistory() => prefs.remove(_kCalibrationHistoryKey);
+  Future<void> clearCalibrationHistory() =>
+      prefs.remove(_kCalibrationHistoryKey);
 }

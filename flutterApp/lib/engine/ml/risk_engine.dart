@@ -30,10 +30,10 @@ class _RollingAverage {
 }
 
 String _systemLabel(BodySystem s) => switch (s) {
-      BodySystem.cardiovascular => 'heart rate',
-      BodySystem.respiratory => 'breathing',
-      BodySystem.autonomic => 'HRV',
-    };
+  BodySystem.cardiovascular => 'heart rate',
+  BodySystem.respiratory => 'breathing',
+  BodySystem.autonomic => 'HRV',
+};
 
 String _joinLabels(List<String> labels) {
   if (labels.isEmpty) return '';
@@ -49,8 +49,12 @@ class RiskEngine {
 
   final Thresholds thresholds;
 
-  late final _RollingAverage _anomalySmoothed = _RollingAverage(thresholds.ml.smoothingS);
-  late final _RollingAverage _riskSmoothed = _RollingAverage(thresholds.ml.smoothingS);
+  late final _RollingAverage _anomalySmoothed = _RollingAverage(
+    thresholds.ml.smoothingS,
+  );
+  late final _RollingAverage _riskSmoothed = _RollingAverage(
+    thresholds.ml.smoothingS,
+  );
 
   double? _anomalyAboveSinceS;
   double? _riskAboveSinceS;
@@ -72,7 +76,8 @@ class RiskEngine {
     required bool alertEscalated,
     double? anomalyThreshold,
   }) {
-    final threshold = anomalyThreshold ?? thresholds.ml.fallbackAnomalyThreshold;
+    final threshold =
+        anomalyThreshold ?? thresholds.ml.fallbackAnomalyThreshold;
     final mlActive = anomalyScoreRaw != null || riskProbabilityRaw != null;
 
     final anomalySmooth = _anomalySmoothed.add(nowS, anomalyScoreRaw);
@@ -84,17 +89,20 @@ class RiskEngine {
     } else {
       _anomalyAboveSinceS = null;
     }
-    final anomalySustained = _anomalyAboveSinceS != null &&
+    final anomalySustained =
+        _anomalyAboveSinceS != null &&
         (nowS - _anomalyAboveSinceS!) >= thresholds.ml.sustainS;
 
-    final riskAbove = riskSmooth != null && riskSmooth >= thresholds.ml.riskHigh;
+    final riskAbove =
+        riskSmooth != null && riskSmooth >= thresholds.ml.riskHigh;
     if (riskAbove) {
       _riskAboveSinceS ??= nowS;
     } else {
       _riskAboveSinceS = null;
     }
     final riskSustained =
-        _riskAboveSinceS != null && (nowS - _riskAboveSinceS!) >= thresholds.ml.sustainS;
+        _riskAboveSinceS != null &&
+        (nowS - _riskAboveSinceS!) >= thresholds.ml.sustainS;
 
     final anyDeviatingNow = flags.any((f) => f.trusted && f.deviating);
     final recoveringSuppressed = flags.any((f) => f.recoveringSuppressed);
@@ -119,11 +127,14 @@ class RiskEngine {
       for (final f in flags)
         if (f.trusted && f.deviating && f.reason.isNotEmpty) f.reason,
     ];
-    final mlContributed = anomalySustained || (level != RiskLevel.normal && anomalyAbove);
+    final mlContributed =
+        anomalySustained || (level != RiskLevel.normal && anomalyAbove);
     if (mlContributed) {
-      reasons.add(anyDeviatingNow
-          ? EngineStrings.reasonMlAgrees
-          : EngineStrings.reasonMlFlagged);
+      reasons.add(
+        anyDeviatingNow
+            ? EngineStrings.reasonMlAgrees
+            : EngineStrings.reasonMlFlagged,
+      );
     }
     if (fusion.watchdogAlert) {
       reasons.add(EngineStrings.reasonSignalLost);

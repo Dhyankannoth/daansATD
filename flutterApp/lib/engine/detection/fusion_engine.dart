@@ -72,7 +72,8 @@ class FusionEngine {
         .map((f) => f.system)
         .toList();
 
-    final ruleAlert = persistent.contains(BodySystem.respiratory) &&
+    final ruleAlert =
+        persistent.contains(BodySystem.respiratory) &&
         (persistent.contains(BodySystem.cardiovascular) ||
             persistent.contains(BodySystem.autonomic));
 
@@ -86,11 +87,15 @@ class FusionEngine {
       _fingerLostSinceS = null;
     }
 
-    final fingerLostDuration =
-        _fingerLostSinceS == null ? 0.0 : nowS - _fingerLostSinceS!;
-    final recentDeviation = _lastDeviationAtMs != null &&
-        (nowMs - _lastDeviationAtMs!) <= thresholds.fusion.watchdogRecentS * 1000;
-    final watchdogAlert = fingerLostDuration > thresholds.fusion.watchdogFingerLostS &&
+    final fingerLostDuration = _fingerLostSinceS == null
+        ? 0.0
+        : nowS - _fingerLostSinceS!;
+    final recentDeviation =
+        _lastDeviationAtMs != null &&
+        (nowMs - _lastDeviationAtMs!) <=
+            thresholds.fusion.watchdogRecentS * 1000;
+    final watchdogAlert =
+        fingerLostDuration > thresholds.fusion.watchdogFingerLostS &&
         recentDeviation &&
         !scanEndedByUser &&
         !inCooldown;

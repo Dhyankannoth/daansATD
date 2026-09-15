@@ -18,14 +18,16 @@ class FeatureRow {
   factory FeatureRow.fromJson(Map<String, dynamic> json) {
     return FeatureRow(
       timestamp: json['timestamp'] as int,
-      values: (json['values'] as List).map((e) => (e as num).toDouble()).toList(),
+      values: (json['values'] as List)
+          .map((e) => (e as num).toDouble())
+          .toList(),
       valid: json['valid'] as bool,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'timestamp': timestamp,
-        'values': values,
-        'valid': valid,
-      };
+    'timestamp': timestamp,
+    'values': values,
+    'valid': valid,
+  };
 }

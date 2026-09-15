@@ -13,13 +13,16 @@ void main() {
     }
   });
 
-  test('resampleLinear flat-extrapolates before first and after last sample', () {
-    final times = [1.0, 2.0];
-    final values = [10.0, 20.0];
-    final out = resampleLinear(times, values, 1, 0.0, 3.0);
-    expect(out.first, 10.0);
-    expect(out.last, 20.0);
-  });
+  test(
+    'resampleLinear flat-extrapolates before first and after last sample',
+    () {
+      final times = [1.0, 2.0];
+      final values = [10.0, 20.0];
+      final out = resampleLinear(times, values, 1, 0.0, 3.0);
+      expect(out.first, 10.0);
+      expect(out.last, 20.0);
+    },
+  );
 
   test('binAverage averages fixed-size bins', () {
     final values = List<double>.generate(10, (i) => i.toDouble());
