@@ -1,0 +1,46 @@
+# Flutter / Dart
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+.widget_preview/
+
+# Android Studio / IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Build artifacts & symbols
+app.*.symbols
+app.*.map.json
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+# System / OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.bak
+*.tmp
+*.log
+
+# Environment variables & secrets
+.env
+.env.*
+*.key
+*.keystore
+*.jks
+google-services.json
+GoogleService-Info.plist
