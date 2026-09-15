@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "features": [
+    {"index": 0,  "name": "hr_z",          "formula": "(HR - mu_hr) / sd_hr"},
+    {"index": 1,  "name": "hrv_z",         "formula": "(RMSSD - mu_hrv) / sd_hrv"},
+    {"index": 2,  "name": "rr_z",          "formula": "(RR - mu_rr) / sd_rr"},
+    {"index": 3,  "name": "hr_slope_z",    "formula": "HR lsq slope per minute over last 60 s / sd_hr"},
+    {"index": 4,  "name": "hrv_slope_z",   "formula": "RMSSD slope per minute / sd_hrv"},
+    {"index": 5,  "name": "rr_slope_z",    "formula": "RR slope per minute / sd_rr"},
+    {"index": 6,  "name": "hr_var_z",      "formula": "std of HR over last 60 s / sd_hr"},
+    {"index": 7,  "name": "hrv_var_z",     "formula": "std of RMSSD over last 60 s / sd_hrv"},
+    {"index": 8,  "name": "rr_var_z",      "formula": "std of RR over last 60 s / sd_rr"},
+    {"index": 9,  "name": "hr_pct",        "formula": "(HR - mu_hr) / mu_hr"},
+    {"index": 10, "name": "hrv_pct",       "formula": "(RMSSD - mu_hrv) / mu_hrv"},
+    {"index": 11, "name": "rr_pct",        "formula": "(RR - mu_rr) / mu_rr"},
+    {"index": 12, "name": "is_resting",    "formula": "1 if activity == resting else 0"},
+    {"index": 13, "name": "is_recovering", "formula": "1 if activity == recovering else 0"},
+    {"index": 14, "name": "is_unknown",    "formula": "1 if activity in (unknown, exercising) else 0"},
+    {"index": 15, "name": "since_exercise","formula": "min(seconds since exercise, 600) / 600; 1.0 if no exercise"}
+  ],
+  "model_subsets": {
+    "isolation_forest": [0, 1, 2, 3, 4, 5, 6, 7, 8, 13],
+    "risk_classifier": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  },
+  "activity_features": ["mag_mean", "mag_std", "mag_range", "mag_energy", "dom_freq",
+                        "zero_cross", "axis_std_x", "axis_std_y", "axis_std_z"],
+  "activity_classes": ["still", "fidgeting", "walking", "running"],
+  "excluded": {
+    "spo2": "uncalibrated; display only",
+    "ox_trend": "uncalibrated; display only",
+    "quality": "used as a row gate, not an input",
+    "absolute_vitals": "would bypass the personal baseline",
+    "deviation_flags": "kept independent so model agreement is meaningful"
+  }
+}

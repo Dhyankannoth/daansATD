@@ -1,0 +1,1807 @@
+{
+  "version": 1,
+  "name": "signal_loss",
+  "time_since_exercise_s": null,
+  "ticks": [
+    {
+      "t": 0.0,
+      "hr": 73.56,
+      "hrv": 48.78,
+      "rr": 14.15,
+      "quality": 0.938,
+      "rr_quality": 0.938,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 1.0,
+      "hr": 72.88,
+      "hrv": 49.54,
+      "rr": 14.11,
+      "quality": 0.912,
+      "rr_quality": 0.912,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 2.0,
+      "hr": 71.38,
+      "hrv": 43.77,
+      "rr": 13.53,
+      "quality": 0.945,
+      "rr_quality": 0.945,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 3.0,
+      "hr": 73.63,
+      "hrv": 38.59,
+      "rr": 14.62,
+      "quality": 0.859,
+      "rr_quality": 0.859,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 4.0,
+      "hr": 71.08,
+      "hrv": 45.83,
+      "rr": 14.68,
+      "quality": 0.856,
+      "rr_quality": 0.856,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 5.0,
+      "hr": 72.21,
+      "hrv": 43.59,
+      "rr": 14.36,
+      "quality": 0.87,
+      "rr_quality": 0.87,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 6.0,
+      "hr": 70.32,
+      "hrv": 53.95,
+      "rr": 14.05,
+      "quality": 0.879,
+      "rr_quality": 0.879,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 7.0,
+      "hr": 73.18,
+      "hrv": 43.89,
+      "rr": 13.32,
+      "quality": 0.912,
+      "rr_quality": 0.912,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 8.0,
+      "hr": 72.27,
+      "hrv": 42.74,
+      "rr": 13.37,
+      "quality": 0.928,
+      "rr_quality": 0.928,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 9.0,
+      "hr": 72.13,
+      "hrv": 37.32,
+      "rr": 13.82,
+      "quality": 0.914,
+      "rr_quality": 0.914,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 10.0,
+      "hr": 72.04,
+      "hrv": 48.75,
+      "rr": 13.69,
+      "quality": 0.922,
+      "rr_quality": 0.922,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 11.0,
+      "hr": 71.72,
+      "hrv": 45.91,
+      "rr": 14.64,
+      "quality": 0.898,
+      "rr_quality": 0.898,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 12.0,
+      "hr": 70.76,
+      "hrv": 43.43,
+      "rr": 13.93,
+      "quality": 0.942,
+      "rr_quality": 0.942,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 13.0,
+      "hr": 69.85,
+      "hrv": 46.26,
+      "rr": 14.33,
+      "quality": 0.921,
+      "rr_quality": 0.921,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 14.0,
+      "hr": 72.8,
+      "hrv": 45.66,
+      "rr": 13.89,
+      "quality": 0.923,
+      "rr_quality": 0.923,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 15.0,
+      "hr": 70.2,
+      "hrv": 45.66,
+      "rr": 13.65,
+      "quality": 0.939,
+      "rr_quality": 0.939,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 16.0,
+      "hr": 70.77,
+      "hrv": 46.45,
+      "rr": 14.68,
+      "quality": 0.905,
+      "rr_quality": 0.905,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 17.0,
+      "hr": 74.06,
+      "hrv": 46.6,
+      "rr": 13.45,
+      "quality": 0.865,
+      "rr_quality": 0.865,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 18.0,
+      "hr": 72.13,
+      "hrv": 47.38,
+      "rr": 13.61,
+      "quality": 0.899,
+      "rr_quality": 0.899,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 19.0,
+      "hr": 73.48,
+      "hrv": 50.9,
+      "rr": 13.08,
+      "quality": 0.873,
+      "rr_quality": 0.873,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 20.0,
+      "hr": 75.34,
+      "hrv": 56.12,
+      "rr": 13.95,
+      "quality": 0.878,
+      "rr_quality": 0.878,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 21.0,
+      "hr": 72.86,
+      "hrv": 42.6,
+      "rr": 14.2,
+      "quality": 0.882,
+      "rr_quality": 0.882,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 22.0,
+      "hr": 71.96,
+      "hrv": 47.75,
+      "rr": 13.86,
+      "quality": 0.934,
+      "rr_quality": 0.934,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 23.0,
+      "hr": 72.18,
+      "hrv": 50.19,
+      "rr": 13.68,
+      "quality": 0.883,
+      "rr_quality": 0.883,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 24.0,
+      "hr": 72.94,
+      "hrv": 49.41,
+      "rr": 14.18,
+      "quality": 0.909,
+      "rr_quality": 0.909,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 25.0,
+      "hr": 71.08,
+      "hrv": 44.13,
+      "rr": 13.75,
+      "quality": 0.883,
+      "rr_quality": 0.883,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 26.0,
+      "hr": 72.38,
+      "hrv": 45.36,
+      "rr": 14.36,
+      "quality": 0.905,
+      "rr_quality": 0.905,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 27.0,
+      "hr": 72.52,
+      "hrv": 48.01,
+      "rr": 14.19,
+      "quality": 0.933,
+      "rr_quality": 0.933,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 28.0,
+      "hr": 71.72,
+      "hrv": 45.75,
+      "rr": 14.45,
+      "quality": 0.943,
+      "rr_quality": 0.943,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 29.0,
+      "hr": 72.62,
+      "hrv": 45.71,
+      "rr": 14.86,
+      "quality": 0.889,
+      "rr_quality": 0.889,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 30.0,
+      "hr": 70.0,
+      "hrv": 44.44,
+      "rr": 15.46,
+      "quality": 0.924,
+      "rr_quality": 0.924,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 31.0,
+      "hr": 72.11,
+      "hrv": 43.56,
+      "rr": 14.85,
+      "quality": 0.861,
+      "rr_quality": 0.861,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 32.0,
+      "hr": 73.56,
+      "hrv": 45.74,
+      "rr": 15.14,
+      "quality": 0.907,
+      "rr_quality": 0.907,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 33.0,
+      "hr": 73.06,
+      "hrv": 40.24,
+      "rr": 16.09,
+      "quality": 0.871,
+      "rr_quality": 0.871,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 34.0,
+      "hr": 74.79,
+      "hrv": 41.43,
+      "rr": 16.0,
+      "quality": 0.857,
+      "rr_quality": 0.857,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 35.0,
+      "hr": 75.29,
+      "hrv": 41.32,
+      "rr": 15.67,
+      "quality": 0.903,
+      "rr_quality": 0.903,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 36.0,
+      "hr": 73.54,
+      "hrv": 40.29,
+      "rr": 15.96,
+      "quality": 0.907,
+      "rr_quality": 0.907,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 37.0,
+      "hr": 75.21,
+      "hrv": 44.82,
+      "rr": 16.93,
+      "quality": 0.944,
+      "rr_quality": 0.944,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 38.0,
+      "hr": 77.18,
+      "hrv": 43.92,
+      "rr": 17.2,
+      "quality": 0.926,
+      "rr_quality": 0.926,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 39.0,
+      "hr": 77.67,
+      "hrv": 50.86,
+      "rr": 16.98,
+      "quality": 0.88,
+      "rr_quality": 0.88,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 40.0,
+      "hr": 78.57,
+      "hrv": 42.24,
+      "rr": 17.47,
+      "quality": 0.88,
+      "rr_quality": 0.88,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 41.0,
+      "hr": 75.75,
+      "hrv": 33.47,
+      "rr": 16.8,
+      "quality": 0.905,
+      "rr_quality": 0.905,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 42.0,
+      "hr": 78.88,
+      "hrv": 36.83,
+      "rr": 16.49,
+      "quality": 0.939,
+      "rr_quality": 0.939,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 43.0,
+      "hr": 76.75,
+      "hrv": 39.12,
+      "rr": 17.03,
+      "quality": 0.868,
+      "rr_quality": 0.868,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 44.0,
+      "hr": 80.26,
+      "hrv": 41.98,
+      "rr": 18.61,
+      "quality": 0.857,
+      "rr_quality": 0.857,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 45.0,
+      "hr": 79.69,
+      "hrv": 38.4,
+      "rr": 17.74,
+      "quality": 0.891,
+      "rr_quality": 0.891,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 46.0,
+      "hr": 82.28,
+      "hrv": 40.64,
+      "rr": 16.88,
+      "quality": 0.889,
+      "rr_quality": 0.889,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 47.0,
+      "hr": 81.91,
+      "hrv": 31.24,
+      "rr": 17.73,
+      "quality": 0.892,
+      "rr_quality": 0.892,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 48.0,
+      "hr": 79.85,
+      "hrv": 40.67,
+      "rr": 17.28,
+      "quality": 0.883,
+      "rr_quality": 0.883,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 49.0,
+      "hr": 81.22,
+      "hrv": 36.94,
+      "rr": 17.27,
+      "quality": 0.852,
+      "rr_quality": 0.852,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 50.0,
+      "hr": 84.4,
+      "hrv": 39.68,
+      "rr": 18.03,
+      "quality": 0.875,
+      "rr_quality": 0.875,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 51.0,
+      "hr": 84.68,
+      "hrv": 44.63,
+      "rr": 16.36,
+      "quality": 0.913,
+      "rr_quality": 0.913,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 52.0,
+      "hr": 82.8,
+      "hrv": 33.03,
+      "rr": 18.0,
+      "quality": 0.922,
+      "rr_quality": 0.922,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 53.0,
+      "hr": 82.16,
+      "hrv": 37.09,
+      "rr": 18.41,
+      "quality": 0.889,
+      "rr_quality": 0.889,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 54.0,
+      "hr": 83.58,
+      "hrv": 47.16,
+      "rr": 18.88,
+      "quality": 0.932,
+      "rr_quality": 0.932,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 55.0,
+      "hr": 86.02,
+      "hrv": 37.2,
+      "rr": 19.14,
+      "quality": 0.896,
+      "rr_quality": 0.896,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 56.0,
+      "hr": 86.57,
+      "hrv": 38.45,
+      "rr": 18.67,
+      "quality": 0.909,
+      "rr_quality": 0.909,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 57.0,
+      "hr": 84.44,
+      "hrv": 32.27,
+      "rr": 19.16,
+      "quality": 0.882,
+      "rr_quality": 0.882,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 58.0,
+      "hr": 86.42,
+      "hrv": 47.73,
+      "rr": 19.87,
+      "quality": 0.914,
+      "rr_quality": 0.914,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 59.0,
+      "hr": 86.78,
+      "hrv": 28.44,
+      "rr": 19.16,
+      "quality": 0.923,
+      "rr_quality": 0.923,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 60.0,
+      "hr": 88.45,
+      "hrv": 37.46,
+      "rr": 17.99,
+      "quality": 0.948,
+      "rr_quality": 0.948,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 61.0,
+      "hr": 87.22,
+      "hrv": 36.05,
+      "rr": 19.2,
+      "quality": 0.947,
+      "rr_quality": 0.947,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 62.0,
+      "hr": 88.7,
+      "hrv": 43.42,
+      "rr": 20.05,
+      "quality": 0.932,
+      "rr_quality": 0.932,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 63.0,
+      "hr": 88.94,
+      "hrv": 37.22,
+      "rr": 18.28,
+      "quality": 0.942,
+      "rr_quality": 0.942,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 64.0,
+      "hr": 88.9,
+      "hrv": 34.88,
+      "rr": 20.08,
+      "quality": 0.871,
+      "rr_quality": 0.871,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 65.0,
+      "hr": 89.69,
+      "hrv": 38.73,
+      "rr": 19.67,
+      "quality": 0.863,
+      "rr_quality": 0.863,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 66.0,
+      "hr": 93.12,
+      "hrv": 27.41,
+      "rr": 20.21,
+      "quality": 0.908,
+      "rr_quality": 0.908,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 67.0,
+      "hr": 94.9,
+      "hrv": 35.86,
+      "rr": 20.38,
+      "quality": 0.91,
+      "rr_quality": 0.91,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 68.0,
+      "hr": 91.75,
+      "hrv": 31.08,
+      "rr": 21.06,
+      "quality": 0.863,
+      "rr_quality": 0.863,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 69.0,
+      "hr": 94.03,
+      "hrv": 26.35,
+      "rr": 20.09,
+      "quality": 0.894,
+      "rr_quality": 0.894,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 70.0,
+      "hr": 93.69,
+      "hrv": 28.46,
+      "rr": 20.24,
+      "quality": 0.94,
+      "rr_quality": 0.94,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 71.0,
+      "hr": 94.62,
+      "hrv": 28.38,
+      "rr": 19.59,
+      "quality": 0.922,
+      "rr_quality": 0.922,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 72.0,
+      "hr": 95.42,
+      "hrv": 30.86,
+      "rr": 20.22,
+      "quality": 0.927,
+      "rr_quality": 0.927,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 73.0,
+      "hr": 95.74,
+      "hrv": 26.54,
+      "rr": 20.42,
+      "quality": 0.88,
+      "rr_quality": 0.88,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 74.0,
+      "hr": 93.85,
+      "hrv": 33.03,
+      "rr": 21.82,
+      "quality": 0.896,
+      "rr_quality": 0.896,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 75.0,
+      "hr": 95.12,
+      "hrv": 28.23,
+      "rr": 21.13,
+      "quality": 0.917,
+      "rr_quality": 0.917,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 76.0,
+      "hr": 94.78,
+      "hrv": 32.23,
+      "rr": 21.92,
+      "quality": 0.911,
+      "rr_quality": 0.911,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 77.0,
+      "hr": 94.81,
+      "hrv": 34.98,
+      "rr": 21.97,
+      "quality": 0.897,
+      "rr_quality": 0.897,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 78.0,
+      "hr": 98.02,
+      "hrv": 31.44,
+      "rr": 22.4,
+      "quality": 0.882,
+      "rr_quality": 0.882,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 79.0,
+      "hr": 97.35,
+      "hrv": 23.9,
+      "rr": 22.18,
+      "quality": 0.907,
+      "rr_quality": 0.907,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 80.0,
+      "hr": 98.95,
+      "hrv": 30.61,
+      "rr": 21.02,
+      "quality": 0.926,
+      "rr_quality": 0.926,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 81.0,
+      "hr": 98.04,
+      "hrv": 32.24,
+      "rr": 22.26,
+      "quality": 0.897,
+      "rr_quality": 0.897,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 82.0,
+      "hr": 100.78,
+      "hrv": 31.39,
+      "rr": 22.05,
+      "quality": 0.929,
+      "rr_quality": 0.929,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 83.0,
+      "hr": 98.09,
+      "hrv": 31.88,
+      "rr": 22.04,
+      "quality": 0.931,
+      "rr_quality": 0.931,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 84.0,
+      "hr": 97.33,
+      "hrv": 27.87,
+      "rr": 21.68,
+      "quality": 0.863,
+      "rr_quality": 0.863,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 85.0,
+      "hr": 100.35,
+      "hrv": 29.52,
+      "rr": 22.65,
+      "quality": 0.87,
+      "rr_quality": 0.87,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 86.0,
+      "hr": 102.56,
+      "hrv": 35.41,
+      "rr": 23.06,
+      "quality": 0.926,
+      "rr_quality": 0.926,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 87.0,
+      "hr": 101.22,
+      "hrv": 27.99,
+      "rr": 23.58,
+      "quality": 0.938,
+      "rr_quality": 0.938,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 88.0,
+      "hr": 103.34,
+      "hrv": 26.01,
+      "rr": 22.34,
+      "quality": 0.914,
+      "rr_quality": 0.914,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 89.0,
+      "hr": 102.12,
+      "hrv": 22.81,
+      "rr": 23.93,
+      "quality": 0.887,
+      "rr_quality": 0.887,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 90.0,
+      "hr": 102.91,
+      "hrv": 23.17,
+      "rr": 23.79,
+      "quality": 0.866,
+      "rr_quality": 0.866,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 91.0,
+      "hr": 104.42,
+      "hrv": 27.14,
+      "rr": 22.86,
+      "quality": 0.862,
+      "rr_quality": 0.862,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 92.0,
+      "hr": 106.18,
+      "hrv": 29.57,
+      "rr": 22.34,
+      "quality": 0.861,
+      "rr_quality": 0.861,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 93.0,
+      "hr": 104.56,
+      "hrv": 33.56,
+      "rr": 23.84,
+      "quality": 0.893,
+      "rr_quality": 0.893,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 94.0,
+      "hr": 107.4,
+      "hrv": 29.88,
+      "rr": 22.62,
+      "quality": 0.915,
+      "rr_quality": 0.915,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 95.0,
+      "hr": 108.8,
+      "hrv": 22.22,
+      "rr": 25.18,
+      "quality": 0.863,
+      "rr_quality": 0.863,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 96.0,
+      "hr": 106.4,
+      "hrv": 25.79,
+      "rr": 24.37,
+      "quality": 0.902,
+      "rr_quality": 0.902,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 97.0,
+      "hr": 107.6,
+      "hrv": 18.69,
+      "rr": 23.82,
+      "quality": 0.878,
+      "rr_quality": 0.878,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 98.0,
+      "hr": 107.32,
+      "hrv": 28.03,
+      "rr": 24.22,
+      "quality": 0.895,
+      "rr_quality": 0.895,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 99.0,
+      "hr": 110.24,
+      "hrv": 29.41,
+      "rr": 25.15,
+      "quality": 0.876,
+      "rr_quality": 0.876,
+      "finger_present": true,
+      "motion": "still"
+    },
+    {
+      "t": 100.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 101.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 102.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 103.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 104.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 105.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 106.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 107.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 108.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 109.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 110.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 111.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 112.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 113.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 114.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 115.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 116.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 117.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 118.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 119.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 120.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 121.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 122.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 123.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 124.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 125.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 126.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 127.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 128.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 129.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 130.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 131.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 132.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 133.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 134.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 135.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 136.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 137.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 138.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 139.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 140.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 141.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 142.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 143.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 144.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 145.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 146.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 147.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 148.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 149.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 150.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 151.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 152.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 153.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 154.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 155.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 156.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 157.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 158.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 159.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 160.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 161.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 162.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 163.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 164.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 165.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 166.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 167.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 168.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 169.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 170.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 171.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 172.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 173.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 174.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 175.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 176.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 177.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 178.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    },
+    {
+      "t": 179.0,
+      "hr": null,
+      "hrv": null,
+      "rr": null,
+      "quality": 0.0,
+      "rr_quality": 0.0,
+      "finger_present": false,
+      "motion": "still"
+    }
+  ]
+}

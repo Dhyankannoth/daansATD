@@ -1,0 +1,28 @@
+{
+  "hr": {
+    "mean": 72.0,
+    "sd": 5.0,
+    "variance": 25.0,
+    "sd_floor_applied": true,
+    "session_count": 3,
+    "updated_at": 0
+  },
+  "hrv": {
+    "mean": 45.0,
+    "sd": 11.25,
+    "variance": 126.5625,
+    "sd_floor_applied": true,
+    "session_count": 3,
+    "updated_at": 0
+  },
+  "rr": {
+    "mean": 14.0,
+    "sd": 2.0,
+    "variance": 4.0,
+    "sd_floor_applied": true,
+    "session_count": 3,
+    "updated_at": 0
+  },
+  "activity_state": "resting",
+  "is_demo": true
+}
