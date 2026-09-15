@@ -166,17 +166,13 @@ void main() {
 
       // Verify Screen 7 (Establish Baseline Tutorial)
       expect(find.text("Let's establish your baseline."), findsOneWidget);
-      expect(find.text('Demonstration'), findsOneWidget);
       expect(
         find.textContaining("We'll take your first measurement"),
         findsOneWidget,
       );
       // Prominent phone animation is displayed
       expect(find.byType(CameraFingerInstruction), findsOneWidget);
-      // Horizontal progress timer elements are displayed
       expect(find.text('Keep your finger still'), findsOneWidget);
-      expect(find.text('Establishing your baseline'), findsOneWidget);
-      expect(find.text('15–20 sec'), findsOneWidget);
       expect(find.text('Start Measurement'), findsOneWidget);
     });
 

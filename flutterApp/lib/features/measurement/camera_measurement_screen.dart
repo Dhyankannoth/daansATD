@@ -14,6 +14,7 @@ import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/dialogs/check_in_sheet.dart';
 import '../../shared/widgets/feedback/live_waveform_painter.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../../shared/widgets/indicators/signal_quality_bar.dart';
 import '../emergency/escalation_screen.dart';
 import 'measurement_results_screen.dart';
@@ -249,9 +250,35 @@ class _CameraMeasurementScreenState extends State<CameraMeasurementScreen> {
 
                   const SizedBox(height: 16),
 
-                  // If awaiting finger: Display instructional animation on top
+                  // If awaiting finger: Display companion prompt and instructional animation on top
                   if (uiState == MeasurementUiState.awaitingFinger ||
                       uiState == MeasurementUiState.preparing) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/mascot/bluey_scanning.png',
+                          height: 44,
+                          fit: BoxFit.contain,
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: Text(
+                            'Ready? Place your finger over the camera.',
+                            style: PulseTypography.bodyMedium.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: PulseColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const PulseInfoIcon(
+                          message:
+                              'Cover both the camera lens and flash with your fingertip. Video stream is processed in-memory and discarded immediately.',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
                     Container(
                       constraints: const BoxConstraints(maxHeight: 280),
                       child: const CameraFingerInstruction(height: 260),

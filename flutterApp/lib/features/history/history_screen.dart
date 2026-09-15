@@ -7,6 +7,7 @@ import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/cards/vital_metric_tile.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../../shared/widgets/indicators/risk_badge.dart';
 import '../measurement/camera_measurement_screen.dart';
 
@@ -267,49 +268,68 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildEmptyState(BuildContext context, bool hasNoHistory) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/mascot/bluey_emptyState.png',
-              height: 180,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              hasNoHistory
-                  ? 'No Measurements Recorded Yet'
-                  : 'No Matching Measurements',
-              style: PulseTypography.headingMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              hasNoHistory
-                  ? 'Take your first 20-second spot measurement to start tracking your vital trends.'
-                  : 'Try selecting another filter chip above to view past spot scans.',
-              textAlign: TextAlign.center,
-              style: PulseTypography.bodyRegular.copyWith(
-                color: PulseColors.textSecondary,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/mascot/bluey_emptyState.png',
+                height: 160,
+                fit: BoxFit.contain,
               ),
-            ),
-            if (hasNoHistory) ...[
-              const SizedBox(height: 24),
-              PrimaryButton(
-                label: 'Take First Measurement',
-                icon: Icons.camera_alt_rounded,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CameraMeasurementScreen(),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      hasNoHistory
+                          ? 'No Measurements Recorded Yet'
+                          : 'No Matching Measurements',
+                      style: PulseTypography.headingMedium,
+                      textAlign: TextAlign.center,
                     ),
-                  );
-                },
+                  ),
+                  const SizedBox(width: 6),
+                  PulseInfoIcon(
+                    message: hasNoHistory
+                        ? 'Spot measurements calculate optical PPG heart rate, HRV, and respiratory rates from camera video.'
+                        : 'Past records can be filtered by deviation classification or physiological range.',
+                  ),
+                ],
               ),
+              const SizedBox(height: 8),
+              Text(
+                hasNoHistory
+                    ? 'Take your first 20-second spot measurement to start tracking your vital trends.'
+                    : 'Try selecting another filter chip above to view past spot scans.',
+                textAlign: TextAlign.center,
+                style: PulseTypography.bodyRegular.copyWith(
+                  color: PulseColors.textSecondary,
+                ),
+              ),
+              if (hasNoHistory) ...[
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  label: 'Take First Measurement',
+                  icon: Icons.camera_alt_rounded,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const CameraMeasurementScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

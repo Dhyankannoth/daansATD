@@ -5,6 +5,7 @@ import '../../core/theme/pulse_colors.dart';
 import '../../core/theme/pulse_typography.dart';
 import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../emergency/emergency_contacts_screen.dart';
 import '../measurement/camera_measurement_screen.dart';
 import '../onboarding/onboarding_flow_screen.dart';
@@ -79,18 +80,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: const BoxDecoration(
-                        color: PulseColors.primaryLight,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.person_rounded,
-                        color: PulseColors.primary,
-                        size: 28,
-                      ),
+                    Image.asset(
+                      'assets/mascot/bluey_welcome.png',
+                      height: 52,
+                      fit: BoxFit.contain,
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -351,48 +344,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               const SizedBox(height: 28),
 
-              // Clinical Disclaimer & Regulatory Notice
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: PulseColors.surfaceDim,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: PulseColors.borderSubtle),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.gavel_rounded,
-                          size: 20,
-                          color: PulseColors.textSecondary,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'CLINICAL & REGULATORY NOTICE',
-                          style: TextStyle(
-                            fontFamily: PulseTypography.fontFamily,
-                            fontFamilyFallback: PulseTypography.fontFamilyFallback,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.5,
-                            color: PulseColors.textPrimary,
-                          ),
-                        ),
-                      ],
+              // Clinical Disclaimer & Regulatory Notice (Accessible via (i) tooltip)
+              Row(
+                children: [
+                  const Icon(
+                    Icons.gavel_rounded,
+                    size: 18,
+                    color: PulseColors.textSecondary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'CLINICAL & REGULATORY NOTICE',
+                    style: TextStyle(
+                      fontFamily: PulseTypography.fontFamily,
+                      fontFamilyFallback: PulseTypography.fontFamilyFallback,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                      color: PulseColors.textPrimary,
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      PulseConstants.clinicalDisclaimer,
-                      style: PulseTypography.caption.copyWith(
-                        color: PulseColors.textSecondary,
-                        height: 1.45,
-                      ),
-                    ),
-                  ],
+                  ),
+                  const SizedBox(width: 6),
+                  const PulseInfoIcon(
+                    title: 'Clinical & Regulatory Disclaimer',
+                    message: PulseConstants.clinicalDisclaimer,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'PulseGuard is an investigational decision-support prototype and does not provide clinical diagnosis.',
+                style: PulseTypography.caption.copyWith(
+                  color: PulseColors.textTertiary,
+                  fontSize: 12,
                 ),
               ),
 

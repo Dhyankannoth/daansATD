@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/pulse_constants.dart';
 import '../../core/theme/pulse_colors.dart';
 import '../../core/theme/pulse_typography.dart';
@@ -9,15 +10,17 @@ import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/cards/activity_intensity_selector.dart';
 import '../../shared/widgets/cards/hero_vital_card.dart';
-import '../../shared/widgets/cards/notice_banner.dart';
 import '../../shared/widgets/cards/vitals_triplet_row.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../../shared/widgets/indicators/risk_badge.dart';
+import '../../shared/widgets/mascot/bluey_companion.dart';
 import '../../shared/widgets/navigation/week_strip.dart';
 import '../measurement/camera_measurement_screen.dart';
 
 /// Screen B: Home / Monitoring Screen.
 ///
-/// Designed with the clean, modern, high-contrast Cal AI health aesthetic.
+/// Seamlessly integrates Bluey as a persistent product companion that communicates
+/// monitoring status, guidance, and reassurance alongside vital metrics.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -29,6 +32,23 @@ class _HomeScreenState extends State<HomeScreen> {
   // Activity context selector for upcoming scan: Resting vs Exercising
   bool _isPostExercise = false;
   DateTime _selectedDate = DateTime.now();
+  String _userName = 'Alex';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('user_name');
+    if (name != null && name.trim().isNotEmpty && mounted) {
+      setState(() {
+        _userName = name.trim();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +88,48 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? (vitals!.spo2! / 100).clamp(0.1, 1.0)
                 : 0.98;
 
+            // Determine Bluey companion status based on current application state
+            final (
+              BlueyPose companionPose,
+              String statusTitle,
+              String statusMessage,
+              String infoExplanation,
+            ) = switch (riskLevel) {
+              RiskLevel.high || RiskLevel.critical => (
+                  BlueyPose.attentive,
+                  'Observation Attention',
+                  'Something looks a little different from your usual pattern. Let\'s check how you\'re feeling.',
+                  'Multi-system vital deviation detected across cardiovascular and respiratory signals.',
+                ),
+              RiskLevel.elevated => (
+                  BlueyPose.attentive,
+                  'Mild Signal Deviation',
+                  'Readings shifted slightly from your baseline. Consider resting while I observe.',
+                  'One or more signals are outside 2 standard deviations from your personal baseline.',
+                ),
+              RiskLevel.monitoring => (
+                  BlueyPose.checking,
+                  'Post-Exercise Recovery',
+                  'Looks like you\'re active. I\'ll keep that in mind when looking at your signals.',
+                  'Recovery mode adapts heart-rate thresholds to prevent exercise false alarms.',
+                ),
+              RiskLevel.normal => snapshot.alertState == AlertSnapshotState.cooldown
+                  ? (
+                      BlueyPose.checking,
+                      'Monitoring Cooldown',
+                      'I\'m continually observing your signals for any multi-system changes.',
+                      'Observing post-check-in stabilization to prevent repeated prompts.',
+                    )
+                  : (
+                      BlueyPose.calm,
+                      'Monitoring Normally',
+                      'Everything looks normal right now. Your signals are within your usual range.',
+                      snapshot.hasBaseline
+                          ? 'Personal baseline active with multi-system anomaly detection enabled.'
+                          : 'Standard baseline active. Complete a 60s calibration to establish personalized thresholds.',
+                    ),
+            };
+
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(
@@ -77,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 1. Cal AI-style Top Brand Header & Streak / Status Badge
+                  // 1. Top Brand Header & Streak / Status Badge
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -111,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
 
-                      // Cal AI-style streak pill badge
+                      // Streak pill badge & Risk badge
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -157,9 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 18),
 
-                  // 2. Cal AI-style Week Calendar Strip
+                  // 2. Week Calendar Strip
                   WeekStrip(
                     selectedDate: _selectedDate,
                     onDateSelected: (date) {
@@ -167,18 +229,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 18),
 
-                  // Cooldown / Replay Notice Banner if active
-                  if (snapshot.alertState == AlertSnapshotState.cooldown) ...[
-                    NoticeBanner(
-                      icon: Icons.check_circle_rounded,
-                      iconColor: PulseColors.riskNormal,
-                      message: 'Monitoring Cooldown Active • Continually observing for multi-system changes.',
-                    ),
-                    const SizedBox(height: 14),
-                  ],
+                  // 3. Persistent Bluey Companion Greeting & Reassurance
+                  BlueyCompanion.heroGreeting(
+                    userName: _userName,
+                    subtitle: "I'm keeping an eye on your vital signals.",
+                    pose: BlueyPose.welcome,
+                    mascotHeight: 90,
+                  ),
 
+                  const SizedBox(height: 16),
+
+                  // Replay In-Progress Notice if active
                   if (snapshot.phase == EnginePhase.replaying) ...[
                     Container(
                       padding: const EdgeInsets.all(14),
@@ -216,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 14),
                   ],
 
-                  // 3. Cal AI-style Hero Card ("2583 Calories left" style -> Heart Rate)
+                  // 4. Hero Vital Metric: Heart Rate
                   HeroVitalCard(
                     title: 'Heart Rate',
                     value: vitals?.hr != null
@@ -238,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 16),
 
-                  // 4. Cal AI-style 3-Column Secondary Cards (Protein/Carbs/Fat -> HRV/Respiration/SpO2)
+                  // 5. 3-Column Secondary Cards: HRV, Respiration, SpO2
                   VitalsTripletRow(
                     hrvValue: vitals?.hrv != null
                         ? vitals!.hrv!.toStringAsFixed(0)
@@ -259,27 +322,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 20),
 
-                  // 5. Cal AI "Recently uploaded" / Notice Banner
-                  Text(
-                    'OBSERVATION STATUS',
-                    style: PulseTypography.caption.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                      color: PulseColors.textTertiary,
-                    ),
+                  // 6. Observation Status Row with (i) info icon instead of heavy container
+                  Row(
+                    children: [
+                      Text(
+                        'OBSERVATION STATUS',
+                        style: PulseTypography.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: PulseColors.textTertiary,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      PulseInfoIcon(
+                        message: snapshot.hasBaseline
+                            ? 'Personal baseline active. Multi-system deviation monitoring enabled.'
+                            : 'Default population baseline active. Record a 60s calibration for personalized limits.',
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
 
-                  NoticeBanner(
-                    icon: Icons.notifications_none_rounded,
-                    message: snapshot.hasBaseline
-                        ? 'Personal baseline active. Multi-system deviation monitoring enabled.'
-                        : 'Default population baseline active. Record a 60s calibration for personalized limits.',
+                  // Dynamic Bluey Status Companion Card
+                  BlueyCompanion.status(
+                    statusTitle: statusTitle,
+                    statusMessage: statusMessage,
+                    pose: companionPose,
+                    infoTooltip: infoExplanation,
+                    mascotHeight: 72,
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 20),
 
-                  // 6. Cal AI "Set Intensity" Activity Context Selector
+                  // 7. Activity Context Selector: Resting vs Post-Exercise
                   ActivityIntensitySelector(
                     isPostExercise: _isPostExercise,
                     onSelectionChanged: (val) {
@@ -289,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 20),
 
-                  // 7. Cal AI Sleek Dark Primary Action Button
+                  // 8. Primary Action Button
                   PrimaryButton(
                     label: 'Take Spot Measurement (20s)',
                     icon: Icons.camera_alt_rounded,
@@ -308,14 +383,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 16),
 
-                  // 8. Demonstration Traces Section
-                  Text(
-                    'DEMONSTRATION & TESTING',
-                    style: PulseTypography.caption.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                      color: PulseColors.textTertiary,
-                    ),
+                  // 9. Demonstration Traces Section
+                  Row(
+                    children: [
+                      Text(
+                        'DEMONSTRATION & TESTING',
+                        style: PulseTypography.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: PulseColors.textTertiary,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const PulseInfoIcon(
+                        message:
+                            'Pre-recorded PPG optical sensor traces demonstrating physiological reactions vs resting stability.',
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
 

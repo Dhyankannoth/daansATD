@@ -7,8 +7,9 @@ import '../../engine/api/engine_snapshot.dart';
 import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
-import '../../shared/widgets/cards/status_card.dart';
 import '../../shared/widgets/cards/vital_metric_tile.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
+import '../../shared/widgets/mascot/bluey_companion.dart';
 
 /// Screen J: Baseline & Calibration Screen.
 class BaselineScreen extends StatefulWidget {
@@ -122,13 +123,16 @@ class _BaselineScreenState extends State<BaselineScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Educational explainer card
-                  StatusCard(
+                  // Companion Explainer with interactive (i) info icon
+                  const BlueyCompanion(
+                    pose: BlueyPose.checking,
+                    layoutMode: BlueyLayoutMode.speechCard,
                     title: 'Why Personal Baselines Matter',
-                    description:
+                    message:
+                        "Everyone is a little different. I'm learning what's normal for your body so I can catch genuine changes accurately.",
+                    infoTooltip:
                         'A fixed heart-rate threshold triggers dangerous false alarms during exercise. PulseGuard learns what is normal for YOUR body during rest and physical activity (mean ± 2 SD), so significant multi-system shifts are recognized accurately.',
-                    icon: Icons.biotech_rounded,
-                    accentColor: PulseColors.primary,
+                    mascotHeight: 76,
                   ),
 
                   const SizedBox(height: 24),
@@ -224,35 +228,42 @@ class _BaselineScreenState extends State<BaselineScreen> {
                       ),
                     ),
                   ] else ...[
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: PulseColors.surfaceDim,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: PulseColors.divider),
-                      ),
-                      child: Column(
-                        children: [
-                          const Icon(
-                            Icons.rule_folder_outlined,
-                            color: PulseColors.textTertiary,
-                            size: 40,
-                          ),
-                          const SizedBox(height: 12),
-                          const Text(
-                            'No Baseline Established',
-                            style: PulseTypography.headingMedium,
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'Record a 60-second resting calibration scan or load the demo baseline to enable tailored anomaly detection.',
-                            textAlign: TextAlign.center,
-                            style: PulseTypography.bodyRegular.copyWith(
-                              fontSize: 13,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/mascot/bluey_emptyState.png',
+                              height: 140,
+                              fit: BoxFit.contain,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 14),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'No Baseline Established',
+                                  style: PulseTypography.headingMedium,
+                                ),
+                                const SizedBox(width: 6),
+                                const PulseInfoIcon(
+                                  message:
+                                      'Record a 60-second resting calibration scan or load the demo baseline to enable tailored anomaly detection.',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Let's take your first calibration so I can learn your baseline.",
+                              textAlign: TextAlign.center,
+                              style: PulseTypography.bodyRegular.copyWith(
+                                fontSize: 13,
+                                color: PulseColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -370,11 +381,29 @@ class _BaselineScreenState extends State<BaselineScreen> {
             ),
           ),
           const SizedBox(height: 14),
-          Text(
-            'Trusted ticks: HR ${prog?.trustedTicksHr ?? 0}/30 • HRV ${prog?.trustedTicksHrv ?? 0}/30 • RR ${prog?.trustedTicksRr ?? 0}/30',
-            style: PulseTypography.caption.copyWith(
-              color: PulseColors.textSecondary,
-            ),
+          Row(
+            children: [
+              Image.asset(
+                'assets/mascot/bluey_scanning.png',
+                height: 44,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Keep your finger steady while I learn your baseline signals.',
+                  style: PulseTypography.caption.copyWith(
+                    color: PulseColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              PulseInfoIcon(
+                message:
+                    'Trusted ticks: HR ${prog?.trustedTicksHr ?? 0}/30 • HRV ${prog?.trustedTicksHrv ?? 0}/30 • RR ${prog?.trustedTicksRr ?? 0}/30',
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           SecondaryButton(

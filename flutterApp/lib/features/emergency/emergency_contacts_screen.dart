@@ -5,7 +5,7 @@ import '../../engine/core/models/emergency_contact.dart';
 import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
-import '../../shared/widgets/cards/status_card.dart';
+import '../../shared/widgets/mascot/bluey_companion.dart';
 
 /// Screen K: Emergency Contacts Screen.
 class EmergencyContactsScreen extends StatefulWidget {
@@ -150,12 +150,15 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                StatusCard(
-                  title: 'Emergency Contact Role',
-                  description:
+                const BlueyCompanion(
+                  pose: BlueyPose.calm,
+                  layoutMode: BlueyLayoutMode.speechCard,
+                  title: 'Emergency Contact',
+                  message:
+                      'Adding a contact helps me reach someone you trust if you ever need assistance.',
+                  infoTooltip:
                       'If multi-system physiological deviations persist and you indicate feeling unwell or don\'t respond to the 30-second check-in, PulseGuard prepares an immediate escalation alert with your vital stats.',
-                  icon: Icons.contact_phone_rounded,
-                  accentColor: PulseColors.riskHigh,
+                  mascotHeight: 68,
                 ),
 
                 const SizedBox(height: 24),

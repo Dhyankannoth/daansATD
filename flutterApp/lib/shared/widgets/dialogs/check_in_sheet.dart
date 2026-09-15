@@ -5,6 +5,7 @@ import '../../../core/theme/pulse_typography.dart';
 import '../buttons/emergency_button.dart';
 import '../buttons/secondary_button.dart';
 import '../indicators/countdown_ring.dart';
+import '../indicators/pulse_info_icon.dart';
 
 /// Modal bottom sheet presented when multi-system deviation is detected.
 ///
@@ -43,23 +44,43 @@ class CheckInSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
+
+          // Bluey Thinking Companion (Attentive & supportive, not panicked)
+          Image.asset(
+            'assets/mascot/bluey_thinking.png',
+            height: 64,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 12),
 
           // Countdown Watchdog Ring
           CountdownRing(
             secondsRemaining: secondsRemaining,
             totalSeconds: PulseConstants.checkInTimeoutSeconds,
-            size: 88,
+            size: 80,
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
 
           // Non-diagnostic Title & Body
-          Text(
-            PulseConstants.checkInPromptTitle,
-            textAlign: TextAlign.center,
-            style: PulseTypography.headingLarge.copyWith(
-              color: PulseColors.riskHigh,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  PulseConstants.checkInPromptTitle,
+                  textAlign: TextAlign.center,
+                  style: PulseTypography.headingLarge.copyWith(
+                    color: PulseColors.riskHigh,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
+              const PulseInfoIcon(
+                message:
+                    'I noticed changes across multiple vital signals. Please take a moment to confirm how you are feeling.',
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(

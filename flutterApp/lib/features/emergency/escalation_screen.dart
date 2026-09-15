@@ -7,6 +7,7 @@ import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/emergency_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/cards/vital_metric_tile.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 
 /// Screen G: Escalation Screen (Emergency State).
 ///
@@ -73,7 +74,30 @@ class EscalationScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 14),
+
+              // Small supportive companion row (calm urgency, not panicked)
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/mascot/bluey_error.png',
+                    height: 38,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'I\'m preparing your emergency assistance and paramedic snapshot.',
+                      style: PulseTypography.caption.copyWith(
+                        color: PulseColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
 
               // Advisory Card for Prescribed Emergency Medication
               Container(
@@ -100,12 +124,24 @@ class EscalationScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Emergency Medication Guidance',
-                            style: PulseTypography.bodyMedium.copyWith(
-                              color: PulseColors.emergencyRed,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  'Emergency Medication Guidance',
+                                  style: PulseTypography.bodyMedium.copyWith(
+                                    color: PulseColors.emergencyRed,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              const PulseInfoIcon(
+                                message:
+                                    'Review your prescribed personal emergency action plan and follow prescribed guidance.',
+                                color: PulseColors.emergencyRed,
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 4),
                           Text(

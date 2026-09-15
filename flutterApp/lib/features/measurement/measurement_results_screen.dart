@@ -8,6 +8,7 @@ import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/cards/vital_metric_tile.dart';
+import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../../shared/widgets/indicators/risk_badge.dart';
 
 /// Screen E: Results & Personal Baseline Comparison Screen.
@@ -28,30 +29,35 @@ class MeasurementResultsScreen extends StatelessWidget {
 
     // Determine status badge copy & color
     final (
+      String mascotAsset,
       String headline,
       String explanation,
       Color accentColor,
       IconData icon,
     ) = switch (summary.maxLevel) {
       RiskLevel.normal => (
+        'assets/mascot/bluey_excited.png',
         'Within your usual range',
         'All recorded vital signals align with your learned resting personal baseline.',
         PulseColors.riskNormal,
         Icons.check_circle_rounded,
       ),
       RiskLevel.monitoring => (
+        'assets/mascot/bluey_checking.png',
         'Consistent with exercise recovery',
         'Elevated metrics are consistent with post-activity physiological cooldown.',
         PulseColors.riskMonitoring,
         Icons.monitor_heart_rounded,
       ),
       RiskLevel.elevated => (
+        'assets/mascot/bluey_error.png',
         'Mild physiological deviation',
         'Readings shifted slightly from your baseline. Consider resting and observing how you feel.',
         PulseColors.riskElevated,
         Icons.info_rounded,
       ),
       RiskLevel.high || RiskLevel.critical => (
+        'assets/mascot/bluey_error.png',
         'Significant multi-system changes',
         'Multiple vitals deviated simultaneously. If you feel unwell, seek medical attention immediately.',
         PulseColors.riskCritical,
@@ -112,23 +118,28 @@ class MeasurementResultsScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: accentColor.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(icon, color: accentColor, size: 28),
+                    Image.asset(
+                      mascotAsset,
+                      height: 84,
+                      fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      headline,
-                      textAlign: TextAlign.center,
-                      style: PulseTypography.headingMedium.copyWith(
-                        color: accentColor,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            headline,
+                            textAlign: TextAlign.center,
+                            style: PulseTypography.headingMedium.copyWith(
+                              color: accentColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        PulseInfoIcon(message: explanation),
+                      ],
                     ),
                     const SizedBox(height: 6),
                     Text(
