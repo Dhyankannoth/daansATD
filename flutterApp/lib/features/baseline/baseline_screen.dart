@@ -273,7 +273,7 @@ class _BaselineScreenState extends State<BaselineScreen> {
                   // Actions: Start 60s Calibration Scan
                   if (!_isCalibrating)
                     PrimaryButton(
-                      label: 'Start 60-Second Calibration',
+                      label: 'Start 2-Minute Calibration',
                       icon: Icons.play_arrow_rounded,
                       onPressed: _startCalibration,
                     ),
@@ -334,10 +334,8 @@ class _BaselineScreenState extends State<BaselineScreen> {
   Widget _buildCalibrationProgressCard() {
     final prog = _progress;
     final elapsedSec = prog?.elapsed.inSeconds ?? 0;
-    final pct = (elapsedSec / PulseConstants.calibrationDurationSeconds).clamp(
-      0.0,
-      1.0,
-    );
+    final totalSec = prog?.total.inSeconds ?? PulseConstants.calibrationDurationSeconds;
+    final pct = totalSec > 0 ? (elapsedSec / totalSec).clamp(0.0, 1.0) : 0.0;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -360,7 +358,7 @@ class _BaselineScreenState extends State<BaselineScreen> {
                 ),
               ),
               Text(
-                '${PulseConstants.calibrationDurationSeconds - elapsedSec}s left',
+                '${(totalSec - elapsedSec).clamp(0, totalSec)}s left',
                 style: PulseTypography.caption.copyWith(
                   fontWeight: FontWeight.w600,
                   color: PulseColors.primaryDark,
