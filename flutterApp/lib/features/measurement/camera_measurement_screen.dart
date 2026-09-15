@@ -541,18 +541,28 @@ class _CameraMeasurementScreenState extends State<CameraMeasurementScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: const BoxDecoration(
-                color: PulseColors.riskCriticalBg,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.no_photography_outlined,
-                color: PulseColors.riskCritical,
-                size: 36,
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        PulseColors.riskCriticalBg,
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+                Image.asset(
+                  'assets/mascot/bluey_error.png',
+                  height: 140,
+                  fit: BoxFit.contain,
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             const Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/pulse_constants.dart';
 import '../../core/theme/pulse_colors.dart';
 import '../../core/theme/pulse_typography.dart';
@@ -6,6 +7,7 @@ import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../emergency/emergency_contacts_screen.dart';
 import '../measurement/camera_measurement_screen.dart';
+import '../onboarding/onboarding_flow_screen.dart';
 
 /// Screen L: Settings & Clinical Disclaimer Screen.
 class SettingsScreen extends StatefulWidget {
@@ -18,6 +20,24 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String _userName = 'Alex Morgan';
   int _userAge = 28;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final name = prefs.getString('user_name');
+    final age = prefs.getInt('user_age');
+    if (mounted) {
+      setState(() {
+        if (name != null && name.isNotEmpty) _userName = name;
+        if (age != null) _userAge = age;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -309,6 +329,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 },
               ),
+              const SizedBox(height: 14),
+
+              // Revisit Onboarding Guide Option
+              SecondaryButton(
+                label: 'Revisit Onboarding Guide',
+                icon: Icons.explore_outlined,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OnboardingFlowScreen(
+                        onComplete: () {
+                          Navigator.of(context).pop();
+                          _loadProfile();
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               const SizedBox(height: 28),
 
@@ -394,12 +433,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              final newName = nameCtrl.text.trim();
+              final newAge = int.tryParse(ageCtrl.text) ?? _userAge;
               setState(() {
-                _userName = nameCtrl.text.trim();
-                _userAge = int.tryParse(ageCtrl.text) ?? _userAge;
+                _userName = newName;
+                _userAge = newAge;
               });
-              Navigator.of(ctx).pop();
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('user_name', newName);
+              await prefs.setInt('user_age', newAge);
+              if (ctx.mounted) Navigator.of(ctx).pop();
             },
             child: const Text('Save'),
           ),

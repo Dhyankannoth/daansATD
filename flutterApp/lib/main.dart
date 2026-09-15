@@ -6,6 +6,7 @@ import 'core/theme/pulse_colors.dart';
 import 'core/theme/pulse_theme.dart';
 import 'data/repositories/history_repository.dart';
 import 'features/app_shell/app_shell_screen.dart';
+import 'features/onboarding/onboarding_flow_screen.dart';
 import 'pulseguard_engine.dart';
 import 'services/pulse_engine_scope.dart';
 
@@ -17,12 +18,13 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final historyRepo = HistoryRepository(prefs: prefs);
+  final hasCompletedOnboarding = prefs.getBool('has_completed_onboarding') ?? false;
 
   runApp(
     PulseGuardApp(
       engine: engine,
       historyRepository: historyRepo,
-      home: const AppShellScreen(),
+      home: hasCompletedOnboarding ? const AppShellScreen() : const OnboardingFlowScreen(),
     ),
   );
 }
@@ -84,7 +86,7 @@ class _PulseGuardAppState extends State<PulseGuardApp> {
     if (widget.engine == null) {
       return const CameraInstructionScreen();
     }
-    return const AppShellScreen();
+    return const OnboardingFlowScreen();
   }
 
   @override

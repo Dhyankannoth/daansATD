@@ -105,9 +105,9 @@ class _CameraFingerInstructionState extends State<CameraFingerInstruction>
             : 320.0;
 
         // Animation container height fits comfortably
-        final double animContainerHeight = (maxHeight * 0.70).clamp(
-          180.0,
-          320.0,
+        final double animContainerHeight = (maxHeight * 0.60).clamp(
+          120.0,
+          280.0,
         );
         final double phoneHeight = animContainerHeight * 0.88;
         final double phoneWidth = phoneHeight * _phoneAspectRatio;
@@ -116,13 +116,15 @@ class _CameraFingerInstructionState extends State<CameraFingerInstruction>
         // Sized appropriately relative to the phone so the index finger tip fits the camera module nicely
         final double handSize = phoneWidth * 0.95;
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Animation canvas
-            SizedBox(
-              height: animContainerHeight,
+        return SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Animation canvas
+              SizedBox(
+                height: animContainerHeight,
               width: maxWidth,
               child: Center(
                 child: SizedBox(
@@ -286,7 +288,8 @@ class _CameraFingerInstructionState extends State<CameraFingerInstruction>
               ),
             ),
           ],
-        );
+        ),
+      );
       },
     );
   }

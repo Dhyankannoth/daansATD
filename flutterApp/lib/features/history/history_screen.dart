@@ -93,17 +93,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 horizontal: 20.0,
                 vertical: 12.0,
               ),
-              child: Row(
-                children: [
-                  _buildFilterChip(
-                    'All (${allRecords.length})',
-                    HistoryFilter.all,
-                  ),
-                  const SizedBox(width: 8),
-                  _buildFilterChip('Deviations', HistoryFilter.deviations),
-                  const SizedBox(width: 8),
-                  _buildFilterChip('In Range', HistoryFilter.normal),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Row(
+                  children: [
+                    _buildFilterChip(
+                      'All (${allRecords.length})',
+                      HistoryFilter.all,
+                    ),
+                    const SizedBox(width: 8),
+                    _buildFilterChip('Deviations', HistoryFilter.deviations),
+                    const SizedBox(width: 8),
+                    _buildFilterChip('In Range', HistoryFilter.normal),
+                  ],
+                ),
               ),
             ),
             const Divider(height: 1),
@@ -269,20 +273,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: const BoxDecoration(
-                color: PulseColors.surfaceDim,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.history_rounded,
-                size: 32,
-                color: PulseColors.textTertiary,
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        PulseColors.surfaceDim,
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+                Image.asset(
+                  'assets/mascot/bluey_emptyState.png',
+                  height: 140,
+                  fit: BoxFit.contain,
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Text(
               hasNoHistory
                   ? 'No Measurements Recorded Yet'
