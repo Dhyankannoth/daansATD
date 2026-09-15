@@ -41,9 +41,11 @@ BiquadCoeffs _rbj(double f0, double fs, {required bool highPass}) {
   );
 }
 
-BiquadCoeffs highPassCoeffs(double f0, double fs) => _rbj(f0, fs, highPass: true);
+BiquadCoeffs highPassCoeffs(double f0, double fs) =>
+    _rbj(f0, fs, highPass: true);
 
-BiquadCoeffs lowPassCoeffs(double f0, double fs) => _rbj(f0, fs, highPass: false);
+BiquadCoeffs lowPassCoeffs(double f0, double fs) =>
+    _rbj(f0, fs, highPass: false);
 
 /// Applies a biquad filter in a single (forward) pass:
 /// `y[n] = b0*x[n] + b1*x[n-1] + b2*x[n-2] + a1*y[n-1] + a2*y[n-2]`.

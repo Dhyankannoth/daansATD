@@ -33,8 +33,10 @@ RrResult computeRr({
     return RrResult(rr: winner.bpm, rrQuality: singleQuality);
   }
 
-  if (intensityOk) return RrResult(rr: intensityResult.bpm, rrQuality: singleQuality);
-  if (intervalOk) return RrResult(rr: intervalResult.bpm, rrQuality: singleQuality);
+  if (intensityOk)
+    return RrResult(rr: intensityResult.bpm, rrQuality: singleQuality);
+  if (intervalOk)
+    return RrResult(rr: intervalResult.bpm, rrQuality: singleQuality);
 
   return const RrResult(rr: null, rrQuality: 0);
 }

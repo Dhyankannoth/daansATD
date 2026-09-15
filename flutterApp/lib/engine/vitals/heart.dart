@@ -24,8 +24,9 @@ HrResult? computeHr(
   final ranged = intervals.where((x) => x >= ibiMinS && x <= ibiMaxS).toList();
   if (ranged.isEmpty) return null;
   final med = median(ranged);
-  final kept =
-      ranged.where((x) => (x - med).abs() <= hrIbiTolerance * med).toList();
+  final kept = ranged
+      .where((x) => (x - med).abs() <= hrIbiTolerance * med)
+      .toList();
 
   if (kept.length < hrMinIntervals) return null;
 
@@ -47,7 +48,9 @@ double? computeRmssd(
   if (intervals.length < hrvMinIntervals) return null;
 
   final med = median(intervals);
-  final clean = intervals.map((x) => (x - med).abs() <= hrvIbiTolerance * med).toList();
+  final clean = intervals
+      .map((x) => (x - med).abs() <= hrvIbiTolerance * med)
+      .toList();
 
   final squaredDiffsMs = <double>[];
   for (var i = 0; i < intervals.length - 1; i++) {

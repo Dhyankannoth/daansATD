@@ -22,8 +22,12 @@ List<double> _jitteredBeats({
   return beats;
 }
 
-List<double> _dipSignal(List<double> beatTimes, double fs, double durationS,
-    {double width = 0.08}) {
+List<double> _dipSignal(
+  List<double> beatTimes,
+  double fs,
+  double durationS, {
+  double width = 0.08,
+}) {
   final n = (durationS * fs).round();
   final out = List<double>.filled(n, 0.0);
   for (var i = 0; i < n; i++) {
@@ -48,26 +52,43 @@ void main() {
       test('$bpm bpm recovered within +/-2 bpm', () {
         final beats = _jitteredBeats(bpm: bpm, durationS: durationS);
         final signal = _dipSignal(beats, fs, durationS);
-        final detected = findBeats(signal, fs,
-            minGapS: 0.3, minHeightSd: 0.3, edgeIgnoreS: 0.3);
-        final result = computeHr(detected,
-            ibiMinS: 0.3, ibiMaxS: 1.5, hrIbiTolerance: 0.25, hrMinIntervals: 5);
+        final detected = findBeats(
+          signal,
+          fs,
+          minGapS: 0.3,
+          minHeightSd: 0.3,
+          edgeIgnoreS: 0.3,
+        );
+        final result = computeHr(
+          detected,
+          ibiMinS: 0.3,
+          ibiMaxS: 1.5,
+          hrIbiTolerance: 0.25,
+          hrMinIntervals: 5,
+        );
         expect(result, isNotNull);
         expect(result!.hr, closeTo(bpm, 2.0));
       });
     }
   });
 
-  test('RMSSD of alternating 800/860 ms intervals is within +/-10 ms of 60 ms', () {
-    final beats = <double>[0];
-    for (var i = 0; i < 30; i++) {
-      beats.add(beats.last + (i.isEven ? 0.8 : 0.86));
-    }
-    final rmssd = computeRmssd(beats,
-        hrvIbiTolerance: 0.2, hrvMinIntervals: 16, hrvMinPairs: 15);
-    expect(rmssd, isNotNull);
-    expect(rmssd!, closeTo(60.0, 10.0));
-  });
+  test(
+    'RMSSD of alternating 800/860 ms intervals is within +/-10 ms of 60 ms',
+    () {
+      final beats = <double>[0];
+      for (var i = 0; i < 30; i++) {
+        beats.add(beats.last + (i.isEven ? 0.8 : 0.86));
+      }
+      final rmssd = computeRmssd(
+        beats,
+        hrvIbiTolerance: 0.2,
+        hrvMinIntervals: 16,
+        hrvMinPairs: 15,
+      );
+      expect(rmssd, isNotNull);
+      expect(rmssd!, closeTo(60.0, 10.0));
+    },
+  );
 
   test('a single artifact spike does not change HR by more than 2 bpm', () {
     const bpm = 72.0;
@@ -75,8 +96,12 @@ void main() {
     final signal = _dipSignal(beats, fs, durationS);
 
     final baseline = computeHr(
-        findBeats(signal, fs, minGapS: 0.3, minHeightSd: 0.3, edgeIgnoreS: 0.3),
-        ibiMinS: 0.3, ibiMaxS: 1.5, hrIbiTolerance: 0.25, hrMinIntervals: 5);
+      findBeats(signal, fs, minGapS: 0.3, minHeightSd: 0.3, edgeIgnoreS: 0.3),
+      ibiMinS: 0.3,
+      ibiMaxS: 1.5,
+      hrIbiTolerance: 0.25,
+      hrMinIntervals: 5,
+    );
     expect(baseline, isNotNull);
 
     // Insert one large, isolated artifact spike mid-signal.
@@ -84,24 +109,43 @@ void main() {
     final spikeIdx = (durationS / 2 * fs).round();
     withArtifact[spikeIdx] -= 5.0;
 
-    final detected = findBeats(withArtifact, fs,
-        minGapS: 0.3, minHeightSd: 0.3, edgeIgnoreS: 0.3);
-    final result = computeHr(detected,
-        ibiMinS: 0.3, ibiMaxS: 1.5, hrIbiTolerance: 0.25, hrMinIntervals: 5);
+    final detected = findBeats(
+      withArtifact,
+      fs,
+      minGapS: 0.3,
+      minHeightSd: 0.3,
+      edgeIgnoreS: 0.3,
+    );
+    final result = computeHr(
+      detected,
+      ibiMinS: 0.3,
+      ibiMaxS: 1.5,
+      hrIbiTolerance: 0.25,
+      hrMinIntervals: 5,
+    );
 
     expect(result, isNotNull);
     expect((result!.hr - baseline!.hr).abs(), lessThanOrEqualTo(2.0));
   });
 
   test('computeHr returns null with too few clean intervals', () {
-    final result = computeHr([0, 0.8],
-        ibiMinS: 0.3, ibiMaxS: 1.5, hrIbiTolerance: 0.25, hrMinIntervals: 5);
+    final result = computeHr(
+      [0, 0.8],
+      ibiMinS: 0.3,
+      ibiMaxS: 1.5,
+      hrIbiTolerance: 0.25,
+      hrMinIntervals: 5,
+    );
     expect(result, isNull);
   });
 
   test('computeRmssd returns null below hrvMinIntervals', () {
-    final result = computeRmssd([0, 0.8, 1.6],
-        hrvIbiTolerance: 0.2, hrvMinIntervals: 16, hrvMinPairs: 15);
+    final result = computeRmssd(
+      [0, 0.8, 1.6],
+      hrvIbiTolerance: 0.2,
+      hrvMinIntervals: 16,
+      hrvMinPairs: 15,
+    );
     expect(result, isNull);
   });
 }

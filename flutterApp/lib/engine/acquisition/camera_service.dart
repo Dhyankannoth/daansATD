@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/widgets.dart';
 
 import '../core/clock.dart';
@@ -80,7 +81,9 @@ class CameraService with WidgetsBindingObserver {
 
   /// Runs the exposure step-down loop (§7.1 settle phase) using recent
   /// saturation fractions supplied by the caller. Locks exposure afterward.
-  Future<void> lockExposureIfSaturated({required double Function() latestSatFrac}) async {
+  Future<void> lockExposureIfSaturated({
+    required double Function() latestSatFrac,
+  }) async {
     final c = controller;
     if (c == null) return;
     final camThresholds = thresholds.camera;
@@ -101,7 +104,9 @@ class CameraService with WidgetsBindingObserver {
         } catch (_) {
           break;
         }
-        await clock.delay(Duration(milliseconds: camThresholds.exposureStepWaitMs));
+        await clock.delay(
+          Duration(milliseconds: camThresholds.exposureStepWaitMs),
+        );
       }
     }
     try {

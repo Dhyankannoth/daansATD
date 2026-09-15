@@ -4,16 +4,20 @@ import 'thresholds.dart' show AssetBundleLike;
 import 'package:flutter/services.dart' show rootBundle;
 
 class FeatureDef {
-  const FeatureDef({required this.index, required this.name, required this.formula});
+  const FeatureDef({
+    required this.index,
+    required this.name,
+    required this.formula,
+  });
   final int index;
   final String name;
   final String formula;
 
   factory FeatureDef.fromJson(Map<String, dynamic> j) => FeatureDef(
-        index: j['index'] as int,
-        name: j['name'] as String,
-        formula: j['formula'] as String,
-      );
+    index: j['index'] as int,
+    name: j['name'] as String,
+    formula: j['formula'] as String,
+  );
 }
 
 /// Typed, validated view over `assets/config/feature_spec.json`. This is the
@@ -58,10 +62,12 @@ class FeatureSpec {
       version: j['version'] as int,
       features: features,
       modelSubsets: modelSubsets,
-      activityFeatures:
-          (j['activity_features'] as List).map((e) => e as String).toList(),
-      activityClasses:
-          (j['activity_classes'] as List).map((e) => e as String).toList(),
+      activityFeatures: (j['activity_features'] as List)
+          .map((e) => e as String)
+          .toList(),
+      activityClasses: (j['activity_classes'] as List)
+          .map((e) => e as String)
+          .toList(),
     );
     spec._validate();
     return spec;
@@ -71,7 +77,8 @@ class FeatureSpec {
     for (var i = 0; i < features.length; i++) {
       if (features[i].index != i) {
         throw FormatException(
-            'feature_spec.json indices must be contiguous from 0; found ${features[i].index} at position $i');
+          'feature_spec.json indices must be contiguous from 0; found ${features[i].index} at position $i',
+        );
       }
     }
     final maxIndex = features.length - 1;
@@ -79,7 +86,8 @@ class FeatureSpec {
       for (final idx in entry.value) {
         if (idx < 0 || idx > maxIndex) {
           throw FormatException(
-              'model_subsets["${entry.key}"] contains out-of-range index $idx');
+            'model_subsets["${entry.key}"] contains out-of-range index $idx',
+          );
         }
       }
     }

@@ -10,17 +10,17 @@ import 'package:pulseguard/engine/core/models/vitals_reading.dart';
 import 'package:pulseguard/engine/record/record_mode_writer.dart';
 
 DeviationFlag _flag(BodySystem s, bool deviating) => DeviationFlag(
-      timestamp: 0,
-      system: s,
-      deviating: deviating,
-      severity: 0,
-      metric: s.name,
-      value: null,
-      baseline: 0,
-      z: null,
-      trusted: true,
-      reason: '',
-    );
+  timestamp: 0,
+  system: s,
+  deviating: deviating,
+  severity: 0,
+  metric: s.name,
+  value: null,
+  baseline: 0,
+  z: null,
+  trusted: true,
+  reason: '',
+);
 
 void main() {
   late Directory tempDir;
@@ -82,7 +82,12 @@ void main() {
       reasons: const [],
     );
 
-    writer.writeTick(vitals: vitals, activity: activity, featureRow: featureRow, risk: risk);
+    writer.writeTick(
+      vitals: vitals,
+      activity: activity,
+      featureRow: featureRow,
+      risk: risk,
+    );
     final result = await writer.stop();
 
     final lines = File(result.csvPath).readAsLinesSync();
@@ -108,7 +113,12 @@ void main() {
       featureNames: const [],
     );
     expect(
-      () => writer.start(label: 'bogus', personId: 'p1', nowMs: 0, meta: const {}),
+      () => writer.start(
+        label: 'bogus',
+        personId: 'p1',
+        nowMs: 0,
+        meta: const {},
+      ),
       throwsArgumentError,
     );
   });
@@ -126,7 +136,14 @@ void main() {
       meta: const {},
     );
     writer.writeRawSample(
-      t: 1.0, r: 100, g: 50, b: 40, satFrac: 0, valid: true, fingerPresent: true, motionStd: 0.1,
+      t: 1.0,
+      r: 100,
+      g: 50,
+      b: 40,
+      satFrac: 0,
+      valid: true,
+      fingerPresent: true,
+      motionStd: 0.1,
     );
     final result = await writer.stop();
     expect(result.rawCsvPath, isNotNull);

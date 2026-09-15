@@ -84,18 +84,22 @@ enum PlacementHint {
   noFinger;
 
   String get message => switch (this) {
-        PlacementHint.ok => EngineStrings.placementOk,
-        PlacementHint.coverLens => EngineStrings.placementCoverLens,
-        PlacementHint.coverFlash => EngineStrings.placementCoverFlash,
-        PlacementHint.pressLighter => EngineStrings.placementPressLighter,
-        PlacementHint.keepStill => EngineStrings.placementKeepStill,
-        PlacementHint.noFinger => EngineStrings.placementNoFinger,
-      };
+    PlacementHint.ok => EngineStrings.placementOk,
+    PlacementHint.coverLens => EngineStrings.placementCoverLens,
+    PlacementHint.coverFlash => EngineStrings.placementCoverFlash,
+    PlacementHint.pressLighter => EngineStrings.placementPressLighter,
+    PlacementHint.keepStill => EngineStrings.placementKeepStill,
+    PlacementHint.noFinger => EngineStrings.placementNoFinger,
+  };
 }
 
 /// One ~30 Hz sample of the live (or simulated) pulse waveform for display.
 class WaveformSample {
-  const WaveformSample({required this.t, required this.value, required this.simulated});
+  const WaveformSample({
+    required this.t,
+    required this.value,
+    required this.simulated,
+  });
 
   /// Seconds since scan start.
   final double t;

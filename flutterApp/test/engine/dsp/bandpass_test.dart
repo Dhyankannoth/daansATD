@@ -6,7 +6,9 @@ import 'package:pulseguard/engine/dsp/stats.dart' show std;
 
 List<double> _sine(double freqHz, double fs, int n, {double amplitude = 1.0}) {
   return List<double>.generate(
-      n, (i) => amplitude * math.sin(2 * math.pi * freqHz * i / fs));
+    n,
+    (i) => amplitude * math.sin(2 * math.pi * freqHz * i / fs),
+  );
 }
 
 void main() {

@@ -32,15 +32,15 @@ class ReplayTick {
   final String motion;
 
   factory ReplayTick.fromJson(Map<String, dynamic> j) => ReplayTick(
-        t: (j['t'] as num).toDouble(),
-        hr: (j['hr'] as num?)?.toDouble(),
-        hrv: (j['hrv'] as num?)?.toDouble(),
-        rr: (j['rr'] as num?)?.toDouble(),
-        quality: (j['quality'] as num).toDouble(),
-        rrQuality: (j['rr_quality'] as num).toDouble(),
-        fingerPresent: j['finger_present'] as bool,
-        motion: j['motion'] as String,
-      );
+    t: (j['t'] as num).toDouble(),
+    hr: (j['hr'] as num?)?.toDouble(),
+    hrv: (j['hrv'] as num?)?.toDouble(),
+    rr: (j['rr'] as num?)?.toDouble(),
+    quality: (j['quality'] as num).toDouble(),
+    rrQuality: (j['rr_quality'] as num).toDouble(),
+    fingerPresent: j['finger_present'] as bool,
+    motion: j['motion'] as String,
+  );
 }
 
 class ReplayTrace {
@@ -57,13 +57,13 @@ class ReplayTrace {
   final List<ReplayTick> ticks;
 
   factory ReplayTrace.fromJson(Map<String, dynamic> j) => ReplayTrace(
-        version: j['version'] as int,
-        name: j['name'] as String,
-        timeSinceExerciseS: (j['time_since_exercise_s'] as num?)?.toDouble(),
-        ticks: (j['ticks'] as List)
-            .map((t) => ReplayTick.fromJson(t as Map<String, dynamic>))
-            .toList(),
-      );
+    version: j['version'] as int,
+    name: j['name'] as String,
+    timeSinceExerciseS: (j['time_since_exercise_s'] as num?)?.toDouble(),
+    ticks: (j['ticks'] as List)
+        .map((t) => ReplayTick.fromJson(t as Map<String, dynamic>))
+        .toList(),
+  );
 }
 
 /// Feeds a recorded [ReplayTrace] through the same tick pipeline the camera
@@ -98,7 +98,9 @@ class ReplayVitalsSource implements VitalsSource {
   @override
   Future<void> start() async {
     if (_assetPath == null) {
-      throw StateError('ReplayVitalsSource.configure() must be called before start()');
+      throw StateError(
+        'ReplayVitalsSource.configure() must be called before start()',
+      );
     }
     final raw = await bundle.loadString(_assetPath!);
     _trace = ReplayTrace.fromJson(jsonDecode(raw) as Map<String, dynamic>);
@@ -129,11 +131,13 @@ class ReplayVitalsSource implements VitalsSource {
       );
       final waveform = _syntheticWaveform(tick);
       if (!_controller.isClosed) {
-        _controller.add(TickInput(
-          vitals: reading,
-          motionClassName: tick.motion,
-          waveform: waveform,
-        ));
+        _controller.add(
+          TickInput(
+            vitals: reading,
+            motionClassName: tick.motion,
+            waveform: waveform,
+          ),
+        );
       }
       await clock.delay(Duration(milliseconds: (1000 / _speed).round()));
     }

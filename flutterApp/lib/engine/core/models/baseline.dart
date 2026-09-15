@@ -50,13 +50,13 @@ class MetricBaseline {
   }
 
   Map<String, dynamic> toJson() => {
-        'mean': mean,
-        'sd': sd,
-        'variance': variance,
-        'sd_floor_applied': sdFloorApplied,
-        'session_count': sessionCount,
-        'updated_at': updatedAt,
-      };
+    'mean': mean,
+    'sd': sd,
+    'variance': variance,
+    'sd_floor_applied': sdFloorApplied,
+    'session_count': sessionCount,
+    'updated_at': updatedAt,
+  };
 }
 
 /// A user's personal resting baseline for HR, HRV and RR.
@@ -106,10 +106,10 @@ class Baseline {
   }
 
   Map<String, dynamic> toJson() => {
-        'hr': hr.toJson(),
-        'hrv': hrv.toJson(),
-        'rr': rr.toJson(),
-        'activity_state': activityState.toJson(),
-        'is_demo': isDemo,
-      };
+    'hr': hr.toJson(),
+    'hrv': hrv.toJson(),
+    'rr': rr.toJson(),
+    'activity_state': activityState.toJson(),
+    'is_demo': isDemo,
+  };
 }

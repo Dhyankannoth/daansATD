@@ -8,10 +8,14 @@ void main() {
   test('low-pass attenuates a high frequency more than a low one', () {
     const fs = 100.0;
     const n = 500;
-    final low =
-        List<double>.generate(n, (i) => math.sin(2 * math.pi * 1 * i / fs));
-    final high =
-        List<double>.generate(n, (i) => math.sin(2 * math.pi * 30 * i / fs));
+    final low = List<double>.generate(
+      n,
+      (i) => math.sin(2 * math.pi * 1 * i / fs),
+    );
+    final high = List<double>.generate(
+      n,
+      (i) => math.sin(2 * math.pi * 30 * i / fs),
+    );
     final coeffs = lowPassCoeffs(5.0, fs);
     final lowOut = applyBiquad(low, coeffs);
     final highOut = applyBiquad(high, coeffs);
@@ -23,10 +27,14 @@ void main() {
   test('high-pass attenuates a low frequency more than a high one', () {
     const fs = 100.0;
     const n = 500;
-    final low =
-        List<double>.generate(n, (i) => math.sin(2 * math.pi * 0.2 * i / fs));
-    final high =
-        List<double>.generate(n, (i) => math.sin(2 * math.pi * 20 * i / fs));
+    final low = List<double>.generate(
+      n,
+      (i) => math.sin(2 * math.pi * 0.2 * i / fs),
+    );
+    final high = List<double>.generate(
+      n,
+      (i) => math.sin(2 * math.pi * 20 * i / fs),
+    );
     final coeffs = highPassCoeffs(5.0, fs);
     final lowOut = applyBiquad(low, coeffs);
     final highOut = applyBiquad(high, coeffs);

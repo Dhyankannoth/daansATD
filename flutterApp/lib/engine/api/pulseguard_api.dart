@@ -41,7 +41,11 @@ abstract class PulseGuardApi {
   Stream<ScanSummary> get scanFinished;
 
   // replay
-  Future<void> startReplay(String assetPath, {double speed = 1.0, bool useDemoBaseline = true});
+  Future<void> startReplay(
+    String assetPath, {
+    double speed = 1.0,
+    bool useDemoBaseline = true,
+  });
   Future<void> stopReplay();
 
   // alerts

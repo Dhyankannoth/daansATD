@@ -95,11 +95,15 @@ class EngineSnapshot {
       placementHint: placementHint ?? this.placementHint,
       risk: risk ?? this.risk,
       alertState: alertState ?? this.alertState,
-      checkInRemaining:
-          checkInRemainingIsSet ? checkInRemaining : (checkInRemaining ?? this.checkInRemaining),
-      activePayload:
-          activePayloadIsSet ? activePayload : (activePayload ?? this.activePayload),
-      oxTrendPct: oxTrendPctIsSet ? oxTrendPct : (oxTrendPct ?? this.oxTrendPct),
+      checkInRemaining: checkInRemainingIsSet
+          ? checkInRemaining
+          : (checkInRemaining ?? this.checkInRemaining),
+      activePayload: activePayloadIsSet
+          ? activePayload
+          : (activePayload ?? this.activePayload),
+      oxTrendPct: oxTrendPctIsSet
+          ? oxTrendPct
+          : (oxTrendPct ?? this.oxTrendPct),
       recording: recording ?? this.recording,
       message: message ?? this.message,
       error: errorIsSet ? error : (error ?? this.error),
