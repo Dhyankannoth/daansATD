@@ -60,19 +60,11 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
 
     try {
       await engine.startCalibration();
-
-      _countdown = PulseConstants.spotScanDurationSeconds;
-      _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (!mounted) return;
-        setState(() {
-          if (_countdown > 1) {
-            _countdown--;
-          } else {
-            _countdown = 0;
-            timer.cancel();
-          }
-        });
-      });
+      // Countdown display is driven live by snapshot.elapsed/remaining in
+      // build() once calibration starts reporting progress — no local timer
+      // needed here. Using a separate hardcoded-duration timer previously
+      // caused the display to hit 0 and freeze while the real (120s)
+      // calibration kept running in the background.
     } catch (_) {
       // If hardware camera fails or in mock test environment, fallback to simulated countdown
       _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -132,8 +124,16 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
           builder: (context, snapshot, _) {
             final vitals = snapshot.latestVitals;
             final statusText = _deriveStatusText(snapshot);
-            final progress = (1.0 - (_countdown / PulseConstants.spotScanDurationSeconds))
-                .clamp(0.0, 1.0);
+            final remaining = snapshot.remaining;
+            final totalSeconds = remaining != null
+                ? (snapshot.elapsed + remaining).inSeconds
+                : PulseConstants.spotScanDurationSeconds;
+            final displaySeconds = remaining != null
+                ? remaining.inSeconds.clamp(0, totalSeconds)
+                : _countdown;
+            final progress = totalSeconds > 0
+                ? (1.0 - (displaySeconds / totalSeconds)).clamp(0.0, 1.0)
+                : 0.0;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -166,7 +166,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
 
                         // Supporting Text
                         Text(
-                          'Stay still and keep your finger over the camera for 20 seconds.',
+                          'Stay still and keep your finger over the camera for about ${(totalSeconds / 60).ceil()} minutes.',
                           style: PulseTypography.bodyRegular.copyWith(
                             fontSize: 14,
                             height: 1.5,
@@ -233,7 +233,7 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
                                           ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      '$_countdown',
+                                      '$displaySeconds',
                                       style: PulseTypography.displayMetric.copyWith(
                                         fontSize: 40,
                                         fontWeight: FontWeight.w800,
@@ -349,6 +349,8 @@ class _InitialBaselineScreenState extends State<InitialBaselineScreen> {
                       child: TextButton(
                         onPressed: () {
                           _countdownTimer?.cancel();
+                          _calibrationSub?.cancel();
+                          unawaited(engine.cancelCalibration());
                           widget.onMeasurementComplete(null);
                         },
                         child: Text(
