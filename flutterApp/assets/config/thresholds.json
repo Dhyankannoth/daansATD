@@ -7,7 +7,7 @@
   "motion": { "fidget_std": 0.3, "exercise_std": 1.5, "window_short_s": 1, "window_long_s": 5 },
   "windows_s": { "buffer": 65, "analysis": 60, "hr": 10, "spo2": 10, "hrv": 30,
                  "rr_min": 32, "rr_max": 60, "trend": 60 },
-  "scan": { "max_s": 180, "no_signal_end_s": 30, "calibration_s": 120 },
+  "scan": { "max_s": 180, "no_signal_end_s": 30, "calibration_s": 150 },
   "filter": { "resample_hz": 30, "bandpass_low_hz": 0.7, "bandpass_high_hz": 3.5,
               "pad_s": 1.5, "resp_hz": 4, "resp_band_hz": [0.1, 0.6], "resp_step_hz": 0.005 },
   "beats": { "min_gap_s": 0.3, "min_height_sd": 0.3, "edge_ignore_s": 0.3,
