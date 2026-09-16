@@ -108,6 +108,7 @@ class PulseGuardEngine implements PulseGuardApi {
 
   VitalsSource? _activeSource;
   StreamSubscription<TickInput>? _tickSub;
+  StreamSubscription<PlacementHint>? _placementSub;
 
   bool _isReplay = false;
   bool _isCalibration = false;
@@ -206,6 +207,7 @@ class PulseGuardEngine implements PulseGuardApi {
   @override
   Future<void> dispose() async {
     await _tickSub?.cancel();
+    await _placementSub?.cancel();
     await _activeSource?.stop();
     _alertController.dispose();
     await _vitalsCtrl.close();
@@ -285,6 +287,7 @@ class PulseGuardEngine implements PulseGuardApi {
   Future<void> cancelCalibration() async {
     if (!_isCalibration) return;
     await _tickSub?.cancel();
+    await _placementSub?.cancel();
     await _activeSource?.stop();
     _isCalibration = false;
     _phase = EnginePhase.idle;
@@ -374,6 +377,7 @@ class PulseGuardEngine implements PulseGuardApi {
   @override
   Future<void> stopReplay() async {
     await _tickSub?.cancel();
+    await _placementSub?.cancel();
     await _activeSource?.stop();
     _phase = EnginePhase.idle;
     _updateSnapshot();
@@ -466,6 +470,27 @@ class PulseGuardEngine implements PulseGuardApi {
       onDone: _onSourceDone,
       onError: (_) {},
     );
+    _subscribePlacement();
+  }
+
+  /// Forwards CameraVitalsSource's real per-frame PlacementHint (computed by
+  /// FrameValidator: ok/keepStill/pressLighter/coverLens/coverFlash/noFinger)
+  /// into the snapshot and the public `placement` stream. This fires as soon
+  /// as frames arrive — including during the ~3s settling phase before the
+  /// first VitalsReading tick — unlike deriving a hint from fingerPresent on
+  /// ticks alone, which stays null/stale until ticks start and only ever
+  /// distinguishes ok/noFinger, not the richer placement states.
+  void _subscribePlacement() {
+    _placementSub?.cancel();
+    final source = _activeSource;
+    if (source is CameraVitalsSource) {
+      _placementSub = source.placement.listen((hint) {
+        if (!_placementCtrl.isClosed) _placementCtrl.add(hint);
+        _snapshotNotifier.value = _snapshotNotifier.value.copyWith(
+          placementHint: hint,
+        );
+      });
+    }
   }
 
   void _onSourceDone() {
@@ -600,9 +625,9 @@ class PulseGuardEngine implements PulseGuardApi {
       phase: _phase,
       elapsed: Duration(milliseconds: (t * 1000).round()),
       latestVitals: input.vitals,
-      placementHint: input.vitals.fingerPresent
-          ? PlacementHint.ok
-          : PlacementHint.noFinger,
+      // placementHint is kept up to date by _subscribePlacement's per-frame
+      // stream, not set here — that's the real hint from FrameValidator, not
+      // a coarse ok/noFinger guess from a single tick's fingerPresent.
       activity: activityState,
       risk: riskAssessment,
       alertState: _mapAlertState(_alertController.state),
@@ -672,9 +697,8 @@ class PulseGuardEngine implements PulseGuardApi {
       remaining: progress.total - progress.elapsed,
       remainingIsSet: true,
       latestVitals: reading,
-      placementHint: reading.fingerPresent
-          ? PlacementHint.ok
-          : PlacementHint.noFinger,
+      // placementHint is kept up to date by _subscribePlacement's per-frame
+      // stream, not set here — see the same note in the regular tick handler.
     );
 
     if (t >= totalS) {
@@ -684,6 +708,7 @@ class PulseGuardEngine implements PulseGuardApi {
 
   Future<void> _finishCalibration(int nowMs) async {
     await _tickSub?.cancel();
+    await _placementSub?.cancel();
     await _activeSource?.stop();
 
     final session = _baselineService.evaluateSession(
@@ -731,6 +756,7 @@ class PulseGuardEngine implements PulseGuardApi {
 
   Future<ScanSummary> _finishScan(ScanEndReason reason) async {
     await _tickSub?.cancel();
+    await _placementSub?.cancel();
     await _activeSource?.stop();
 
     final duration = _snapshotNotifier.value.elapsed;

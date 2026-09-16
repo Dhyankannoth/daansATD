@@ -273,7 +273,7 @@ class _BaselineScreenState extends State<BaselineScreen> {
                   // Actions: Start 60s Calibration Scan
                   if (!_isCalibrating)
                     PrimaryButton(
-                      label: 'Start 2-Minute Calibration',
+                      label: 'Start 2.5-Minute Calibration',
                       icon: Icons.play_arrow_rounded,
                       onPressed: _startCalibration,
                     ),

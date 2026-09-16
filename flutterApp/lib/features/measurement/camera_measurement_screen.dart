@@ -186,7 +186,13 @@ class _CameraMeasurementScreenState extends State<CameraMeasurementScreen> {
       return MeasurementUiState.completed;
 
     final hint = snapshot.placementHint;
-    if (hint == PlacementHint.noFinger) {
+    if (hint == null ||
+        hint == PlacementHint.noFinger ||
+        hint == PlacementHint.coverLens ||
+        hint == PlacementHint.coverFlash) {
+      // null means no placement data has arrived yet (e.g. still within the
+      // settling window) — treat the same as "finger not placed" rather than
+      // falling through to fingerDetected by default.
       return MeasurementUiState.awaitingFinger;
     }
     if (hint == PlacementHint.pressLighter || hint == PlacementHint.keepStill) {

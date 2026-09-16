@@ -40,8 +40,6 @@ class RecordModeWriter {
   String? _label;
   String? _deviceLabel;
   bool _includeRaw = false;
-  int _rowsSinceFlush = 0;
-  int _rawRowsSinceFlush = 0;
 
   bool get isRecording => _sink != null;
 
@@ -161,11 +159,6 @@ class RecordModeWriter {
       auto?.deviating,
     ];
     sink.writeln(_csvRow(row));
-    _rowsSinceFlush++;
-    if (_rowsSinceFlush >= 10) {
-      _rowsSinceFlush = 0;
-      sink.flush();
-    }
   }
 
   void writeRawSample({
@@ -183,11 +176,6 @@ class RecordModeWriter {
     sink.writeln(
       _csvRow([t, r, g, b, satFrac, valid, fingerPresent, motionStd]),
     );
-    _rawRowsSinceFlush++;
-    if (_rawRowsSinceFlush >= 10) {
-      _rawRowsSinceFlush = 0;
-      sink.flush();
-    }
   }
 
   Future<RecordingResult> stop() async {
