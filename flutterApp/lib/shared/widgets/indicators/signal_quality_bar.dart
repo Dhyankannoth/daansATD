@@ -15,10 +15,14 @@ class SignalQualityBar extends StatelessWidget {
     this.showLabel = true,
   });
 
+  // Tier boundaries match assets/config/thresholds.json's quality thresholds
+  // (display_min=0.4, trusted=0.6) so "Strong signal" on screen means the
+  // same thing as "this tick counts as trusted" in the engine — keep these
+  // in sync if thresholds.json's quality values ever change.
   int get level {
     if (!hasFinger || quality <= 0.0) return 0;
     if (quality < 0.4) return 1;
-    if (quality < 0.7) return 2;
+    if (quality < 0.6) return 2;
     return 3;
   }
 
@@ -26,7 +30,7 @@ class SignalQualityBar extends StatelessWidget {
     if (!hasFinger) return 'No finger';
     if (quality <= 0.0) return 'Searching';
     if (quality < 0.4) return 'Low signal';
-    if (quality < 0.7) return 'Adjusting';
+    if (quality < 0.6) return 'Adjusting';
     return 'Strong signal';
   }
 

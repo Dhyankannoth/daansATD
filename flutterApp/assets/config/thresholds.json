@@ -1,7 +1,7 @@
 {
   "version": 1,
   "camera": { "settle_s": 3, "exposure_step_wait_ms": 500, "max_exposure_steps": 6 },
-  "frame": { "roi_fraction": 0.5, "pixel_step": 2, "finger_ratio": 2.0, "min_red": 40,
+  "frame": { "roi_fraction": 0.5, "pixel_step": 2, "finger_ratio": 1.3, "min_red": 20,
              "sat_pixel": 250, "max_sat_frac": 0.05, "max_jump": 0.03,
              "finger_lost_reset_s": 3.0 },
   "motion": { "fidget_std": 0.3, "exercise_std": 1.5, "window_short_s": 1, "window_long_s": 5 },
