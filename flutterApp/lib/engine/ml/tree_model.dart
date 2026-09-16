@@ -52,7 +52,7 @@ class TreeNode {
 }
 
 /// A loaded tree-ensemble model: `iforest.json`, `risk_rf.json`,
-/// `activity_tree.json`, etc, all sharing this JSON shape.
+/// `activity_tree.json`, `recovery_gbr.json`, etc, all sharing this JSON shape.
 class TreeModel {
   const TreeModel({
     required this.modelType,
@@ -62,15 +62,22 @@ class TreeModel {
     required this.scoreThreshold,
     required this.classes,
     required this.trees,
+    required this.learningRate,
+    required this.baseScore,
   });
 
-  final String modelType; // isolation_forest | random_forest | decision_tree
+  final String modelType; // isolation_forest | random_forest | decision_tree | gradient_boosting_regressor
   final int featureSpecVersion;
   final List<int> featureIndices;
   final int? maxSamples;
   final double? scoreThreshold;
   final List<String> classes;
   final List<TreeNode> trees;
+
+  /// gradient_boosting_regressor only: prediction = baseScore + learningRate *
+  /// sum(tree leaf values). Null for every other model_type.
+  final double? learningRate;
+  final double? baseScore;
 
   /// Restricts a full feature row to this model's feature subset, in order.
   List<double> selectFeatures(List<double> fullRow) => [
@@ -98,6 +105,8 @@ class TreeModel {
       trees: (j['trees'] as List)
           .map((t) => TreeNode.fromJson(t as Map<String, dynamic>))
           .toList(),
+      learningRate: (j['learning_rate'] as num?)?.toDouble(),
+      baseScore: (j['base_score'] as num?)?.toDouble(),
     );
   }
 }

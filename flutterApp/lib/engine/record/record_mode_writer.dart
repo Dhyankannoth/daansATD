@@ -6,7 +6,7 @@ import '../core/models/activity_state.dart';
 import '../core/models/feature_row.dart';
 import '../core/models/vitals_reading.dart';
 
-const kRecordModeLabels = ['normal_rest', 'recovery', 'stress', 'artifact'];
+const kRecordModeLabels = ['normal_rest', 'recovery', 'stress', 'artifact', 'reaction'];
 
 String _csvCell(Object? v) {
   if (v == null) return '';

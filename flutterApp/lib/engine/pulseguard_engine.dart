@@ -31,6 +31,7 @@ import 'detection/trends.dart';
 import 'dsp/stats.dart' show median;
 import 'ml/activity_classifier.dart';
 import 'ml/feature_builder.dart';
+import 'ml/gradient_boosting_regressor.dart';
 import 'ml/isolation_forest.dart';
 import 'ml/random_forest.dart';
 import 'ml/risk_engine.dart';
@@ -79,6 +80,10 @@ class PulseGuardEngine implements PulseGuardApi {
   // TODO(phase-8): wire into CameraVitalsSource's motion classification.
   // ignore: unused_field
   ActivityClassifier? _activityClassifier;
+  // TODO: wire into exercise-end handling to compare predicted vs actual
+  // recovery time. Loaded but not yet consulted anywhere in the tick loop.
+  // ignore: unused_field
+  GradientBoostingRegressor? _recoveryRegressor;
 
   EngineStore? _store;
   RecordModeWriter? _recordWriter;
@@ -188,6 +193,13 @@ class PulseGuardEngine implements PulseGuardApi {
         expectedFeatureSpecVersion: featureSpec.version,
       );
       if (model != null) _activityClassifier = ActivityClassifier(model);
+    } catch (_) {}
+    try {
+      final raw = await _bundle.loadString('assets/models/recovery_gbr.json');
+      final model = TreeModel.tryParse(raw, expectedFeatureSpecVersion: featureSpec.version);
+      if (model != null && model.modelType == 'gradient_boosting_regressor') {
+        _recoveryRegressor = GradientBoostingRegressor(model);
+      }
     } catch (_) {}
   }
 
@@ -633,6 +645,14 @@ class PulseGuardEngine implements PulseGuardApi {
     final rrTrusted =
         math.min(reading.quality, reading.rrQuality) >=
         thresholds.quality.trusted;
+    // TEMP DIAGNOSTIC — remove once sensor issue is root-caused.
+    debugPrint(
+      '[CAL-DIAG] t=${t.toStringAsFixed(1)}s finger=${reading.fingerPresent} '
+      'quality=${reading.quality.toStringAsFixed(3)} '
+      'rrQuality=${reading.rrQuality.toStringAsFixed(3)} '
+      'trusted=$trusted hr=${reading.hr} hrv=${reading.hrv} rr=${reading.rr} '
+      'source=${reading.source}',
+    );
     if (trusted && reading.hr != null) _calHr.add(reading.hr!);
     if (trusted && reading.hrv != null) _calHrv.add(reading.hrv!);
     if (rrTrusted && reading.rr != null) _calRr.add(reading.rr!);
