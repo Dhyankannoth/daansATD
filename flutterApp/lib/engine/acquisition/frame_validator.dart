@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart' show debugPrint;
+
 import '../api/events.dart' show PlacementHint;
 import '../core/config/thresholds.dart';
 import 'frame_averager.dart' show FrameAverage;
@@ -26,6 +28,7 @@ class FrameValidator {
   PlacementHint? _debouncedHint;
   PlacementHint? _pendingHint;
   double? _pendingSinceS;
+  double _lastLogT = -1;
 
   FrameValidation validate(
     FrameAverage avg, {
@@ -65,6 +68,18 @@ class FrameValidator {
 
     _prevR = avg.r;
     _debounce(rawHint, t);
+
+    // TEMP DIAGNOSTIC — remove once sensor issue is root-caused.
+    if (t - _lastLogT >= 1.0) {
+      _lastLogT = t;
+      debugPrint(
+        '[FRAME-DIAG] t=${t.toStringAsFixed(1)}s r=${avg.r.toStringAsFixed(1)} '
+        'g=${avg.g.toStringAsFixed(1)} b=${avg.b.toStringAsFixed(1)} '
+        'satFrac=${avg.satFrac.toStringAsFixed(3)} finger=$fingerCheck '
+        'light=$lightCheck clip=$clippingCheck jump=$jumpCheck '
+        'motion=$motionCheck(std=${motionStdShort.toStringAsFixed(3)}) valid=$valid',
+      );
+    }
 
     return FrameValidation(
       fingerPresent: fingerPresent,

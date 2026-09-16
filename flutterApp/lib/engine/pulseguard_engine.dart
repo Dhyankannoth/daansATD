@@ -645,6 +645,14 @@ class PulseGuardEngine implements PulseGuardApi {
     final rrTrusted =
         math.min(reading.quality, reading.rrQuality) >=
         thresholds.quality.trusted;
+    // TEMP DIAGNOSTIC — remove once sensor issue is root-caused.
+    debugPrint(
+      '[CAL-DIAG] t=${t.toStringAsFixed(1)}s finger=${reading.fingerPresent} '
+      'quality=${reading.quality.toStringAsFixed(3)} '
+      'rrQuality=${reading.rrQuality.toStringAsFixed(3)} '
+      'trusted=$trusted hr=${reading.hr} hrv=${reading.hrv} rr=${reading.rr} '
+      'source=${reading.source}',
+    );
     if (trusted && reading.hr != null) _calHr.add(reading.hr!);
     if (trusted && reading.hrv != null) _calHrv.add(reading.hrv!);
     if (rrTrusted && reading.rr != null) _calRr.add(reading.rr!);
