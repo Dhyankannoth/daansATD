@@ -15,7 +15,7 @@
              "hrv_ibi_tolerance": 0.2, "hr_min_intervals": 5,
              "hrv_min_intervals": 16, "hrv_min_pairs": 15 },
   "resp": { "min_prominence": 3.0, "agree_bpm": 3.0, "agree_quality": 1.0, "single_quality": 0.6 },
-  "quality": { "trusted": 0.7, "display_min": 0.4, "min_valid_frac": 0.9, "max_gap_s": 0.3 },
+  "quality": { "trusted": 0.6, "display_min": 0.4, "min_valid_frac": 0.9, "max_gap_s": 0.3 },
   "spo2": { "reference_windows": 10 },
   "baseline": { "min_ticks_hr": 60, "min_ticks_hrv": 40, "min_ticks_rr": 40,
                 "sd_floor_hr": 5.0, "sd_floor_hrv_ms": 8.0, "sd_floor_hrv_frac": 0.25,
