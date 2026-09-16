@@ -18,7 +18,14 @@ class _Gap {
 }
 
 class _Grids {
-  const _Grids(this.times, this.red, this.green, this.fs, this.tStart, this.tEnd);
+  const _Grids(
+    this.times,
+    this.red,
+    this.green,
+    this.fs,
+    this.tStart,
+    this.tEnd,
+  );
   final List<double> times;
   final List<double> red;
   final List<double> green;
@@ -32,7 +39,9 @@ class _Grids {
 /// reset per scan via [resetScan].
 class VitalsEngine {
   VitalsEngine({required this.thresholds})
-      : _ox = OxygenationTracker(referenceWindows: thresholds.spo2.referenceWindows);
+    : _ox = OxygenationTracker(
+        referenceWindows: thresholds.spo2.referenceWindows,
+      );
 
   final Thresholds thresholds;
   final OxygenationTracker _ox;
@@ -47,7 +56,9 @@ class VitalsEngine {
     VitalsReadingSource source = VitalsReadingSource.camera,
   }) {
     final analysisStart = nowS - thresholds.windowsS.analysis;
-    final window = buffer.where((s) => s.t >= analysisStart && s.t <= nowS).toList();
+    final window = buffer
+        .where((s) => s.t >= analysisStart && s.t <= nowS)
+        .toList();
 
     final fingerPresent = _majorityFingerPresent(buffer, nowS);
 
@@ -83,16 +94,31 @@ class VitalsEngine {
     }
 
     final f = thresholds.filter;
-    final filteredRed = bandpass(grids.red, grids.fs,
-        lowHz: f.bandpassLowHz, highHz: f.bandpassHighHz, padS: f.padS);
-    final filteredGreen = bandpass(grids.green, grids.fs,
-        lowHz: f.bandpassLowHz, highHz: f.bandpassHighHz, padS: f.padS);
+    final filteredRed = bandpass(
+      grids.red,
+      grids.fs,
+      lowHz: f.bandpassLowHz,
+      highHz: f.bandpassHighHz,
+      padS: f.padS,
+    );
+    final filteredGreen = bandpass(
+      grids.green,
+      grids.fs,
+      lowHz: f.bandpassLowHz,
+      highHz: f.bandpassHighHz,
+      padS: f.padS,
+    );
 
     final gaps = _findGaps(window, thresholds.quality.maxGapS);
 
     final b = thresholds.beats;
-    final beatsRedRel = findBeats(filteredRed, grids.fs,
-        minGapS: b.minGapS, minHeightSd: b.minHeightSd, edgeIgnoreS: b.edgeIgnoreS);
+    final beatsRedRel = findBeats(
+      filteredRed,
+      grids.fs,
+      minGapS: b.minGapS,
+      minHeightSd: b.minHeightSd,
+      edgeIgnoreS: b.edgeIgnoreS,
+    );
     final beatsRedAbs = beatsRedRel
         .map((t) => grids.tStart + t)
         .where((t) => !_inGap(t, gaps))
@@ -101,30 +127,42 @@ class VitalsEngine {
     final hrWindowStart = nowS - thresholds.windowsS.hr;
     final hrvWindowStart = nowS - thresholds.windowsS.hrv;
 
-    var hrBeats = beatsRedAbs.where((t) => t >= hrWindowStart && t <= nowS).toList();
-    var hrResult = computeHr(hrBeats,
-        ibiMinS: b.ibiMinS,
-        ibiMaxS: b.ibiMaxS,
-        hrIbiTolerance: b.hrIbiTolerance,
-        hrMinIntervals: b.hrMinIntervals);
+    var hrBeats = beatsRedAbs
+        .where((t) => t >= hrWindowStart && t <= nowS)
+        .toList();
+    var hrResult = computeHr(
+      hrBeats,
+      ibiMinS: b.ibiMinS,
+      ibiMaxS: b.ibiMaxS,
+      hrIbiTolerance: b.hrIbiTolerance,
+      hrMinIntervals: b.hrMinIntervals,
+    );
 
     var beatsAbs = beatsRedAbs;
     var usedGreen = false;
 
     if (hrResult == null) {
-      final beatsGreenRel = findBeats(filteredGreen, grids.fs,
-          minGapS: b.minGapS, minHeightSd: b.minHeightSd, edgeIgnoreS: b.edgeIgnoreS);
+      final beatsGreenRel = findBeats(
+        filteredGreen,
+        grids.fs,
+        minGapS: b.minGapS,
+        minHeightSd: b.minHeightSd,
+        edgeIgnoreS: b.edgeIgnoreS,
+      );
       final beatsGreenAbs = beatsGreenRel
           .map((t) => grids.tStart + t)
           .where((t) => !_inGap(t, gaps))
           .toList();
-      final greenHrBeats =
-          beatsGreenAbs.where((t) => t >= hrWindowStart && t <= nowS).toList();
-      final greenHrResult = computeHr(greenHrBeats,
-          ibiMinS: b.ibiMinS,
-          ibiMaxS: b.ibiMaxS,
-          hrIbiTolerance: b.hrIbiTolerance,
-          hrMinIntervals: b.hrMinIntervals);
+      final greenHrBeats = beatsGreenAbs
+          .where((t) => t >= hrWindowStart && t <= nowS)
+          .toList();
+      final greenHrResult = computeHr(
+        greenHrBeats,
+        ibiMinS: b.ibiMinS,
+        ibiMaxS: b.ibiMaxS,
+        hrIbiTolerance: b.hrIbiTolerance,
+        hrMinIntervals: b.hrMinIntervals,
+      );
       if (greenHrResult != null) {
         hrResult = greenHrResult;
         hrBeats = greenHrBeats;
@@ -133,19 +171,30 @@ class VitalsEngine {
       }
     }
 
-    final hrvBeats = beatsAbs.where((t) => t >= hrvWindowStart && t <= nowS).toList();
-    final hrv = computeRmssd(hrvBeats,
-        hrvIbiTolerance: b.hrvIbiTolerance,
-        hrvMinIntervals: b.hrvMinIntervals,
-        hrvMinPairs: b.hrvMinPairs);
+    final hrvBeats = beatsAbs
+        .where((t) => t >= hrvWindowStart && t <= nowS)
+        .toList();
+    final hrv = computeRmssd(
+      hrvBeats,
+      hrvIbiTolerance: b.hrvIbiTolerance,
+      hrvMinIntervals: b.hrvMinIntervals,
+      hrvMinPairs: b.hrvMinPairs,
+    );
 
     final q = thresholds.quality;
-    final hrWindowOk = _windowOk(window, thresholds.windowsS.hr, nowS,
-        minValidFrac: q.minValidFrac, maxGapS: q.maxGapS);
+    final hrWindowOk = _windowOk(
+      window,
+      thresholds.windowsS.hr,
+      nowS,
+      minValidFrac: q.minValidFrac,
+      maxGapS: q.maxGapS,
+    );
 
     final hrSubStart = nowS - thresholds.windowsS.hr;
-    final subIdxStart =
-        ((hrSubStart - grids.tStart) * grids.fs).round().clamp(0, filteredRed.length);
+    final subIdxStart = ((hrSubStart - grids.tStart) * grids.fs).round().clamp(
+      0,
+      filteredRed.length,
+    );
     final redSub = filteredRed.sublist(subIdxStart);
     final greenSub = filteredGreen.sublist(subIdxStart);
 
@@ -166,11 +215,11 @@ class VitalsEngine {
     double rrQuality = 0;
     if (availableS >= rrMinS) {
       final rrWindowStartT = nowS - availableS;
-      final startIdx =
-          ((rrWindowStartT - grids.tStart) * grids.fs).round().clamp(0, grids.red.length);
+      final startIdx = ((rrWindowStartT - grids.tStart) * grids.fs)
+          .round()
+          .clamp(0, grids.red.length);
       final redRaw = grids.red.sublist(startIdx);
-      final intensityBinned =
-          binAverage(redRaw, grids.fs, 1.0 / f.respHz);
+      final intensityBinned = binAverage(redRaw, grids.fs, 1.0 / f.respHz);
 
       final rrBeats = (usedGreen ? beatsAbs : beatsRedAbs)
           .where((t) => t >= rrWindowStartT && t <= nowS)
@@ -186,16 +235,29 @@ class VitalsEngine {
       }
 
       final intensityResult = dominantRate(
-          intensityBinned, f.respHz, f.respBandHz, f.respStepHz,
-          minSamples: (rrMinS * f.respHz).round());
+        intensityBinned,
+        f.respHz,
+        f.respBandHz,
+        f.respStepHz,
+        minSamples: (rrMinS * f.respHz).round(),
+      );
 
       DominantRateResult? intervalResult;
       if (intervalTimes.length >= 2) {
         final intervalGrid = resampleLinear(
-            intervalTimes, intervalValues, f.respHz, rrWindowStartT, nowS);
+          intervalTimes,
+          intervalValues,
+          f.respHz,
+          rrWindowStartT,
+          nowS,
+        );
         intervalResult = dominantRate(
-            intervalGrid, f.respHz, f.respBandHz, f.respStepHz,
-            minSamples: (rrMinS * f.respHz).round());
+          intervalGrid,
+          f.respHz,
+          f.respBandHz,
+          f.respStepHz,
+          minSamples: (rrMinS * f.respHz).round(),
+        );
       }
 
       final rrResult = computeRr(
@@ -213,12 +275,16 @@ class VitalsEngine {
     // --- Oxygenation ---
     final spo2WindowS = thresholds.windowsS.spo2;
     final spo2Start = nowS - spo2WindowS;
-    final spo2Idx =
-        ((spo2Start - grids.tStart) * grids.fs).round().clamp(0, filteredRed.length);
+    final spo2Idx = ((spo2Start - grids.tStart) * grids.fs).round().clamp(
+      0,
+      filteredRed.length,
+    );
     final redFilteredSub = filteredRed.sublist(spo2Idx);
     final greenFilteredSub = filteredGreen.sublist(spo2Idx);
     final redRawSub = grids.red.sublist(spo2Idx.clamp(0, grids.red.length));
-    final greenRawSub = grids.green.sublist(spo2Idx.clamp(0, grids.green.length));
+    final greenRawSub = grids.green.sublist(
+      spo2Idx.clamp(0, grids.green.length),
+    );
 
     final acRed = std(redFilteredSub);
     final dcRed = mean(redRawSub);
@@ -274,14 +340,18 @@ class VitalsEngine {
   }
 
   bool _majorityFingerPresent(List<FrameSample> buffer, double nowS) {
-    final lastSecond = buffer.where((s) => s.t >= nowS - 1 && s.t <= nowS).toList();
+    final lastSecond = buffer
+        .where((s) => s.t >= nowS - 1 && s.t <= nowS)
+        .toList();
     if (lastSecond.isEmpty) return false;
     final present = lastSecond.where((s) => s.fingerPresent).length;
     return present * 2 >= lastSecond.length;
   }
 
   double _validFrac(List<FrameSample> window, double subWindowS, double nowS) {
-    final sub = window.where((s) => s.t >= nowS - subWindowS && s.t <= nowS).toList();
+    final sub = window
+        .where((s) => s.t >= nowS - subWindowS && s.t <= nowS)
+        .toList();
     if (sub.isEmpty) return 0;
     return sub.where((s) => s.valid).length / sub.length;
   }
@@ -293,7 +363,9 @@ class VitalsEngine {
     required double minValidFrac,
     required double maxGapS,
   }) {
-    final sub = window.where((s) => s.t >= nowS - subWindowS && s.t <= nowS).toList();
+    final sub = window
+        .where((s) => s.t >= nowS - subWindowS && s.t <= nowS)
+        .toList();
     if (sub.isEmpty) return false;
     final validFrac = sub.where((s) => s.valid).length / sub.length;
     if (validFrac < minValidFrac) return false;

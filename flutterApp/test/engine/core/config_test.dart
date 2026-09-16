@@ -20,8 +20,9 @@ void main() {
     });
 
     test('rejects unsupported version', () {
-      final json = jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
-          as Map<String, dynamic>;
+      final json =
+          jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
+              as Map<String, dynamic>;
       json['version'] = 99;
       expect(() => Thresholds.fromJson(json), throwsFormatException);
     });
@@ -33,31 +34,38 @@ void main() {
       expect(spec.version, 1);
       expect(spec.features.length, 16);
       expect(spec.modelSubsets['isolation_forest'], isNotEmpty);
-      expect(spec.activityClasses, ['still', 'fidgeting', 'walking', 'running']);
-    });
-
-    test('feature names match the canonical order used by the feature builder',
-        () async {
-      final spec = await FeatureSpec.load(bundle: _FileBundle());
-      expect(spec.featureNames, [
-        'hr_z',
-        'hrv_z',
-        'rr_z',
-        'hr_slope_z',
-        'hrv_slope_z',
-        'rr_slope_z',
-        'hr_var_z',
-        'hrv_var_z',
-        'rr_var_z',
-        'hr_pct',
-        'hrv_pct',
-        'rr_pct',
-        'is_resting',
-        'is_recovering',
-        'is_unknown',
-        'since_exercise',
+      expect(spec.activityClasses, [
+        'still',
+        'fidgeting',
+        'walking',
+        'running',
       ]);
     });
+
+    test(
+      'feature names match the canonical order used by the feature builder',
+      () async {
+        final spec = await FeatureSpec.load(bundle: _FileBundle());
+        expect(spec.featureNames, [
+          'hr_z',
+          'hrv_z',
+          'rr_z',
+          'hr_slope_z',
+          'hrv_slope_z',
+          'rr_slope_z',
+          'hr_var_z',
+          'hrv_var_z',
+          'rr_var_z',
+          'hr_pct',
+          'hrv_pct',
+          'rr_pct',
+          'is_resting',
+          'is_recovering',
+          'is_unknown',
+          'since_exercise',
+        ]);
+      },
+    );
 
     test('rejects non-contiguous indices', () {
       final json =
@@ -71,7 +79,9 @@ void main() {
       final json =
           jsonDecode(File('assets/config/feature_spec.json').readAsStringSync())
               as Map<String, dynamic>;
-      (json['model_subsets'] as Map<String, dynamic>)['isolation_forest'] = [999];
+      (json['model_subsets'] as Map<String, dynamic>)['isolation_forest'] = [
+        999,
+      ];
       expect(() => FeatureSpec.fromJson(json), throwsFormatException);
     });
   });

@@ -100,7 +100,9 @@ class BaselineService {
       double Function(double mean) floorFor,
     ) {
       final m = mean(medians);
-      var sd = last10.length >= b.minSessionsForSessionSd ? std(medians) : latestWithinStd;
+      var sd = last10.length >= b.minSessionsForSessionSd
+          ? std(medians)
+          : latestWithinStd;
       final floor = floorFor(m);
       var floorApplied = false;
       if (sd < floor) {
@@ -117,12 +119,21 @@ class BaselineService {
       );
     }
 
-    final hr = build(last10.map((s) => s.hrMedian!).toList(), last10.last.hrStd!,
-        (_) => b.sdFloorHr);
-    final hrv = build(last10.map((s) => s.hrvMedian!).toList(), last10.last.hrvStd!,
-        (m) => math.max(b.sdFloorHrvMs, b.sdFloorHrvFrac * m));
-    final rr = build(last10.map((s) => s.rrMedian!).toList(), last10.last.rrStd!,
-        (_) => b.sdFloorRr);
+    final hr = build(
+      last10.map((s) => s.hrMedian!).toList(),
+      last10.last.hrStd!,
+      (_) => b.sdFloorHr,
+    );
+    final hrv = build(
+      last10.map((s) => s.hrvMedian!).toList(),
+      last10.last.hrvStd!,
+      (m) => math.max(b.sdFloorHrvMs, b.sdFloorHrvFrac * m),
+    );
+    final rr = build(
+      last10.map((s) => s.rrMedian!).toList(),
+      last10.last.rrStd!,
+      (_) => b.sdFloorRr,
+    );
 
     return Baseline(hr: hr, hrv: hrv, rr: rr, isDemo: isDemo);
   }
@@ -136,8 +147,10 @@ class BaselineService {
     required double rrMedian,
     required String endReason, // 'user' | 'timeout' (only these qualify)
     required double restingFraction,
-    required int maxLevelRank, // 0=normal .. 4=critical; must be <= 1 (monitoring)
-    required String alertOutcome, // 'none' | 'userOk' | 'escalated' | 'cancelled'
+    required int
+    maxLevelRank, // 0=normal .. 4=critical; must be <= 1 (monitoring)
+    required String
+    alertOutcome, // 'none' | 'userOk' | 'escalated' | 'cancelled'
     required int trustedTicksHr,
     required int trustedTicksHrv,
     required int trustedTicksRr,
@@ -149,13 +162,31 @@ class BaselineService {
     if (restingFraction < 0.8) return null;
     if (maxLevelRank > 1) return null;
     if (alertOutcome != 'none' && alertOutcome != 'userOk') return null;
-    if (trustedTicksHr < 30 || trustedTicksHrv < 30 || trustedTicksRr < 30) return null;
+    if (trustedTicksHr < 30 || trustedTicksHrv < 30 || trustedTicksRr < 30)
+      return null;
 
     final b = thresholds.baseline;
-    final hr = _ema(current.hr, hrMedian, b.updateAlpha, floor: b.sdFloorHr, nowMs: nowMs);
-    final hrv = _ema(current.hrv, hrvMedian, b.updateAlpha,
-        floor: math.max(b.sdFloorHrvMs, b.sdFloorHrvFrac * current.hrv.mean), nowMs: nowMs);
-    final rr = _ema(current.rr, rrMedian, b.updateAlpha, floor: b.sdFloorRr, nowMs: nowMs);
+    final hr = _ema(
+      current.hr,
+      hrMedian,
+      b.updateAlpha,
+      floor: b.sdFloorHr,
+      nowMs: nowMs,
+    );
+    final hrv = _ema(
+      current.hrv,
+      hrvMedian,
+      b.updateAlpha,
+      floor: math.max(b.sdFloorHrvMs, b.sdFloorHrvFrac * current.hrv.mean),
+      nowMs: nowMs,
+    );
+    final rr = _ema(
+      current.rr,
+      rrMedian,
+      b.updateAlpha,
+      floor: b.sdFloorRr,
+      nowMs: nowMs,
+    );
 
     return current.copyWith(hr: hr, hrv: hrv, rr: rr);
   }

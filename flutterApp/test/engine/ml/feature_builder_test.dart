@@ -10,8 +10,9 @@ import 'package:pulseguard/engine/detection/trends.dart';
 import 'package:pulseguard/engine/ml/feature_builder.dart';
 
 Thresholds _load() {
-  final json = jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
-      as Map<String, dynamic>;
+  final json =
+      jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
+          as Map<String, dynamic>;
   return Thresholds.fromJson(json);
 }
 
@@ -20,11 +21,29 @@ void main() {
       'produces exact feature values', () {
     final thresholds = _load();
     const mb72 = MetricBaseline(
-        mean: 72, sd: 5, variance: 25, sdFloorApplied: false, sessionCount: 3, updatedAt: 0);
+      mean: 72,
+      sd: 5,
+      variance: 25,
+      sdFloorApplied: false,
+      sessionCount: 3,
+      updatedAt: 0,
+    );
     const mb45 = MetricBaseline(
-        mean: 45, sd: 8, variance: 64, sdFloorApplied: false, sessionCount: 3, updatedAt: 0);
+      mean: 45,
+      sd: 8,
+      variance: 64,
+      sdFloorApplied: false,
+      sessionCount: 3,
+      updatedAt: 0,
+    );
     const mb14 = MetricBaseline(
-        mean: 14, sd: 2, variance: 4, sdFloorApplied: false, sessionCount: 3, updatedAt: 0);
+      mean: 14,
+      sd: 2,
+      variance: 4,
+      sdFloorApplied: false,
+      sessionCount: 3,
+      updatedAt: 0,
+    );
     const baseline = Baseline(hr: mb72, hrv: mb45, rr: mb14, isDemo: false);
 
     final trends = Trends(
@@ -35,17 +54,17 @@ void main() {
     final builder = FeatureBuilder(thresholds: thresholds);
 
     VitalsReading reading(int t) => VitalsReading(
-          timestamp: t * 1000,
-          hr: 80,
-          hrv: 45,
-          rr: 14,
-          spo2: null,
-          oxTrend: null,
-          quality: 0.9,
-          rrQuality: 0.9,
-          fingerPresent: true,
-          source: VitalsReadingSource.camera,
-        );
+      timestamp: t * 1000,
+      hr: 80,
+      hrv: 45,
+      rr: 14,
+      spo2: null,
+      oxTrend: null,
+      quality: 0.9,
+      rrQuality: 0.9,
+      fingerPresent: true,
+      source: VitalsReadingSource.camera,
+    );
 
     var lastRow = builder.build(
       nowS: 0,

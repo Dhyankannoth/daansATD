@@ -22,7 +22,8 @@ List<double> bandpass(
   final hp = highPassCoeffs(lowHz, fs);
   final lp = lowPassCoeffs(highHz, fs);
 
-  List<double> cascade(List<double> input) => applyBiquad(applyBiquad(input, hp), lp);
+  List<double> cascade(List<double> input) =>
+      applyBiquad(applyBiquad(input, hp), lp);
 
   final stage1 = cascade(padded);
   final reversed1 = stage1.reversed.toList();

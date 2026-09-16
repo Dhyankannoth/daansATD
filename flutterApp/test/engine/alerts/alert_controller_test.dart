@@ -4,15 +4,17 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pulseguard/engine/alerts/alert_controller.dart';
 import 'package:pulseguard/engine/alerts/alert_effects.dart';
-import 'package:pulseguard/engine/api/events.dart' show AlertEventKind, RiskLevel;
+import 'package:pulseguard/engine/api/events.dart'
+    show AlertEventKind, RiskLevel;
 import 'package:pulseguard/engine/core/config/thresholds.dart';
 import 'package:pulseguard/engine/core/models/emergency_contact.dart';
 import 'package:pulseguard/engine/core/models/escalation_payload.dart';
 import 'package:pulseguard/engine/core/models/vitals_reading.dart';
 
 Thresholds _load() {
-  final json = jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
-      as Map<String, dynamic>;
+  final json =
+      jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
+          as Map<String, dynamic>;
   return Thresholds.fromJson(json);
 }
 
@@ -47,20 +49,23 @@ const _vitals = VitalsReading(
 );
 
 EscalationPayload _payload() => const EscalationPayload(
-      triggeredAt: 0,
-      triggerType: EscalationTriggerType.multiSystem,
-      systems: [],
-      reasons: [],
-      vitalsSnapshot: _vitals,
-      contact: EmergencyContact(name: 'Alex', phone: '555-0100'),
-      status: EscalationStatus.pending,
-    );
+  triggeredAt: 0,
+  triggerType: EscalationTriggerType.multiSystem,
+  systems: [],
+  reasons: [],
+  vitalsSnapshot: _vitals,
+  contact: EmergencyContact(name: 'Alex', phone: '555-0100'),
+  status: EscalationStatus.pending,
+);
 
 void main() {
   test('high risk opens a check-in, timeout escalates, then cooldown', () {
     final thresholds = _load();
     final effects = _FakeEffects();
-    final controller = AlertController(thresholds: thresholds, effects: effects);
+    final controller = AlertController(
+      thresholds: thresholds,
+      effects: effects,
+    );
     final events = <AlertEventKind>[];
     controller.events.listen((e) => events.add(e.kind));
 
@@ -71,7 +76,11 @@ void main() {
 
     // Advance through the timeout without a response.
     final timeoutMs = (thresholds.alerts.checkinTimeoutS * 1000).round();
-    controller.tick(level: RiskLevel.high, nowMs: timeoutMs + 1, buildPayload: _payload);
+    controller.tick(
+      level: RiskLevel.high,
+      nowMs: timeoutMs + 1,
+      buildPayload: _payload,
+    );
 
     expect(controller.state, AlertControllerState.escalated);
     expect(effects.escalatedCount, 1);
@@ -82,32 +91,48 @@ void main() {
     controller.cancelEscalation(timeoutMs + 2);
     expect(controller.state, AlertControllerState.cooldown);
 
-    expect(events, containsAllInOrder([
-      AlertEventKind.checkInOpened,
-      AlertEventKind.escalated,
-      AlertEventKind.resolved,
-      AlertEventKind.cooldownStarted,
-    ]));
+    expect(
+      events,
+      containsAllInOrder([
+        AlertEventKind.checkInOpened,
+        AlertEventKind.escalated,
+        AlertEventKind.resolved,
+        AlertEventKind.cooldownStarted,
+      ]),
+    );
   });
 
-  test('respondCheckIn(ok: true) resolves and starts cooldown, suppressing a new high', () {
-    final thresholds = _load();
-    final controller = AlertController(thresholds: thresholds, effects: _FakeEffects());
+  test(
+    'respondCheckIn(ok: true) resolves and starts cooldown, suppressing a new high',
+    () {
+      final thresholds = _load();
+      final controller = AlertController(
+        thresholds: thresholds,
+        effects: _FakeEffects(),
+      );
 
-    controller.tick(level: RiskLevel.high, nowMs: 0, buildPayload: _payload);
-    controller.respondCheckIn(ok: true, nowMs: 1000);
-    expect(controller.state, AlertControllerState.cooldown);
-    expect(controller.activePayload!.status, EscalationStatus.userOk);
+      controller.tick(level: RiskLevel.high, nowMs: 0, buildPayload: _payload);
+      controller.respondCheckIn(ok: true, nowMs: 1000);
+      expect(controller.state, AlertControllerState.cooldown);
+      expect(controller.activePayload!.status, EscalationStatus.userOk);
 
-    // A new `high` tick during cooldown does not reopen a check-in.
-    controller.tick(level: RiskLevel.high, nowMs: 2000, buildPayload: _payload);
-    expect(controller.state, AlertControllerState.cooldown);
-  });
+      // A new `high` tick during cooldown does not reopen a check-in.
+      controller.tick(
+        level: RiskLevel.high,
+        nowMs: 2000,
+        buildPayload: _payload,
+      );
+      expect(controller.state, AlertControllerState.cooldown);
+    },
+  );
 
   test('respondCheckIn(ok: false) escalates immediately', () {
     final thresholds = _load();
     final effects = _FakeEffects();
-    final controller = AlertController(thresholds: thresholds, effects: effects);
+    final controller = AlertController(
+      thresholds: thresholds,
+      effects: effects,
+    );
 
     controller.tick(level: RiskLevel.high, nowMs: 0, buildPayload: _payload);
     controller.respondCheckIn(ok: false, nowMs: 1000);
@@ -117,20 +142,30 @@ void main() {
 
   test('cooldown expires back to none after cooldown_s', () {
     final thresholds = _load();
-    final controller = AlertController(thresholds: thresholds, effects: _FakeEffects());
+    final controller = AlertController(
+      thresholds: thresholds,
+      effects: _FakeEffects(),
+    );
 
     controller.tick(level: RiskLevel.high, nowMs: 0, buildPayload: _payload);
     controller.respondCheckIn(ok: true, nowMs: 1000);
     expect(controller.state, AlertControllerState.cooldown);
 
     final cooldownEndMs = 1000 + (thresholds.alerts.cooldownS * 1000).round();
-    controller.tick(level: RiskLevel.normal, nowMs: cooldownEndMs + 1, buildPayload: _payload);
+    controller.tick(
+      level: RiskLevel.normal,
+      nowMs: cooldownEndMs + 1,
+      buildPayload: _payload,
+    );
     expect(controller.state, AlertControllerState.none);
   });
 
   test('resetForNewScan preserves an active cooldown', () {
     final thresholds = _load();
-    final controller = AlertController(thresholds: thresholds, effects: _FakeEffects());
+    final controller = AlertController(
+      thresholds: thresholds,
+      effects: _FakeEffects(),
+    );
     controller.tick(level: RiskLevel.high, nowMs: 0, buildPayload: _payload);
     controller.respondCheckIn(ok: true, nowMs: 1000);
     expect(controller.state, AlertControllerState.cooldown);

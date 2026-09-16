@@ -26,13 +26,20 @@ import 'vitals_source.dart';
 /// the on-device checklist in the final deliverables summary before relying
 /// on it.
 class CameraVitalsSource implements VitalsSource {
-  CameraVitalsSource({required this.thresholds, required this.clock, this.oxCalibration});
+  CameraVitalsSource({
+    required this.thresholds,
+    required this.clock,
+    this.oxCalibration,
+  });
 
   final Thresholds thresholds;
   final Clock clock;
   final OxCalibration? oxCalibration;
 
-  late final CameraService _cameraService = CameraService(thresholds: thresholds, clock: clock);
+  late final CameraService _cameraService = CameraService(
+    thresholds: thresholds,
+    clock: clock,
+  );
   late final FrameAverager _averager = FrameAverager(
     roiFraction: thresholds.frame.roiFraction,
     pixelStep: thresholds.frame.pixelStep,
@@ -40,7 +47,9 @@ class CameraVitalsSource implements VitalsSource {
   );
   late final FrameValidator _validator = FrameValidator(thresholds: thresholds);
   late final MotionService _motion = MotionService(clock: clock);
-  late final SampleBuffer _buffer = SampleBuffer(windowS: thresholds.windowsS.buffer);
+  late final SampleBuffer _buffer = SampleBuffer(
+    windowS: thresholds.windowsS.buffer,
+  );
   late final VitalsEngine _vitalsEngine = VitalsEngine(thresholds: thresholds);
 
   final _ticksController = StreamController<TickInput>.broadcast();
@@ -99,10 +108,16 @@ class CameraVitalsSource implements VitalsSource {
     final (image, t) = event;
     final avg = _averageFrame(image);
     final motionStd = _motion.motionStd(thresholds.motion.windowShortS);
-    final validation = _validator.validate(avg, t: t, motionStdShort: motionStd);
+    final validation = _validator.validate(
+      avg,
+      t: t,
+      motionStdShort: motionStd,
+    );
 
     final hint = _validator.debouncedHint;
-    if (hint != null && hint != _lastEmittedHint && !_placementController.isClosed) {
+    if (hint != null &&
+        hint != _lastEmittedHint &&
+        !_placementController.isClosed) {
       _lastEmittedHint = hint;
       _placementController.add(hint);
     }
@@ -113,7 +128,10 @@ class CameraVitalsSource implements VitalsSource {
         if (t - _settleStartS! >= thresholds.camera.settleS) {
           _settled = true;
           unawaited(
-              _cameraService.lockExposureIfSaturated(latestSatFrac: () => avg.satFrac));
+            _cameraService.lockExposureIfSaturated(
+              latestSatFrac: () => avg.satFrac,
+            ),
+          );
         }
       } else {
         _settleStartS = null;
@@ -131,14 +149,16 @@ class CameraVitalsSource implements VitalsSource {
       _fingerLostSinceS = null;
     }
 
-    _buffer.add(FrameSample(
-      t: t,
-      r: avg.r,
-      g: avg.g,
-      b: avg.b,
-      valid: validation.valid,
-      fingerPresent: validation.fingerPresent,
-    ));
+    _buffer.add(
+      FrameSample(
+        t: t,
+        r: avg.r,
+        g: avg.g,
+        b: avg.b,
+        valid: validation.valid,
+        fingerPresent: validation.fingerPresent,
+      ),
+    );
   }
 
   FrameAverage _averageFrame(CameraImage image) {
@@ -180,11 +200,13 @@ class CameraVitalsSource implements VitalsSource {
     );
     final motionStdShort = _motion.motionStd(thresholds.motion.windowShortS);
     final waveform = _computeWaveform(nowS, reading.fingerPresent);
-    _ticksController.add(TickInput(
-      vitals: reading,
-      motionStdShort: motionStdShort,
-      waveform: waveform,
-    ));
+    _ticksController.add(
+      TickInput(
+        vitals: reading,
+        motionStdShort: motionStdShort,
+        waveform: waveform,
+      ),
+    );
   }
 
   WaveformSample? _computeWaveform(double nowS, bool fingerPresent) {
@@ -193,8 +215,14 @@ class CameraVitalsSource implements VitalsSource {
     if (samples.isEmpty) return null;
     final last = samples.last;
 
-    final avgWindow = samples.where((s) => s.t >= nowS - 1.0).map((s) => s.r).toList();
-    final stdWindow = samples.where((s) => s.t >= nowS - 5.0).map((s) => s.r).toList();
+    final avgWindow = samples
+        .where((s) => s.t >= nowS - 1.0)
+        .map((s) => s.r)
+        .toList();
+    final stdWindow = samples
+        .where((s) => s.t >= nowS - 5.0)
+        .map((s) => s.r)
+        .toList();
     if (avgWindow.isEmpty || stdWindow.isEmpty) return null;
 
     final movAvg = avgWindow.reduce((a, b) => a + b) / avgWindow.length;

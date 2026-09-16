@@ -59,16 +59,22 @@ class Thresholds {
       camera: CameraThresholds.fromJson(j['camera'] as Map<String, dynamic>),
       frame: FrameThresholds.fromJson(j['frame'] as Map<String, dynamic>),
       motion: MotionThresholds.fromJson(j['motion'] as Map<String, dynamic>),
-      windowsS: WindowsSThresholds.fromJson(j['windows_s'] as Map<String, dynamic>),
+      windowsS: WindowsSThresholds.fromJson(
+        j['windows_s'] as Map<String, dynamic>,
+      ),
       scan: ScanThresholds.fromJson(j['scan'] as Map<String, dynamic>),
       filter: FilterThresholds.fromJson(j['filter'] as Map<String, dynamic>),
       beats: BeatsThresholds.fromJson(j['beats'] as Map<String, dynamic>),
       resp: RespThresholds.fromJson(j['resp'] as Map<String, dynamic>),
       quality: QualityThresholds.fromJson(j['quality'] as Map<String, dynamic>),
       spo2: Spo2Thresholds.fromJson(j['spo2'] as Map<String, dynamic>),
-      baseline: BaselineThresholds.fromJson(j['baseline'] as Map<String, dynamic>),
+      baseline: BaselineThresholds.fromJson(
+        j['baseline'] as Map<String, dynamic>,
+      ),
       trend: TrendThresholds.fromJson(j['trend'] as Map<String, dynamic>),
-      deviation: DeviationThresholds.fromJson(j['deviation'] as Map<String, dynamic>),
+      deviation: DeviationThresholds.fromJson(
+        j['deviation'] as Map<String, dynamic>,
+      ),
       fusion: FusionThresholds.fromJson(j['fusion'] as Map<String, dynamic>),
       ml: MlThresholds.fromJson(j['ml'] as Map<String, dynamic>),
       alerts: AlertsThresholds.fromJson(j['alerts'] as Map<String, dynamic>),
@@ -95,10 +101,10 @@ class CameraThresholds {
   final int exposureStepWaitMs;
   final int maxExposureSteps;
   factory CameraThresholds.fromJson(Map<String, dynamic> j) => CameraThresholds(
-        settleS: (j['settle_s'] as num).toDouble(),
-        exposureStepWaitMs: j['exposure_step_wait_ms'] as int,
-        maxExposureSteps: j['max_exposure_steps'] as int,
-      );
+    settleS: (j['settle_s'] as num).toDouble(),
+    exposureStepWaitMs: j['exposure_step_wait_ms'] as int,
+    maxExposureSteps: j['max_exposure_steps'] as int,
+  );
 }
 
 class FrameThresholds {
@@ -121,15 +127,15 @@ class FrameThresholds {
   final double maxJump;
   final double fingerLostResetS;
   factory FrameThresholds.fromJson(Map<String, dynamic> j) => FrameThresholds(
-        roiFraction: (j['roi_fraction'] as num).toDouble(),
-        pixelStep: j['pixel_step'] as int,
-        fingerRatio: (j['finger_ratio'] as num).toDouble(),
-        minRed: (j['min_red'] as num).toDouble(),
-        satPixel: (j['sat_pixel'] as num).toDouble(),
-        maxSatFrac: (j['max_sat_frac'] as num).toDouble(),
-        maxJump: (j['max_jump'] as num).toDouble(),
-        fingerLostResetS: (j['finger_lost_reset_s'] as num).toDouble(),
-      );
+    roiFraction: (j['roi_fraction'] as num).toDouble(),
+    pixelStep: j['pixel_step'] as int,
+    fingerRatio: (j['finger_ratio'] as num).toDouble(),
+    minRed: (j['min_red'] as num).toDouble(),
+    satPixel: (j['sat_pixel'] as num).toDouble(),
+    maxSatFrac: (j['max_sat_frac'] as num).toDouble(),
+    maxJump: (j['max_jump'] as num).toDouble(),
+    fingerLostResetS: (j['finger_lost_reset_s'] as num).toDouble(),
+  );
 }
 
 class MotionThresholds {
@@ -144,11 +150,11 @@ class MotionThresholds {
   final double windowShortS;
   final double windowLongS;
   factory MotionThresholds.fromJson(Map<String, dynamic> j) => MotionThresholds(
-        fidgetStd: (j['fidget_std'] as num).toDouble(),
-        exerciseStd: (j['exercise_std'] as num).toDouble(),
-        windowShortS: (j['window_short_s'] as num).toDouble(),
-        windowLongS: (j['window_long_s'] as num).toDouble(),
-      );
+    fidgetStd: (j['fidget_std'] as num).toDouble(),
+    exerciseStd: (j['exercise_std'] as num).toDouble(),
+    windowShortS: (j['window_short_s'] as num).toDouble(),
+    windowLongS: (j['window_long_s'] as num).toDouble(),
+  );
 }
 
 class WindowsSThresholds {
@@ -170,7 +176,8 @@ class WindowsSThresholds {
   final double rrMin;
   final double rrMax;
   final double trend;
-  factory WindowsSThresholds.fromJson(Map<String, dynamic> j) => WindowsSThresholds(
+  factory WindowsSThresholds.fromJson(Map<String, dynamic> j) =>
+      WindowsSThresholds(
         buffer: (j['buffer'] as num).toDouble(),
         analysis: (j['analysis'] as num).toDouble(),
         hr: (j['hr'] as num).toDouble(),
@@ -192,10 +199,10 @@ class ScanThresholds {
   final double noSignalEndS;
   final double calibrationS;
   factory ScanThresholds.fromJson(Map<String, dynamic> j) => ScanThresholds(
-        maxS: (j['max_s'] as num).toDouble(),
-        noSignalEndS: (j['no_signal_end_s'] as num).toDouble(),
-        calibrationS: (j['calibration_s'] as num).toDouble(),
-      );
+    maxS: (j['max_s'] as num).toDouble(),
+    noSignalEndS: (j['no_signal_end_s'] as num).toDouble(),
+    calibrationS: (j['calibration_s'] as num).toDouble(),
+  );
 }
 
 class FilterThresholds {
@@ -216,15 +223,16 @@ class FilterThresholds {
   final List<double> respBandHz;
   final double respStepHz;
   factory FilterThresholds.fromJson(Map<String, dynamic> j) => FilterThresholds(
-        resampleHz: (j['resample_hz'] as num).toDouble(),
-        bandpassLowHz: (j['bandpass_low_hz'] as num).toDouble(),
-        bandpassHighHz: (j['bandpass_high_hz'] as num).toDouble(),
-        padS: (j['pad_s'] as num).toDouble(),
-        respHz: (j['resp_hz'] as num).toDouble(),
-        respBandHz:
-            (j['resp_band_hz'] as List).map((e) => (e as num).toDouble()).toList(),
-        respStepHz: (j['resp_step_hz'] as num).toDouble(),
-      );
+    resampleHz: (j['resample_hz'] as num).toDouble(),
+    bandpassLowHz: (j['bandpass_low_hz'] as num).toDouble(),
+    bandpassHighHz: (j['bandpass_high_hz'] as num).toDouble(),
+    padS: (j['pad_s'] as num).toDouble(),
+    respHz: (j['resp_hz'] as num).toDouble(),
+    respBandHz: (j['resp_band_hz'] as List)
+        .map((e) => (e as num).toDouble())
+        .toList(),
+    respStepHz: (j['resp_step_hz'] as num).toDouble(),
+  );
 }
 
 class BeatsThresholds {
@@ -251,17 +259,17 @@ class BeatsThresholds {
   final int hrvMinIntervals;
   final int hrvMinPairs;
   factory BeatsThresholds.fromJson(Map<String, dynamic> j) => BeatsThresholds(
-        minGapS: (j['min_gap_s'] as num).toDouble(),
-        minHeightSd: (j['min_height_sd'] as num).toDouble(),
-        edgeIgnoreS: (j['edge_ignore_s'] as num).toDouble(),
-        ibiMinS: (j['ibi_min_s'] as num).toDouble(),
-        ibiMaxS: (j['ibi_max_s'] as num).toDouble(),
-        hrIbiTolerance: (j['hr_ibi_tolerance'] as num).toDouble(),
-        hrvIbiTolerance: (j['hrv_ibi_tolerance'] as num).toDouble(),
-        hrMinIntervals: j['hr_min_intervals'] as int,
-        hrvMinIntervals: j['hrv_min_intervals'] as int,
-        hrvMinPairs: j['hrv_min_pairs'] as int,
-      );
+    minGapS: (j['min_gap_s'] as num).toDouble(),
+    minHeightSd: (j['min_height_sd'] as num).toDouble(),
+    edgeIgnoreS: (j['edge_ignore_s'] as num).toDouble(),
+    ibiMinS: (j['ibi_min_s'] as num).toDouble(),
+    ibiMaxS: (j['ibi_max_s'] as num).toDouble(),
+    hrIbiTolerance: (j['hr_ibi_tolerance'] as num).toDouble(),
+    hrvIbiTolerance: (j['hrv_ibi_tolerance'] as num).toDouble(),
+    hrMinIntervals: j['hr_min_intervals'] as int,
+    hrvMinIntervals: j['hrv_min_intervals'] as int,
+    hrvMinPairs: j['hrv_min_pairs'] as int,
+  );
 }
 
 class RespThresholds {
@@ -276,11 +284,11 @@ class RespThresholds {
   final double agreeQuality;
   final double singleQuality;
   factory RespThresholds.fromJson(Map<String, dynamic> j) => RespThresholds(
-        minProminence: (j['min_prominence'] as num).toDouble(),
-        agreeBpm: (j['agree_bpm'] as num).toDouble(),
-        agreeQuality: (j['agree_quality'] as num).toDouble(),
-        singleQuality: (j['single_quality'] as num).toDouble(),
-      );
+    minProminence: (j['min_prominence'] as num).toDouble(),
+    agreeBpm: (j['agree_bpm'] as num).toDouble(),
+    agreeQuality: (j['agree_quality'] as num).toDouble(),
+    singleQuality: (j['single_quality'] as num).toDouble(),
+  );
 }
 
 class QualityThresholds {
@@ -294,7 +302,8 @@ class QualityThresholds {
   final double displayMin;
   final double minValidFrac;
   final double maxGapS;
-  factory QualityThresholds.fromJson(Map<String, dynamic> j) => QualityThresholds(
+  factory QualityThresholds.fromJson(Map<String, dynamic> j) =>
+      QualityThresholds(
         trusted: (j['trusted'] as num).toDouble(),
         displayMin: (j['display_min'] as num).toDouble(),
         minValidFrac: (j['min_valid_frac'] as num).toDouble(),
@@ -330,7 +339,8 @@ class BaselineThresholds {
   final double sdFloorRr;
   final double updateAlpha;
   final int minSessionsForSessionSd;
-  factory BaselineThresholds.fromJson(Map<String, dynamic> j) => BaselineThresholds(
+  factory BaselineThresholds.fromJson(Map<String, dynamic> j) =>
+      BaselineThresholds(
         minTicksHr: j['min_ticks_hr'] as int,
         minTicksHrv: j['min_ticks_hrv'] as int,
         minTicksRr: j['min_ticks_rr'] as int,
@@ -369,7 +379,8 @@ class DeviationThresholds {
   final double recoveringRrSlope;
   final double recoveringHrvSlope;
   final double recoveringMaxSinceExerciseS;
-  factory DeviationThresholds.fromJson(Map<String, dynamic> j) => DeviationThresholds(
+  factory DeviationThresholds.fromJson(Map<String, dynamic> j) =>
+      DeviationThresholds(
         hrZ: (j['hr_z'] as num).toDouble(),
         rrZ: (j['rr_z'] as num).toDouble(),
         hrvZ: (j['hrv_z'] as num).toDouble(),
@@ -394,11 +405,11 @@ class FusionThresholds {
   final double watchdogFingerLostS;
   final double watchdogRecentS;
   factory FusionThresholds.fromJson(Map<String, dynamic> j) => FusionThresholds(
-        persistenceWindow: j['persistence_window'] as int,
-        persistenceMin: j['persistence_min'] as int,
-        watchdogFingerLostS: (j['watchdog_finger_lost_s'] as num).toDouble(),
-        watchdogRecentS: (j['watchdog_recent_s'] as num).toDouble(),
-      );
+    persistenceWindow: j['persistence_window'] as int,
+    persistenceMin: j['persistence_min'] as int,
+    watchdogFingerLostS: (j['watchdog_finger_lost_s'] as num).toDouble(),
+    watchdogRecentS: (j['watchdog_recent_s'] as num).toDouble(),
+  );
 }
 
 class MlThresholds {
@@ -421,25 +432,29 @@ class MlThresholds {
   final double riskHigh;
   final double sustainS;
   factory MlThresholds.fromJson(Map<String, dynamic> j) => MlThresholds(
-        rowWindowS: (j['row_window_s'] as num).toDouble(),
-        rowMinTrustedFrac: (j['row_min_trusted_frac'] as num).toDouble(),
-        carryForwardS: (j['carry_forward_s'] as num).toDouble(),
-        metricMinPoints: j['metric_min_points'] as int,
-        smoothingS: (j['smoothing_s'] as num).toDouble(),
-        fallbackAnomalyThreshold: (j['fallback_anomaly_threshold'] as num).toDouble(),
-        riskHigh: (j['risk_high'] as num).toDouble(),
-        sustainS: (j['sustain_s'] as num).toDouble(),
-      );
+    rowWindowS: (j['row_window_s'] as num).toDouble(),
+    rowMinTrustedFrac: (j['row_min_trusted_frac'] as num).toDouble(),
+    carryForwardS: (j['carry_forward_s'] as num).toDouble(),
+    metricMinPoints: j['metric_min_points'] as int,
+    smoothingS: (j['smoothing_s'] as num).toDouble(),
+    fallbackAnomalyThreshold: (j['fallback_anomaly_threshold'] as num)
+        .toDouble(),
+    riskHigh: (j['risk_high'] as num).toDouble(),
+    sustainS: (j['sustain_s'] as num).toDouble(),
+  );
 }
 
 class AlertsThresholds {
-  const AlertsThresholds({required this.checkinTimeoutS, required this.cooldownS});
+  const AlertsThresholds({
+    required this.checkinTimeoutS,
+    required this.cooldownS,
+  });
   final double checkinTimeoutS;
   final double cooldownS;
   factory AlertsThresholds.fromJson(Map<String, dynamic> j) => AlertsThresholds(
-        checkinTimeoutS: (j['checkin_timeout_s'] as num).toDouble(),
-        cooldownS: (j['cooldown_s'] as num).toDouble(),
-      );
+    checkinTimeoutS: (j['checkin_timeout_s'] as num).toDouble(),
+    cooldownS: (j['cooldown_s'] as num).toDouble(),
+  );
 }
 
 class OxThresholds {

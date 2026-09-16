@@ -5,8 +5,14 @@ import 'package:pulseguard/engine/vitals/quality.dart';
 
 void main() {
   test('clean correlated signal scores >= 0.7', () {
-    final red = List<double>.generate(90, (i) => math.sin(2 * math.pi * 1.2 * i / 30));
-    final green = List<double>.generate(90, (i) => 0.8 * math.sin(2 * math.pi * 1.2 * i / 30));
+    final red = List<double>.generate(
+      90,
+      (i) => math.sin(2 * math.pi * 1.2 * i / 30),
+    );
+    final green = List<double>.generate(
+      90,
+      (i) => 0.8 * math.sin(2 * math.pi * 1.2 * i / 30),
+    );
     final q = computeQuality(
       hrWindowOk: true,
       validFrac: 1.0,
@@ -33,8 +39,14 @@ void main() {
   });
 
   test('failed HR window forces quality to 0', () {
-    final red = List<double>.generate(90, (i) => math.sin(2 * math.pi * 1.2 * i / 30));
-    final green = List<double>.generate(90, (i) => math.sin(2 * math.pi * 1.2 * i / 30));
+    final red = List<double>.generate(
+      90,
+      (i) => math.sin(2 * math.pi * 1.2 * i / 30),
+    );
+    final green = List<double>.generate(
+      90,
+      (i) => math.sin(2 * math.pi * 1.2 * i / 30),
+    );
     final q = computeQuality(
       hrWindowOk: false,
       validFrac: 1.0,

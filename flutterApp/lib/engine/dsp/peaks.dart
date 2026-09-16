@@ -41,8 +41,9 @@ List<double> findBeats(
   kept.sort();
 
   final edgeIgnoreSamples = edgeIgnoreS * fs;
-  final trimmed =
-      kept.where((i) => i >= edgeIgnoreSamples && i <= (n - 1) - edgeIgnoreSamples);
+  final trimmed = kept.where(
+    (i) => i >= edgeIgnoreSamples && i <= (n - 1) - edgeIgnoreSamples,
+  );
 
   final times = <double>[];
   for (final i in trimmed) {

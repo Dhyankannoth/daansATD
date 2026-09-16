@@ -7,8 +7,9 @@ import 'package:pulseguard/engine/core/models/deviation_flag.dart';
 import 'package:pulseguard/engine/detection/fusion_engine.dart';
 
 Thresholds _load() {
-  final json = jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
-      as Map<String, dynamic>;
+  final json =
+      jsonDecode(File('assets/config/thresholds.json').readAsStringSync())
+          as Map<String, dynamic>;
   return Thresholds.fromJson(json);
 }
 
@@ -28,32 +29,38 @@ DeviationFlag _flag(BodySystem s, bool deviating, {bool trusted = true}) {
 }
 
 void main() {
-  test('persistence requires >= persistence_min of persistence_window (15 of 20)', () {
-    final fusion = FusionEngine(thresholds: _load());
-    // 14 deviating out of 20 ticks: not persistent.
-    for (var i = 0; i < 14; i++) {
-      fusion.evaluate(
-        flags: [_flag(BodySystem.respiratory, true)],
-        fingerPresent: true,
-        scanEndedByUser: false,
-        inCooldown: false,
-        nowS: i.toDouble(),
-        nowMs: i * 1000,
+  test(
+    'persistence requires >= persistence_min of persistence_window (15 of 20)',
+    () {
+      final fusion = FusionEngine(thresholds: _load());
+      // 14 deviating out of 20 ticks: not persistent.
+      for (var i = 0; i < 14; i++) {
+        fusion.evaluate(
+          flags: [_flag(BodySystem.respiratory, true)],
+          fingerPresent: true,
+          scanEndedByUser: false,
+          inCooldown: false,
+          nowS: i.toDouble(),
+          nowMs: i * 1000,
+        );
+      }
+      late FusionResult result;
+      for (var i = 14; i < 20; i++) {
+        result = fusion.evaluate(
+          flags: [_flag(BodySystem.respiratory, false)],
+          fingerPresent: true,
+          scanEndedByUser: false,
+          inCooldown: false,
+          nowS: i.toDouble(),
+          nowMs: i * 1000,
+        );
+      }
+      expect(
+        result.persistentSystems.contains(BodySystem.respiratory),
+        isFalse,
       );
-    }
-    late FusionResult result;
-    for (var i = 14; i < 20; i++) {
-      result = fusion.evaluate(
-        flags: [_flag(BodySystem.respiratory, false)],
-        fingerPresent: true,
-        scanEndedByUser: false,
-        inCooldown: false,
-        nowS: i.toDouble(),
-        nowMs: i * 1000,
-      );
-    }
-    expect(result.persistentSystems.contains(BodySystem.respiratory), isFalse);
-  });
+    },
+  );
 
   test('15 of 20 deviating ticks reaches persistence', () {
     final fusion = FusionEngine(thresholds: _load());
@@ -81,45 +88,51 @@ void main() {
     expect(result.persistentSystems.contains(BodySystem.respiratory), isTrue);
   });
 
-  test('rule alert requires respiratory plus one of cardiovascular/autonomic', () {
-    final fusion = FusionEngine(thresholds: _load());
-    late FusionResult result;
-    for (var i = 0; i < 20; i++) {
-      result = fusion.evaluate(
-        flags: [
-          _flag(BodySystem.respiratory, true),
-          _flag(BodySystem.cardiovascular, true),
-          _flag(BodySystem.autonomic, false),
-        ],
-        fingerPresent: true,
-        scanEndedByUser: false,
-        inCooldown: false,
-        nowS: i.toDouble(),
-        nowMs: i * 1000,
-      );
-    }
-    expect(result.ruleAlert, isTrue);
-  });
+  test(
+    'rule alert requires respiratory plus one of cardiovascular/autonomic',
+    () {
+      final fusion = FusionEngine(thresholds: _load());
+      late FusionResult result;
+      for (var i = 0; i < 20; i++) {
+        result = fusion.evaluate(
+          flags: [
+            _flag(BodySystem.respiratory, true),
+            _flag(BodySystem.cardiovascular, true),
+            _flag(BodySystem.autonomic, false),
+          ],
+          fingerPresent: true,
+          scanEndedByUser: false,
+          inCooldown: false,
+          nowS: i.toDouble(),
+          nowMs: i * 1000,
+        );
+      }
+      expect(result.ruleAlert, isTrue);
+    },
+  );
 
-  test('respiratory alone (no cardio/autonomic) does not trigger the rule alert', () {
-    final fusion = FusionEngine(thresholds: _load());
-    late FusionResult result;
-    for (var i = 0; i < 20; i++) {
-      result = fusion.evaluate(
-        flags: [
-          _flag(BodySystem.respiratory, true),
-          _flag(BodySystem.cardiovascular, false),
-          _flag(BodySystem.autonomic, false),
-        ],
-        fingerPresent: true,
-        scanEndedByUser: false,
-        inCooldown: false,
-        nowS: i.toDouble(),
-        nowMs: i * 1000,
-      );
-    }
-    expect(result.ruleAlert, isFalse);
-  });
+  test(
+    'respiratory alone (no cardio/autonomic) does not trigger the rule alert',
+    () {
+      final fusion = FusionEngine(thresholds: _load());
+      late FusionResult result;
+      for (var i = 0; i < 20; i++) {
+        result = fusion.evaluate(
+          flags: [
+            _flag(BodySystem.respiratory, true),
+            _flag(BodySystem.cardiovascular, false),
+            _flag(BodySystem.autonomic, false),
+          ],
+          fingerPresent: true,
+          scanEndedByUser: false,
+          inCooldown: false,
+          nowS: i.toDouble(),
+          nowMs: i * 1000,
+        );
+      }
+      expect(result.ruleAlert, isFalse);
+    },
+  );
 
   test('watchdog fires after finger loss persists for > watchdog_finger_lost_s '
       'following a recent deviation', () {

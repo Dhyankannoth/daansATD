@@ -9,7 +9,9 @@ void main() {
     const trueHz = 0.25; // 15 bpm
     final n = (fs * 60).round(); // 60 s
     final x = List<double>.generate(
-        n, (i) => math.sin(2 * math.pi * trueHz * i / fs));
+      n,
+      (i) => math.sin(2 * math.pi * trueHz * i / fs),
+    );
     final result = dominantRate(x, fs, [0.1, 0.6], 0.005, minSamples: 32);
     expect(result, isNotNull);
     expect(result!.freqHz, closeTo(trueHz, 0.01));

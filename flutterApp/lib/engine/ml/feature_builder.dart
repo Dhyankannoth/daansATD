@@ -39,7 +39,8 @@ class FeatureBuilder {
     _qualityHistory.add(_QualityTick(nowS, overallTrusted));
     _qualityHistory.removeWhere((t) => t.t < nowS - thresholds.ml.rowWindowS);
 
-    FeatureRow invalid() => FeatureRow(timestamp: nowMs, values: const [], valid: false);
+    FeatureRow invalid() =>
+        FeatureRow(timestamp: nowMs, values: const [], valid: false);
 
     if (baseline == null) return invalid();
 
@@ -55,7 +56,8 @@ class FeatureBuilder {
     final hrSlope = trends.slopePerMin('hr');
     final hrvSlope = trends.slopePerMin('hrv');
     final rrSlope = trends.slopePerMin('rr');
-    if (hrSlope == null || hrvSlope == null || rrSlope == null) return invalid();
+    if (hrSlope == null || hrvSlope == null || rrSlope == null)
+      return invalid();
 
     final hrStd = trends.std('hr');
     final hrvStd = trends.std('hrv');
@@ -85,7 +87,8 @@ class FeatureBuilder {
       (rr - muRr) / muRr, // 11 rr_pct
       activity == ActivityStateKind.resting ? 1.0 : 0.0, // 12 is_resting
       activity == ActivityStateKind.recovering ? 1.0 : 0.0, // 13 is_recovering
-      (activity == ActivityStateKind.unknown || activity == ActivityStateKind.exercising)
+      (activity == ActivityStateKind.unknown ||
+              activity == ActivityStateKind.exercising)
           ? 1.0
           : 0.0, // 14 is_unknown
       sinceExercise.toDouble(), // 15 since_exercise

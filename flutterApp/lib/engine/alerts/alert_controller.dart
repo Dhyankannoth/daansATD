@@ -11,10 +11,8 @@ enum AlertControllerState { none, checkIn, escalated, cooldown }
 /// `none -> checkIn -> (userOk | escalated -> cancelled) -> cooldown -> none`.
 /// Escalation is always simulated: no SMS/calls are ever sent.
 class AlertController {
-  AlertController({
-    required this.thresholds,
-    AlertEffects? effects,
-  }) : effects = effects ?? DefaultAlertEffects();
+  AlertController({required this.thresholds, AlertEffects? effects})
+    : effects = effects ?? DefaultAlertEffects();
 
   final Thresholds thresholds;
   final AlertEffects effects;
@@ -34,7 +32,8 @@ class AlertController {
   /// Seconds remaining in the open check-in countdown, or null if none is
   /// open. Recomputed on demand (not just at [tick] time) for snapshot reads.
   int? checkInRemainingSeconds(int nowMs) {
-    if (_state != AlertControllerState.checkIn || _checkInDeadlineMs == null) return null;
+    if (_state != AlertControllerState.checkIn || _checkInDeadlineMs == null)
+      return null;
     return ((_checkInDeadlineMs! - nowMs) / 1000).ceil();
   }
 
@@ -76,7 +75,8 @@ class AlertController {
 
   void _openCheckIn(int nowMs, EscalationPayload payload) {
     _state = AlertControllerState.checkIn;
-    _checkInDeadlineMs = nowMs + (thresholds.alerts.checkinTimeoutS * 1000).round();
+    _checkInDeadlineMs =
+        nowMs + (thresholds.alerts.checkinTimeoutS * 1000).round();
     _activePayload = payload;
     effects.onCheckInOpened();
     effects.enableWakelock();
@@ -93,7 +93,9 @@ class AlertController {
   void respondCheckIn({required bool ok, required int nowMs}) {
     if (_state != AlertControllerState.checkIn) return;
     if (ok) {
-      _activePayload = _activePayload?.copyWith(status: EscalationStatus.userOk);
+      _activePayload = _activePayload?.copyWith(
+        status: EscalationStatus.userOk,
+      );
       _emit(AlertEventKind.resolved, nowMs, payload: _activePayload);
       _startCooldown(nowMs);
     } else {
@@ -103,17 +105,22 @@ class AlertController {
 
   void _escalate(int nowMs) {
     _state = AlertControllerState.escalated;
-    _activePayload = _activePayload?.copyWith(status: EscalationStatus.escalated);
+    _activePayload = _activePayload?.copyWith(
+      status: EscalationStatus.escalated,
+    );
     effects.onEscalated();
     _emit(AlertEventKind.escalated, nowMs, payload: _activePayload);
   }
 
   /// Cancels an open check-in or an already-escalated alert; starts cooldown.
   void cancelEscalation(int nowMs) {
-    if (_state != AlertControllerState.checkIn && _state != AlertControllerState.escalated) {
+    if (_state != AlertControllerState.checkIn &&
+        _state != AlertControllerState.escalated) {
       return;
     }
-    _activePayload = _activePayload?.copyWith(status: EscalationStatus.cancelled);
+    _activePayload = _activePayload?.copyWith(
+      status: EscalationStatus.cancelled,
+    );
     _emit(AlertEventKind.resolved, nowMs, payload: _activePayload);
     _startCooldown(nowMs);
   }
@@ -143,12 +150,19 @@ class AlertController {
     }
   }
 
-  void _emit(AlertEventKind kind, int nowMs, {int? remainingSeconds, EscalationPayload? payload}) {
-    _eventsController.add(AlertEvent(
-      kind: kind,
-      timestamp: nowMs,
-      remainingSeconds: remainingSeconds,
-      payload: payload,
-    ));
+  void _emit(
+    AlertEventKind kind,
+    int nowMs, {
+    int? remainingSeconds,
+    EscalationPayload? payload,
+  }) {
+    _eventsController.add(
+      AlertEvent(
+        kind: kind,
+        timestamp: nowMs,
+        remainingSeconds: remainingSeconds,
+        payload: payload,
+      ),
+    );
   }
 }

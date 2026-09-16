@@ -7,7 +7,8 @@
 class EngineStrings {
   // Placement hints (frame_validator.dart)
   static const placementOk = 'Hold still — measuring';
-  static const placementNoFinger = 'Place your fingertip over the camera and flash';
+  static const placementNoFinger =
+      'Place your fingertip over the camera and flash';
   static const placementCoverLens = 'Cover the camera lens completely';
   static const placementCoverFlash = 'Cover the flash too';
   static const placementPressLighter = 'Press more lightly';
@@ -17,7 +18,8 @@ class EngineStrings {
   static const statusNormal = 'All systems normal';
   static const statusRecovering = 'Recovering from exercise — tracking';
   static const statusMonitoringUnusual = 'Monitoring — unusual pattern';
-  static const statusElevated = 'Unusual for you — stop activity and stay still';
+  static const statusElevated =
+      'Unusual for you — stop activity and stay still';
   static const statusHigh = 'Checking on you';
   static const statusCritical = 'Contact notified (simulated)';
 
@@ -32,7 +34,8 @@ class EngineStrings {
 
   // Deviation reasons (deviation_engine.dart)
   static const noBaselineYet = 'No baseline yet';
-  static String noTrustedTick(String metricName) => 'No trusted $metricName this tick';
+  static String noTrustedTick(String metricName) =>
+      'No trusted $metricName this tick';
 
   // Calibration failure reasons (baseline_service.dart)
   static const calibrationFailHr =

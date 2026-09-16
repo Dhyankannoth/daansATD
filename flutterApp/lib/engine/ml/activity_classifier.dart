@@ -27,6 +27,9 @@ class ActivityClassifier {
       if (counts[i] > counts[bestIdx]) bestIdx = i;
     }
     final confidence = counts[bestIdx] / model.trees.length;
-    return MotionClassResult(className: model.classes[bestIdx], confidence: confidence);
+    return MotionClassResult(
+      className: model.classes[bestIdx],
+      confidence: confidence,
+    );
   }
 }

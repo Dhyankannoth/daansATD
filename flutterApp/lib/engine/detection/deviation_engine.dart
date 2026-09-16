@@ -130,7 +130,10 @@ class DeviationEngine {
       );
     }
 
-    final severity = (z.abs() / thresholds.deviation.severityScale).clamp(0.0, 1.0);
+    final severity = (z.abs() / thresholds.deviation.severityScale).clamp(
+      0.0,
+      1.0,
+    );
     final deviatingRaw = deviatingTest(z);
 
     var deviating = deviatingRaw;
@@ -144,7 +147,9 @@ class DeviationEngine {
       }
     }
 
-    final pct = ((value - metricBaseline.mean).abs() / metricBaseline.mean * 100).round();
+    final pct =
+        ((value - metricBaseline.mean).abs() / metricBaseline.mean * 100)
+            .round();
     final direction = aboveBaseline ? 'above' : 'below';
     final String reason;
     if (recoveringSuppressed) {

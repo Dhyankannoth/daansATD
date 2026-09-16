@@ -97,15 +97,15 @@ class VitalsReading {
   }
 
   Map<String, dynamic> toJson() => {
-        'timestamp': timestamp,
-        'hr': hr,
-        'hrv': hrv,
-        'rr': rr,
-        'spo2': spo2,
-        'ox_trend': oxTrend,
-        'quality': quality,
-        'rr_quality': rrQuality,
-        'finger_present': fingerPresent,
-        'source': source.toJson(),
-      };
+    'timestamp': timestamp,
+    'hr': hr,
+    'hrv': hrv,
+    'rr': rr,
+    'spo2': spo2,
+    'ox_trend': oxTrend,
+    'quality': quality,
+    'rr_quality': rrQuality,
+    'finger_present': fingerPresent,
+    'source': source.toJson(),
+  };
 }

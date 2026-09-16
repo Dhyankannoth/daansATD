@@ -140,7 +140,11 @@ void main() {
   });
 
   test('FeatureRow round-trips', () {
-    final row = FeatureRow(timestamp: 3, values: List.filled(16, 0.5), valid: true);
+    final row = FeatureRow(
+      timestamp: 3,
+      values: List.filled(16, 0.5),
+      valid: true,
+    );
     final back = FeatureRow.fromJson(row.toJson());
     expect(back.values.length, 16);
     expect(back.valid, true);

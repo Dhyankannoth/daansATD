@@ -3,7 +3,11 @@ import 'dart:math' as math;
 import 'stats.dart' show mean;
 
 class DominantRateResult {
-  const DominantRateResult({required this.freqHz, required this.bpm, required this.prominence});
+  const DominantRateResult({
+    required this.freqHz,
+    required this.bpm,
+    required this.prominence,
+  });
   final double freqHz;
   final double bpm;
   final double prominence;
@@ -30,7 +34,9 @@ List<double> _linearDetrend(List<double> x) {
 List<double> _hann(int n) {
   if (n == 1) return [1.0];
   return List<double>.generate(
-      n, (i) => 0.5 - 0.5 * math.cos(2 * math.pi * i / (n - 1)));
+    n,
+    (i) => 0.5 - 0.5 * math.cos(2 * math.pi * i / (n - 1)),
+  );
 }
 
 /// Scans `band` (Hz, `[low, high]`) in steps of `step` Hz for the frequency
@@ -47,7 +53,9 @@ DominantRateResult? dominantRate(
   final detrended = _linearDetrend(x);
   final window = _hann(detrended.length);
   final windowed = List<double>.generate(
-      detrended.length, (i) => detrended[i] * window[i]);
+    detrended.length,
+    (i) => detrended[i] * window[i],
+  );
 
   final freqs = <double>[];
   for (var f = band[0]; f <= band[1] + 1e-9; f += step) {
@@ -76,5 +84,9 @@ DominantRateResult? dominantRate(
   final meanPower = mean(powers);
   final prominence = meanPower == 0 ? 0.0 : powers[bestIdx] / meanPower;
   final fStar = freqs[bestIdx];
-  return DominantRateResult(freqHz: fStar, bpm: 60 * fStar, prominence: prominence);
+  return DominantRateResult(
+    freqHz: fStar,
+    bpm: 60 * fStar,
+    prominence: prominence,
+  );
 }

@@ -19,8 +19,8 @@ class EmergencyContact {
   }
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'phone': phone,
-        'method': method,
-      };
+    'name': name,
+    'phone': phone,
+    'method': method,
+  };
 }

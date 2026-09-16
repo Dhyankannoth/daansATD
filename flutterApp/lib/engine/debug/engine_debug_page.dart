@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/theme/pulse_typography.dart';
 import '../pulseguard_engine.dart';
 import '../api/engine_snapshot.dart';
 
@@ -19,7 +20,6 @@ class EngineDebugPage extends StatefulWidget {
 class _EngineDebugPageState extends State<EngineDebugPage> {
   final _log = <String>[];
   bool _initialized = false;
-
   PulseGuardEngine get _engine => widget.engine;
 
   @override
@@ -32,7 +32,7 @@ class _EngineDebugPageState extends State<EngineDebugPage> {
     _engine.alerts.listen((e) => _appendLog('alert: ${e.kind.name}'));
     _engine.scanFinished.listen((s) => _appendLog('scanFinished: ${s.endReason.name}'));
     await _engine.initialize();
-    setState(() => _initialized = true);
+    if (mounted) setState(() => _initialized = true);
   }
 
   void _appendLog(String line) {
@@ -62,7 +62,10 @@ class _EngineDebugPageState extends State<EngineDebugPage> {
           flex: 3,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(12),
-            child: Text(_dump(snapshot), style: const TextStyle(fontFamily: 'monospace')),
+            child: Text(
+              _dump(snapshot),
+              style: PulseTypography.monoSmall,
+            ),
           ),
         ),
         const Divider(),
@@ -70,11 +73,24 @@ class _EngineDebugPageState extends State<EngineDebugPage> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            ElevatedButton(onPressed: () => _engine.startScan(), child: const Text('Start scan')),
-            ElevatedButton(onPressed: () async => _appendLog('summary: ${await _engine.endScan()}'), child: const Text('End scan')),
-            ElevatedButton(onPressed: () => _engine.startCalibration(), child: const Text('Calibrate')),
             ElevatedButton(
-              onPressed: () => _engine.startReplay('assets/traces/reaction.json', speed: 1.0),
+              onPressed: () => _engine.startScan(),
+              child: const Text('Start scan'),
+            ),
+            ElevatedButton(
+              onPressed: () async =>
+                  _appendLog('summary: ${await _engine.endScan()}'),
+              child: const Text('End scan'),
+            ),
+            ElevatedButton(
+              onPressed: () => _engine.startCalibration(),
+              child: const Text('Calibrate'),
+            ),
+            ElevatedButton(
+              onPressed: () => _engine.startReplay(
+                'assets/traces/reaction.json',
+                speed: 1.0,
+              ),
               child: const Text('Replay reaction'),
             ),
             ElevatedButton(
@@ -92,7 +108,9 @@ class _EngineDebugPageState extends State<EngineDebugPage> {
           flex: 2,
           child: ListView(
             padding: const EdgeInsets.all(8),
-            children: _log.map((l) => Text(l, style: const TextStyle(fontSize: 12))).toList(),
+            children: _log
+                .map((l) => Text(l, style: const TextStyle(fontSize: 12)))
+                .toList(),
           ),
         ),
         if (_engine.cameraController != null)

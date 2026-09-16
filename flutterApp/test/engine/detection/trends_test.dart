@@ -12,7 +12,11 @@ void main() {
   });
 
   test('slopePerMin is null below trendMinPoints', () {
-    final trends = Trends(windowS: 60, trendMinPoints: 30, mlMetricMinPoints: 5);
+    final trends = Trends(
+      windowS: 60,
+      trendMinPoints: 30,
+      mlMetricMinPoints: 5,
+    );
     trends.record('hr', 0, 70, true);
     trends.record('hr', 1, 71, true);
     expect(trends.slopePerMin('hr'), isNull);

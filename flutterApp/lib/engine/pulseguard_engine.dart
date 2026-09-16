@@ -5,7 +5,8 @@ import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
+import 'package:path_provider/path_provider.dart'
+    show getApplicationDocumentsDirectory;
 
 import 'alerts/alert_controller.dart';
 import 'alerts/alert_effects.dart';
@@ -48,16 +49,17 @@ class PulseGuardEngine implements PulseGuardApi {
     AssetBundleLike? bundle,
     VitalsSource? cameraSource,
     AlertEffects? alertEffects,
-  })  : clock = clock ?? SystemClock(),
-        _bundle = bundle ?? _RootBundleAdapter(),
-        _cameraSourceOverride = cameraSource,
-        _alertEffects = alertEffects;
+  }) : clock = clock ?? SystemClock(),
+       _bundle = bundle ?? _RootBundleAdapter(),
+       _cameraSourceOverride = cameraSource,
+       _alertEffects = alertEffects;
 
   final Clock clock;
   final AssetBundleLike _bundle;
   final VitalsSource? _cameraSourceOverride;
   late final VitalsSource _cameraSource =
-      _cameraSourceOverride ?? CameraVitalsSource(thresholds: thresholds, clock: clock);
+      _cameraSourceOverride ??
+      CameraVitalsSource(thresholds: thresholds, clock: clock);
   final AlertEffects? _alertEffects;
 
   late Thresholds thresholds;
@@ -85,7 +87,9 @@ class PulseGuardEngine implements PulseGuardApi {
   Baseline? _replayBaselineOverride;
   EmergencyContact? _contact;
 
-  final _snapshotNotifier = ValueNotifier<EngineSnapshot>(const EngineSnapshot());
+  final _snapshotNotifier = ValueNotifier<EngineSnapshot>(
+    const EngineSnapshot(),
+  );
   final _vitalsCtrl = StreamController<VitalsReading>.broadcast();
   final _waveformCtrl = StreamController<WaveformSample>.broadcast();
   final _placementCtrl = StreamController<PlacementHint>.broadcast();
@@ -137,7 +141,10 @@ class PulseGuardEngine implements PulseGuardApi {
     _activityGate = ActivityGate(thresholds: thresholds);
     _riskEngine = RiskEngine(thresholds: thresholds);
     _featureBuilder = FeatureBuilder(thresholds: thresholds);
-    _alertController = AlertController(thresholds: thresholds, effects: _alertEffects);
+    _alertController = AlertController(
+      thresholds: thresholds,
+      effects: _alertEffects,
+    );
     _baselineService = BaselineService(thresholds: thresholds);
 
     await _tryLoadModels();
@@ -157,7 +164,10 @@ class PulseGuardEngine implements PulseGuardApi {
   Future<void> _tryLoadModels() async {
     try {
       final raw = await _bundle.loadString('assets/models/iforest.json');
-      final model = TreeModel.tryParse(raw, expectedFeatureSpecVersion: featureSpec.version);
+      final model = TreeModel.tryParse(
+        raw,
+        expectedFeatureSpecVersion: featureSpec.version,
+      );
       if (model != null) {
         _iforestModel = model;
         _iforest = IsolationForest(model);
@@ -165,12 +175,18 @@ class PulseGuardEngine implements PulseGuardApi {
     } catch (_) {}
     try {
       final raw = await _bundle.loadString('assets/models/risk_rf.json');
-      final model = TreeModel.tryParse(raw, expectedFeatureSpecVersion: featureSpec.version);
+      final model = TreeModel.tryParse(
+        raw,
+        expectedFeatureSpecVersion: featureSpec.version,
+      );
       if (model != null) _riskRf = RandomForest(model);
     } catch (_) {}
     try {
       final raw = await _bundle.loadString('assets/models/activity_tree.json');
-      final model = TreeModel.tryParse(raw, expectedFeatureSpecVersion: featureSpec.version);
+      final model = TreeModel.tryParse(
+        raw,
+        expectedFeatureSpecVersion: featureSpec.version,
+      );
       if (model != null) _activityClassifier = ActivityClassifier(model);
     } catch (_) {}
   }
@@ -215,6 +231,16 @@ class PulseGuardEngine implements PulseGuardApi {
   bool get hasBaseline => _baseline != null;
   @override
   Baseline? get baseline => _baseline;
+
+  @visibleForTesting
+  Future<void> setBaselineForTesting(Baseline baseline) async {
+    _baseline = baseline;
+    if (_store != null) {
+      await _store!.saveBaseline(baseline);
+    }
+    _updateSnapshot();
+  }
+
   @override
   Stream<CalibrationProgress> get calibration => _calibrationCtrl.stream;
 
@@ -317,7 +343,9 @@ class PulseGuardEngine implements PulseGuardApi {
     if (useDemoBaseline) {
       try {
         final raw = await _bundle.loadString('assets/demo/baseline.json');
-        _replayBaselineOverride = Baseline.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+        _replayBaselineOverride = Baseline.fromJson(
+          jsonDecode(raw) as Map<String, dynamic>,
+        );
       } catch (_) {}
     }
     final source = ReplayVitalsSource(clock: clock, bundle: _bundle);
@@ -421,7 +449,11 @@ class PulseGuardEngine implements PulseGuardApi {
   }
 
   void _subscribeTicks() {
-    _tickSub = _activeSource!.ticks.listen(_onTick, onDone: _onSourceDone, onError: (_) {});
+    _tickSub = _activeSource!.ticks.listen(
+      _onTick,
+      onDone: _onSourceDone,
+      onError: (_) {},
+    );
   }
 
   void _onSourceDone() {
@@ -438,8 +470,10 @@ class PulseGuardEngine implements PulseGuardApi {
 
     MotionClassResult? classifierResult;
     if (input.motionClassName != null) {
-      classifierResult =
-          MotionClassResult(className: input.motionClassName!, confidence: input.motionConfidence);
+      classifierResult = MotionClassResult(
+        className: input.motionClassName!,
+        confidence: input.motionConfidence,
+      );
     }
     final activityState = _activityGate.classify(
       motionStdShort: input.motionStdShort ?? 0,
@@ -452,11 +486,14 @@ class PulseGuardEngine implements PulseGuardApi {
       return;
     }
 
-    final baseline = _isReplay ? (_replayBaselineOverride ?? _baseline) : _baseline;
+    final baseline = _isReplay
+        ? (_replayBaselineOverride ?? _baseline)
+        : _baseline;
 
     final hrTrusted = input.vitals.quality >= thresholds.quality.trusted;
     final rrTrusted =
-        math.min(input.vitals.quality, input.vitals.rrQuality) >= thresholds.quality.trusted;
+        math.min(input.vitals.quality, input.vitals.rrQuality) >=
+        thresholds.quality.trusted;
     _trends.record('hr', t, input.vitals.hr, hrTrusted);
     _trends.record('hrv', t, input.vitals.hrv, hrTrusted);
     _trends.record('rr', t, input.vitals.rr, rrTrusted);
@@ -493,7 +530,8 @@ class PulseGuardEngine implements PulseGuardApi {
     double? riskProb;
     if (featureRow.valid) {
       if (_iforest != null) anomalyScore = _iforest!.score(featureRow.values);
-      if (_riskRf != null) riskProb = _riskRf!.riskProbability(featureRow.values);
+      if (_riskRf != null)
+        riskProb = _riskRf!.riskProbability(featureRow.values);
     }
 
     final riskAssessment = _riskEngine.evaluate(
@@ -507,7 +545,9 @@ class PulseGuardEngine implements PulseGuardApi {
       anomalyThreshold: _iforestModel?.scoreThreshold,
     );
 
-    _maxLevel = _maxLevel.index >= riskAssessment.level.index ? _maxLevel : riskAssessment.level;
+    _maxLevel = _maxLevel.index >= riskAssessment.level.index
+        ? _maxLevel
+        : riskAssessment.level;
 
     _alertController.tick(
       level: riskAssessment.level,
@@ -523,10 +563,14 @@ class PulseGuardEngine implements PulseGuardApi {
     _totalTicks++;
     if (activityState.state == ActivityStateKind.resting) _restingTicks++;
     if (hrTrusted && input.vitals.hr != null) _hrTrusted.add(input.vitals.hr!);
-    if (hrTrusted && input.vitals.hrv != null) _hrvTrusted.add(input.vitals.hrv!);
+    if (hrTrusted && input.vitals.hrv != null)
+      _hrvTrusted.add(input.vitals.hrv!);
     if (rrTrusted && input.vitals.rr != null) _rrTrusted.add(input.vitals.rr!);
 
-    if (_recording && !_isReplay && _recordWriter != null && _recordWriter!.isRecording) {
+    if (_recording &&
+        !_isReplay &&
+        _recordWriter != null &&
+        _recordWriter!.isRecording) {
       _recordWriter!.writeTick(
         vitals: input.vitals,
         activity: activityState,
@@ -544,6 +588,9 @@ class PulseGuardEngine implements PulseGuardApi {
       phase: _phase,
       elapsed: Duration(milliseconds: (t * 1000).round()),
       latestVitals: input.vitals,
+      placementHint: input.vitals.fingerPresent
+          ? PlacementHint.ok
+          : PlacementHint.noFinger,
       activity: activityState,
       risk: riskAssessment,
       alertState: _mapAlertState(_alertController.state),
@@ -560,7 +607,8 @@ class PulseGuardEngine implements PulseGuardApi {
       recording: _recording,
     );
 
-    final checkInOpen = _alertController.state == AlertControllerState.checkIn ||
+    final checkInOpen =
+        _alertController.state == AlertControllerState.checkIn ||
         _alertController.state == AlertControllerState.escalated;
 
     if (!_isReplay && !checkInOpen) {
@@ -573,7 +621,8 @@ class PulseGuardEngine implements PulseGuardApi {
       } else {
         _noSignalSinceS = null;
       }
-      if (_noSignalSinceS != null && (t - _noSignalSinceS!) >= thresholds.scan.noSignalEndS) {
+      if (_noSignalSinceS != null &&
+          (t - _noSignalSinceS!) >= thresholds.scan.noSignalEndS) {
         unawaited(_finishScan(ScanEndReason.noSignal));
       }
     }
@@ -582,7 +631,8 @@ class PulseGuardEngine implements PulseGuardApi {
   void _handleCalibrationTick(VitalsReading reading, int nowMs, double t) {
     final trusted = reading.quality >= thresholds.quality.trusted;
     final rrTrusted =
-        math.min(reading.quality, reading.rrQuality) >= thresholds.quality.trusted;
+        math.min(reading.quality, reading.rrQuality) >=
+        thresholds.quality.trusted;
     if (trusted && reading.hr != null) _calHr.add(reading.hr!);
     if (trusted && reading.hrv != null) _calHrv.add(reading.hrv!);
     if (rrTrusted && reading.rr != null) _calRr.add(reading.rr!);
@@ -601,6 +651,10 @@ class PulseGuardEngine implements PulseGuardApi {
       elapsed: progress.elapsed,
       remaining: progress.total - progress.elapsed,
       remainingIsSet: true,
+      latestVitals: reading,
+      placementHint: reading.fingerPresent
+          ? PlacementHint.ok
+          : PlacementHint.noFinger,
     );
 
     if (t >= totalS) {
@@ -673,10 +727,13 @@ class PulseGuardEngine implements PulseGuardApi {
       escalationPayload: _alertController.activePayload,
     );
 
-    if (!_isReplay && (reason == ScanEndReason.user || reason == ScanEndReason.timeout)) {
+    if (!_isReplay &&
+        (reason == ScanEndReason.user || reason == ScanEndReason.timeout)) {
       final b = _baseline;
       if (b != null) {
-        final restingFraction = _totalTicks == 0 ? 0.0 : _restingTicks / _totalTicks;
+        final restingFraction = _totalTicks == 0
+            ? 0.0
+            : _restingTicks / _totalTicks;
         final updated = _baselineService.adaptiveUpdate(
           current: b,
           hrMedian: summary.medianHr ?? b.hr.mean,
@@ -720,15 +777,22 @@ class PulseGuardEngine implements PulseGuardApi {
   }) {
     final triggerType = fusion.watchdogAlert
         ? EscalationTriggerType.signalLoss
-        : (fusion.ruleAlert ? EscalationTriggerType.multiSystem : EscalationTriggerType.mlSupported);
+        : (fusion.ruleAlert
+              ? EscalationTriggerType.multiSystem
+              : EscalationTriggerType.mlSupported);
     return EscalationPayload(
       triggeredAt: nowMs,
       triggerType: triggerType,
       systems: fusion.persistentSystems,
-      reasons: [for (final f in flags) if (f.trusted && f.deviating && f.reason.isNotEmpty) f.reason],
+      reasons: [
+        for (final f in flags)
+          if (f.trusted && f.deviating && f.reason.isNotEmpty) f.reason,
+      ],
       vitalsSnapshot: reading,
       timeoutSeconds: thresholds.alerts.checkinTimeoutS.round(),
-      contact: _contact ?? const EmergencyContact(name: EngineStrings.contactNotSet, phone: ''),
+      contact:
+          _contact ??
+          const EmergencyContact(name: EngineStrings.contactNotSet, phone: ''),
       status: EscalationStatus.pending,
     );
   }
@@ -745,11 +809,11 @@ class PulseGuardEngine implements PulseGuardApi {
   }
 
   AlertSnapshotState _mapAlertState(AlertControllerState s) => switch (s) {
-        AlertControllerState.none => AlertSnapshotState.none,
-        AlertControllerState.checkIn => AlertSnapshotState.checkIn,
-        AlertControllerState.escalated => AlertSnapshotState.escalated,
-        AlertControllerState.cooldown => AlertSnapshotState.cooldown,
-      };
+    AlertControllerState.none => AlertSnapshotState.none,
+    AlertControllerState.checkIn => AlertSnapshotState.checkIn,
+    AlertControllerState.escalated => AlertSnapshotState.escalated,
+    AlertControllerState.cooldown => AlertSnapshotState.cooldown,
+  };
 
   void _updateSnapshot() {
     _snapshotNotifier.value = _snapshotNotifier.value.copyWith(
