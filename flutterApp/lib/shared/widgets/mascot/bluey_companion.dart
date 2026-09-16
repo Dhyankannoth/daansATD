@@ -13,6 +13,7 @@ enum BlueyPose {
   excited,
   attentive,
   empty,
+  resting,
 }
 
 extension BlueyPoseAsset on BlueyPose {
@@ -25,6 +26,7 @@ extension BlueyPoseAsset on BlueyPose {
         BlueyPose.excited => 'assets/mascot/bluey_excited.png',
         BlueyPose.attentive => 'assets/mascot/bluey_error.png',
         BlueyPose.empty => 'assets/mascot/bluey_emptyState.png',
+        BlueyPose.resting => 'assets/mascot/bluey_sleepy.png',
       };
 }
 

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/pulse_colors.dart';
 import '../../core/theme/pulse_typography.dart';
+import '../../engine/core/models/deviation_flag.dart';
 import '../../engine/core/models/emergency_contact.dart';
+import '../../engine/core/models/escalation_payload.dart';
+import '../../engine/core/models/vitals_reading.dart';
 import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/primary_button.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/mascot/bluey_companion.dart';
+import 'escalation_screen.dart';
 
 /// Screen K: Emergency Contacts Screen.
 class EmergencyContactsScreen extends StatefulWidget {
@@ -72,59 +76,41 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
   }
 
   void _simulateAlertPayload() {
+    final engine = PulseEngineScope.engineOf(context);
     final name = _nameController.text.trim().isEmpty
-        ? 'Alex Morgan'
+        ? (engine.contact?.name ?? 'Sarah Jenkins')
         : _nameController.text.trim();
     final phone = _phoneController.text.trim().isEmpty
-        ? '+1 (555) 0199'
+        ? (engine.contact?.phone ?? '+1 (555) 0199')
         : _phoneController.text.trim();
 
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Simulated Emergency Payload'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'During an actual escalation, the application prepares this simulated emergency notification payload:',
-              style: PulseTypography.bodyRegular.copyWith(fontSize: 13),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EscalationScreen(
+          payload: EscalationPayload(
+            triggeredAt: DateTime.now().millisecondsSinceEpoch,
+            triggerType: EscalationTriggerType.multiSystem,
+            systems: const [BodySystem.cardiovascular, BodySystem.respiratory],
+            reasons: const [
+              'Simulated multi-system deviation: Elevated HR (+42 BPM) and tachypnea',
+            ],
+            vitalsSnapshot: const VitalsReading(
+              timestamp: 1000000,
+              hr: 128,
+              hrv: 18,
+              rr: 26,
+              spo2: 96,
+              oxTrend: null,
+              quality: 1.0,
+              rrQuality: 1.0,
+              fingerPresent: true,
+              source: VitalsReadingSource.camera,
             ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: PulseColors.surfaceDim,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: PulseColors.divider),
-              ),
-              child: Text(
-                'EMERGENCY ALERT (SIMULATED)\n'
-                'Target: $name ($phone)\n'
-                'Method: Simulated local dispatch\n'
-                'Timestamp: ${DateTime.now().toIso8601String()}\n'
-                'Reason: Multi-system vital deviation\n'
-                'Vitals: HR 128 BPM (+42 BPM), RR 26 BrPM, HRV 18 ms\n'
-                'Status: Unresponsive to 30s check-in',
-                style: PulseTypography.monoSmall,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Notice: As specified in ENGINE_API.md, PulseGuard never transmits unauthorized cellular SMS or makes unprompted network calls.',
-              style: PulseTypography.caption.copyWith(
-                color: PulseColors.textTertiary,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Close Preview'),
+            contact: EmergencyContact(name: name, phone: phone),
+            status: EscalationStatus.pending,
           ),
-        ],
+          initialState: EmergencyVisualState.alert,
+        ),
       ),
     );
   }

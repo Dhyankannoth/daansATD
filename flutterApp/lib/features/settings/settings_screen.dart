@@ -3,10 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/pulse_constants.dart';
 import '../../core/theme/pulse_colors.dart';
 import '../../core/theme/pulse_typography.dart';
+import '../../engine/core/models/deviation_flag.dart';
+import '../../engine/core/models/emergency_contact.dart';
+import '../../engine/core/models/escalation_payload.dart';
+import '../../engine/core/models/vitals_reading.dart';
 import '../../services/pulse_engine_scope.dart';
 import '../../shared/widgets/buttons/secondary_button.dart';
 import '../../shared/widgets/indicators/pulse_info_icon.dart';
 import '../emergency/emergency_contacts_screen.dart';
+import '../emergency/escalation_screen.dart';
 import '../measurement/camera_measurement_screen.dart';
 import '../onboarding/onboarding_flow_screen.dart';
 
@@ -81,7 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Row(
                   children: [
                     Image.asset(
-                      'assets/mascot/bluey_welcome.png',
+                      'assets/mascot/bluey_happy.png',
                       height: 52,
                       fit: BoxFit.contain,
                     ),
@@ -173,6 +178,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   '30 seconds (Apple/Garmin incident protocol)',
                   style: PulseTypography.caption,
                 ),
+              ),
+              const SizedBox(height: 8),
+
+              ListTile(
+                tileColor: PulseColors.riskCriticalBg,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  side: BorderSide(
+                    color: PulseColors.emergencyRed.withValues(alpha: 0.35),
+                    width: 1.2,
+                  ),
+                ),
+                leading: const Icon(
+                  Icons.notifications_active_rounded,
+                  color: PulseColors.emergencyRed,
+                ),
+                title: Text(
+                  'Test Emergency Alert (Simulation)',
+                  style: PulseTypography.bodyMedium.copyWith(
+                    color: PulseColors.emergencyRed,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                subtitle: const Text(
+                  'Test live early-warning card, alarm & check-in flow',
+                  style: PulseTypography.caption,
+                ),
+                trailing: const Icon(
+                  Icons.play_arrow_rounded,
+                  color: PulseColors.emergencyRed,
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EscalationScreen(
+                        payload: EscalationPayload(
+                          triggeredAt: DateTime.now().millisecondsSinceEpoch,
+                          triggerType: EscalationTriggerType.multiSystem,
+                          systems: const [
+                            BodySystem.cardiovascular,
+                            BodySystem.respiratory,
+                          ],
+                          reasons: const [
+                            'Simulated multi-system deviation: Elevated HR (+42 BPM) and tachypnea',
+                          ],
+                          vitalsSnapshot: const VitalsReading(
+                            timestamp: 1000000,
+                            hr: 128,
+                            hrv: 18,
+                            rr: 26,
+                            spo2: 96,
+                            oxTrend: null,
+                            quality: 1.0,
+                            rrQuality: 1.0,
+                            fingerPresent: true,
+                            source: VitalsReadingSource.camera,
+                          ),
+                          contact: engine.contact ??
+                              const EmergencyContact(
+                                name: 'Sarah Jenkins',
+                                phone: '+1 (555) 0199',
+                              ),
+                          status: EscalationStatus.pending,
+                        ),
+                        initialState: EmergencyVisualState.alert,
+                      ),
+                    ),
+                  );
+                },
               ),
 
               const SizedBox(height: 24),

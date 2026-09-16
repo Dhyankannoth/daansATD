@@ -142,6 +142,57 @@ void main() {
       expect(find.text('Allow & Continue'), findsOneWidget);
     });
 
+    testWidgets('Screen 4 (Emergency Contact) relationship dropdown and number verification work', (tester) async {
+      setupMobileViewport(tester);
+      await tester.pumpWidget(createTestApp());
+      await stepPump(tester);
+
+      // Navigate to Screen 4
+      await tapButton(tester, find.text('Get Started'));
+      await tapButton(tester, find.text('Continue'));
+      await tapButton(tester, find.text('Continue'));
+
+      expect(find.text('Who should I contact if you need help?'), findsOneWidget);
+      expect(find.text('Partner'), findsOneWidget);
+
+      // Open Relationship Dropdown and select 'Parent'
+      await tester.tap(find.text('Partner'));
+      await tester.pumpAndSettle();
+      expect(find.text('Parent').last, findsOneWidget);
+      await tester.tap(find.text('Parent').last);
+      await tester.pumpAndSettle();
+
+      // Open Phone Number Verification Sheet
+      expect(find.text('Verify Number'), findsOneWidget);
+      await tester.tap(find.text('Verify Number'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Verify Contact Number'), findsOneWidget);
+      expect(find.text('Send Verification Code'), findsOneWidget);
+
+      // Send Verification Code
+      await tester.tap(find.text('Send Verification Code'));
+      await tester.pump(const Duration(milliseconds: 700));
+      await tester.pumpAndSettle();
+
+      // Auto-fill Test Code
+      expect(find.text('Auto-fill Test Code (4826)'), findsOneWidget);
+      await tester.tap(find.text('Auto-fill Test Code (4826)'));
+      await tester.pumpAndSettle();
+
+      // Confirm & Verify
+      await tester.tap(find.text('Confirm & Verify'));
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pumpAndSettle();
+
+      // Verified badge should now be visible
+      expect(find.text('Verified'), findsOneWidget);
+
+      // Tap Continue to advance to Screen 5
+      await tapButton(tester, find.text('Continue'));
+      expect(find.text('A few permissions are needed.'), findsOneWidget);
+    });
+
     testWidgets('Screen 6 (Camera Tutorial) "Measure" button navigates to Screen 7 (Establish Baseline)', (tester) async {
       setupMobileViewport(tester);
       await tester.pumpWidget(createTestApp());

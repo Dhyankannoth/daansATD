@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/pulse_colors.dart';
 import '../../../core/theme/pulse_typography.dart';
+import '../indicators/pulse_info_icon.dart';
 
 /// Cal AI-style activity and intensity context selector with sleek pill chips.
 class ActivityIntensitySelector extends StatelessWidget {
@@ -15,6 +16,10 @@ class ActivityIntensitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final infoMessage = isPostExercise
+        ? 'Recovery hysteresis active — elevated heart rate with falling slope is recognized as normal post-workout cooldown.'
+        : 'Resting state — vitals are strictly evaluated against your learned normal baseline distribution (mean ± 2 SD).';
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18.0),
@@ -43,6 +48,11 @@ class ActivityIntensitySelector extends StatelessWidget {
                   color: PulseColors.textPrimary,
                 ),
               ),
+              const SizedBox(width: 6),
+              PulseInfoIcon(
+                message: infoMessage,
+                title: isPostExercise ? 'Post-Exercise Mode' : 'Resting Baseline Mode',
+              ),
             ],
           ),
           const SizedBox(height: 14),
@@ -70,44 +80,6 @@ class ActivityIntensitySelector extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-
-          const SizedBox(height: 12),
-
-          // Informative Context Box
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: PulseColors.surfaceDim,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  isPostExercise
-                      ? Icons.info_outline_rounded
-                      : Icons.verified_user_outlined,
-                  size: 16,
-                  color: isPostExercise
-                      ? PulseColors.riskElevated
-                      : PulseColors.riskNormal,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    isPostExercise
-                        ? 'Recovery hysteresis active — elevated heart rate with falling slope is recognized as normal post-workout cooldown.'
-                        : 'Resting state — vitals are strictly evaluated against your learned normal baseline distribution (mean ± 2 SD).',
-                    style: PulseTypography.caption.copyWith(
-                      fontSize: 12,
-                      color: PulseColors.textSecondary,
-                      height: 1.35,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),

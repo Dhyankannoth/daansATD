@@ -111,5 +111,137 @@ void main() {
       // Verify Cancel / Safe button
       expect(find.text('I Am Safe — Cancel Alert'), findsOneWidget);
     });
+
+    testWidgets('EscalationScreen in alert state transitions to State 2 (User Okay) on YES tap', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final historyRepo = HistoryRepository(prefs: prefs);
+      final engine = PulseGuardEngine();
+
+      final payload = EscalationPayload(
+        triggeredAt: DateTime.now().millisecondsSinceEpoch,
+        triggerType: EscalationTriggerType.multiSystem,
+        systems: const [BodySystem.cardiovascular, BodySystem.respiratory],
+        reasons: const ['Persistent elevated heart rate and tachypnea'],
+        vitalsSnapshot: const VitalsReading(
+          timestamp: 1000000,
+          hr: 134,
+          hrv: 16,
+          rr: 28,
+          spo2: null,
+          oxTrend: null,
+          quality: 1.0,
+          rrQuality: 1.0,
+          fingerPresent: true,
+          source: VitalsReadingSource.camera,
+        ),
+        contact: const EmergencyContact(name: 'Sarah Jenkins', phone: '+1-555-0199'),
+        status: EscalationStatus.pending,
+      );
+
+      await tester.pumpWidget(
+        PulseEngineScope(
+          engine: engine,
+          historyRepository: historyRepo,
+          child: MaterialApp(
+            theme: PulseTheme.lightTheme,
+            home: EscalationScreen(
+              payload: payload,
+              initialState: EmergencyVisualState.alert,
+            ),
+          ),
+        ),
+      );
+
+      // State 1: Alert
+      expect(find.text(PulseConstants.checkInPromptTitle), findsOneWidget); // "Something has changed"
+      expect(find.text(PulseConstants.checkInQuestion), findsOneWidget); // "Are you feeling okay?"
+      expect(find.text("YES, I'M OKAY"), findsOneWidget);
+      expect(find.text("NO, I NEED HELP"), findsOneWidget);
+
+      // Tap "YES, I'M OKAY" -> transitions to State 2 (User Okay)
+      await tester.tap(find.text("YES, I'M OKAY"));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Thanks for checking in.'), findsOneWidget);
+      expect(find.text('WHAT WE NOTICED'), findsOneWidget);
+      expect(find.text('What this means'), findsOneWidget);
+      expect(find.text('What should I do?'), findsOneWidget);
+      expect(find.text('Return to Monitoring'), findsOneWidget);
+    });
+
+    testWidgets('EscalationScreen in alert state transitions to State 3 (Need Help) on NO tap', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final historyRepo = HistoryRepository(prefs: prefs);
+      final engine = PulseGuardEngine();
+
+      final payload = EscalationPayload(
+        triggeredAt: DateTime.now().millisecondsSinceEpoch,
+        triggerType: EscalationTriggerType.multiSystem,
+        systems: const [BodySystem.cardiovascular, BodySystem.respiratory],
+        reasons: const ['Persistent elevated heart rate and tachypnea'],
+        vitalsSnapshot: const VitalsReading(
+          timestamp: 1000000,
+          hr: 134,
+          hrv: 16,
+          rr: 28,
+          spo2: null,
+          oxTrend: null,
+          quality: 1.0,
+          rrQuality: 1.0,
+          fingerPresent: true,
+          source: VitalsReadingSource.camera,
+        ),
+        contact: const EmergencyContact(name: 'Sarah Jenkins', phone: '+1-555-0199'),
+        status: EscalationStatus.pending,
+      );
+
+      await tester.pumpWidget(
+        PulseEngineScope(
+          engine: engine,
+          historyRepository: historyRepo,
+          child: MaterialApp(
+            theme: PulseTheme.lightTheme,
+            home: EscalationScreen(
+              payload: payload,
+              initialState: EmergencyVisualState.alert,
+            ),
+          ),
+        ),
+      );
+
+      // Tap "NO, I NEED HELP" -> transitions to State 3 (Need Help)
+      await tester.tap(find.text("NO, I NEED HELP"));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text(PulseConstants.escalationHeadline), findsOneWidget);
+      expect(find.text('CALL EMERGENCY (911 / 112)'), findsOneWidget);
+      expect(find.text('NOTIFY SARAH JENKINS'), findsOneWidget);
+    });
+
+    testWidgets('EscalationScreen renders State 4 (Unresponsive) when timeout occurs', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final historyRepo = HistoryRepository(prefs: prefs);
+      final engine = PulseGuardEngine();
+
+      await tester.pumpWidget(
+        PulseEngineScope(
+          engine: engine,
+          historyRepository: historyRepo,
+          child: const MaterialApp(
+            home: EscalationScreen(
+              initialState: EmergencyVisualState.unresponsive,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text("Please check how you're feeling."), findsOneWidget);
+      expect(find.text('CALL EMERGENCY (911 / 112)'), findsOneWidget);
+      expect(find.text("YES, I'M OKAY"), findsOneWidget);
+    });
   });
 }
