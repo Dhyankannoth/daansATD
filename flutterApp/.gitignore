@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Generated ML-3 training data (real or synthetic) — never commit recordings
+/recordings/
+/recordings_synthetic/
