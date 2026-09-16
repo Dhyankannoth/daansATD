@@ -188,6 +188,9 @@ void main() {
       // Verified badge should now be visible
       expect(find.text('Verified'), findsOneWidget);
 
+      ScaffoldMessenger.of(tester.element(find.text('Verified'))).hideCurrentSnackBar();
+      await tester.pumpAndSettle();
+
       // Tap Continue to advance to Screen 5
       await tapButton(tester, find.text('Continue'));
       expect(find.text('A few permissions are needed.'), findsOneWidget);

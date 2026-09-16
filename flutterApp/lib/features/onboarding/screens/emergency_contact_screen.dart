@@ -149,237 +149,36 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen>
       return;
     }
 
-    final codeCtrl = TextEditingController();
-    bool codeSent = false;
-    bool isVerifying = false;
-    String? codeError;
-
-    await showModalBottomSheet<bool>(
+    final verified = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (sheetContext) {
-        return StatefulBuilder(
-          builder: (context, setSheetState) {
-            final bottomPadding = MediaQuery.of(sheetContext).viewInsets.bottom;
-            return Container(
-              decoration: const BoxDecoration(
-                color: PulseColors.surface,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 20,
-                    offset: Offset(0, -4),
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.fromLTRB(24, 20, 24, 24 + bottomPadding),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Grab handle
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: PulseColors.borderSubtle,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+      builder: (sheetContext) => _PhoneVerificationSheet(phone: phone),
+    );
 
-                  // Header Row
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: PulseColors.primary.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: const Icon(
-                          Icons.verified_user_outlined,
-                          color: PulseColors.primary,
-                          size: 26,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Verify Contact Number',
-                              style: PulseTypography.headingMedium.copyWith(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              phone,
-                              style: PulseTypography.caption.copyWith(
-                                color: PulseColors.textSecondary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  Text(
-                    'PulseGuard verifies that this number is valid and reachable so automated escalation alerts arrive without failure.',
-                    style: PulseTypography.bodyRegular.copyWith(
-                      fontSize: 13.5,
-                      height: 1.45,
-                      color: PulseColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  if (!codeSent) ...[
-                    // Step 1: Send Code
-                    PrimaryButton(
-                      label: isVerifying ? 'Sending Code...' : 'Send Verification Code',
-                      icon: Icons.send_rounded,
-                      onPressed: isVerifying
-                          ? null
-                          : () async {
-                              setSheetState(() => isVerifying = true);
-                              await Future.delayed(const Duration(milliseconds: 650));
-                              setSheetState(() {
-                                isVerifying = false;
-                                codeSent = true;
-                              });
-                            },
-                    ),
-                  ] else ...[
-                    // Step 2: Enter Code
-                    Text(
-                      'ENTER 4-DIGIT VERIFICATION CODE',
-                      style: PulseTypography.caption.copyWith(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                        color: PulseColors.textTertiary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: codeCtrl,
-                      keyboardType: TextInputType.number,
-                      maxLength: 4,
-                      textAlign: TextAlign.center,
-                      autofocus: true,
-                      style: PulseTypography.headingMedium.copyWith(
-                        letterSpacing: 8,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      decoration: InputDecoration(
-                        counterText: '',
-                        hintText: '••••',
-                        errorText: codeError,
-                        filled: true,
-                        fillColor: PulseColors.background,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: PulseColors.borderSubtle),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: PulseColors.borderSubtle),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(
-                            color: PulseColors.primary,
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Auto-fill convenience button for rapid testing / simulation
-                    Center(
-                      child: TextButton.icon(
-                        onPressed: () {
-                          codeCtrl.text = '4826';
-                          setSheetState(() {
-                            codeError = null;
-                          });
-                        },
-                        icon: const Icon(Icons.flash_on_rounded, size: 16),
-                        label: const Text('Auto-fill Test Code (4826)'),
-                        style: TextButton.styleFrom(
-                          foregroundColor: PulseColors.primary,
-                          textStyle: PulseTypography.caption.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    PrimaryButton(
-                      label: isVerifying ? 'Confirming...' : 'Confirm & Verify',
-                      icon: Icons.check_circle_outline_rounded,
-                      onPressed: isVerifying
-                          ? null
-                          : () async {
-                              final entered = codeCtrl.text.trim();
-                              if (entered.length < 4) {
-                                setSheetState(() {
-                                  codeError = 'Please enter 4 digits';
-                                });
-                                return;
-                              }
-                              setSheetState(() => isVerifying = true);
-                              await Future.delayed(const Duration(milliseconds: 500));
-                              if (sheetContext.mounted) {
-                                Navigator.of(sheetContext).pop(true);
-                              }
-                            },
-                    ),
-                  ],
-                ],
-              ),
-            );
-          },
-        );
-      },
-    ).then((verified) {
-      codeCtrl.dispose();
-      if (verified == true && mounted) {
-        setState(() {
-          _isPhoneVerified = true;
-          _lastVerifiedPhone = phone;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: PulseColors.riskNormal,
-            content: Row(
-              children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.white, size: 18),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Phone number verified: $phone',
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
+    if (verified == true && mounted) {
+      setState(() {
+        _isPhoneVerified = true;
+        _lastVerifiedPhone = phone;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: PulseColors.riskNormal,
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle_rounded, color: Colors.white, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Phone number verified: $phone',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }
-    });
+        ),
+      );
+    }
   }
 
   Future<void> _saveAndContinue() async {
@@ -795,6 +594,225 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen>
           ),
         );
       },
+    );
+  }
+}
+
+class _PhoneVerificationSheet extends StatefulWidget {
+  final String phone;
+
+  const _PhoneVerificationSheet({required this.phone});
+
+  @override
+  State<_PhoneVerificationSheet> createState() => _PhoneVerificationSheetState();
+}
+
+class _PhoneVerificationSheetState extends State<_PhoneVerificationSheet> {
+  late final TextEditingController _codeCtrl;
+  bool _codeSent = false;
+  bool _isVerifying = false;
+  String? _codeError;
+
+  @override
+  void initState() {
+    super.initState();
+    _codeCtrl = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _codeCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    return Container(
+      decoration: const BoxDecoration(
+        color: PulseColors.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 20,
+            offset: Offset(0, -4),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.fromLTRB(24, 20, 24, 24 + bottomPadding),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Grab handle
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: PulseColors.borderSubtle,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Header Row
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: PulseColors.primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.verified_user_outlined,
+                  color: PulseColors.primary,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Verify Contact Number',
+                      style: PulseTypography.headingMedium.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.phone,
+                      style: PulseTypography.caption.copyWith(
+                        color: PulseColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          Text(
+            'PulseGuard verifies that this number is valid and reachable so automated escalation alerts arrive without failure.',
+            style: PulseTypography.bodyRegular.copyWith(
+              fontSize: 13.5,
+              height: 1.45,
+              color: PulseColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          if (!_codeSent) ...[
+            PrimaryButton(
+              label: _isVerifying ? 'Sending Code...' : 'Send Verification Code',
+              icon: Icons.send_rounded,
+              onPressed: _isVerifying
+                  ? null
+                  : () async {
+                      setState(() => _isVerifying = true);
+                      await Future.delayed(const Duration(milliseconds: 650));
+                      if (mounted) {
+                        setState(() {
+                          _isVerifying = false;
+                          _codeSent = true;
+                        });
+                      }
+                    },
+            ),
+          ] else ...[
+            Text(
+              'ENTER 4-DIGIT VERIFICATION CODE',
+              style: PulseTypography.caption.copyWith(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
+                color: PulseColors.textTertiary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _codeCtrl,
+              keyboardType: TextInputType.number,
+              maxLength: 4,
+              textAlign: TextAlign.center,
+              autofocus: true,
+              style: PulseTypography.headingMedium.copyWith(
+                letterSpacing: 8,
+                fontWeight: FontWeight.w800,
+              ),
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: '••••',
+                errorText: _codeError,
+                filled: true,
+                fillColor: PulseColors.background,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: PulseColors.borderSubtle),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: PulseColors.borderSubtle),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: PulseColors.primary,
+                    width: 1.5,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: TextButton.icon(
+                onPressed: () {
+                  _codeCtrl.text = '4826';
+                  setState(() {
+                    _codeError = null;
+                  });
+                },
+                icon: const Icon(Icons.flash_on_rounded, size: 16),
+                label: const Text('Auto-fill Test Code (4826)'),
+                style: TextButton.styleFrom(
+                  foregroundColor: PulseColors.primary,
+                  textStyle: PulseTypography.caption.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            PrimaryButton(
+              label: _isVerifying ? 'Confirming...' : 'Confirm & Verify',
+              icon: Icons.check_circle_outline_rounded,
+              onPressed: _isVerifying
+                  ? null
+                  : () async {
+                      final entered = _codeCtrl.text.trim();
+                      if (entered.length < 4) {
+                        setState(() {
+                          _codeError = 'Please enter 4 digits';
+                        });
+                        return;
+                      }
+                      setState(() => _isVerifying = true);
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      if (context.mounted) {
+                        Navigator.of(context).pop(true);
+                      }
+                    },
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
