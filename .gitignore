@@ -1,0 +1,17 @@
+# ML-1 raw calibration recordings — local only, share via cloud storage if needed
+# (large binary video + raw accelerometer dumps, not the small derived ML-3 training CSVs in recordings/)
+ml/ml1/data/raw/
+*.mov
+*.mp4
+
+# Flutter/Dart
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/build/
+**/.packages
+*.iml
+.idea/
+
+# macOS
+.DS_Store
